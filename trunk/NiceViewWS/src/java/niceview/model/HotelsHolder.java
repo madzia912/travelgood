@@ -7,7 +7,7 @@ import travelgood.utils.model.Hotel;
 /**
  * Holds all available hotels.
  *
- * @author Bartosz Cichecki
+ * @author Magdalena Furman
  */
 public class HotelsHolder {
 
@@ -21,7 +21,7 @@ public class HotelsHolder {
         return INSTANCE;
     }
 
-    public List<Hotel> getFlights() {
+    public List<Hotel> getHotels() {
         return hotels;
     }
 }
