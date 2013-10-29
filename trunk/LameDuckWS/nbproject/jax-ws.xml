@@ -3,8 +3,8 @@
   <services>
     <service name="LameDuckWS">
       <implementation-class>lameduck.ws.LameDuckWS</implementation-class>
-      <wsdl-url>file:/D:/Dropbox/DTU/webservices/travelgood/trunk/LameDuckWS/src/java/lameduck/wsdl/lameDuckWSDL.wsdl</wsdl-url>
-      <local-wsdl-file>lameDuckWSDL.wsdl</local-wsdl-file>
+      <wsdl-url>file:/D:/Dropbox/DTU/webservices/travelgood/trunk/LameDuckWS/src/java/lameDuck.wsdl</wsdl-url>
+      <local-wsdl-file>lameDuck.wsdl</local-wsdl-file>
       <service-name>lameDuckService</service-name>
       <port-name>lameDuckPort</port-name>
       <package-name>dk.dtu.lameduck</package-name>
