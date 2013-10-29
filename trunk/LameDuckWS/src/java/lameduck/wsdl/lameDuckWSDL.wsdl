@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    author: Bartosz Grzegorz Cichecki
+-->
+<definitions name="lameDuckWSDL" targetNamespace="urn:lameduck.dtu.dk"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:lameduck.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk">
+    <types>
+        <xsd:schema targetNamespace="urn:lameduck.dtu.dk">
+            <xsd:import namespace="urn:commons.travelgood.dtu.dk"/>
+        </xsd:schema>
+    </types>
+</definitions>
