@@ -28,8 +28,8 @@
     </target>
     <target name="wsimport-service-LameDuckWS" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/service/LameDuckWS"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/LameDuckWS" destdir="${build.generated.dir}/jax-wsCache/service/LameDuckWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/LameDuckWS/wsdl/lameDuckWSDL.wsdl" catalog="catalog.xml" extension="true" verbose="true" xnocompile="true" xendorsed="true" target="2.1">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-services/LameDuckWS/wsdl/lameDuckWSDL.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/service/LameDuckWS" destdir="${build.generated.dir}/jax-wsCache/service/LameDuckWS" wsdl="${basedir}/${conf-dir}xml-resources/web-services/LameDuckWS/wsdl/lameDuck.wsdl" catalog="catalog.xml" extension="true" verbose="true" xnocompile="true" xendorsed="true" target="2.1">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-services/LameDuckWS/wsdl/lameDuck.wsdl"/>
             <produces dir="${build.generated.dir}/jax-wsCache/service/LameDuckWS"/>
         </wsimport>
         <copy todir="${build.generated.sources.dir}/jax-ws">
