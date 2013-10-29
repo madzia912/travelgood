@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions name="lameDuckWSDL" targetNamespace="urn:travelgood.dtu.dk"
+<definitions name="travelGoodWSDL" targetNamespace="urn:travelgood.dtu.dk"
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
              xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:travelgood.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk">
     <types>
         <xsd:schema targetNamespace="urn:travelgood.dtu.dk">
-            <xsd:import namespace="urn:commons.travelgood.dtu.dk"/>
+            <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="commonTypes.xsd"/>
         </xsd:schema>
     </types>
 </definitions>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="niceViewWSDL" targetNamespace="urn:niceview.dtu.dk"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:niceview.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="urn:niceview.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk">
+            <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="commonTypes.xsd"/>
+            <xsd:element name="getHotelsRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="location" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getHotelsResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="hotels" type="ct:hotelsType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="getHotelsRequest">
+        <part name="getHotelsRequestPart" element="tns:getHotelsRequest"/>
+    </message>
+    <message name="getHotelsResponse">
+        <part name="getHotelsResponsePart" element="tns:getHotelsResponse"/>
+    </message>
+    <portType name="niceViewPortType">
+        <operation name="getHotels">
+            <input name="getHotelsInput" message="tns:getHotelsRequest"/>
+            <output name="getHotelsOutput" message="tns:getHotelsResponse"/>
+        </operation>
+    </portType>
+    <binding name="niceViewPortTypeBinding" type="tns:niceViewPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getHotels">
+            <soap:operation/>
+            <input name="getHotelsInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="getHotelsOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="niceViewService">
+        <port name="niceViewPortTypeBindingPort" binding="tns:niceViewPortTypeBinding">
+            <soap:address location="http://localhost:8080/niceViewService/niceViewPort"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="niceViewWSDL">
+        <plnk:role name="niceViewPortTypeRole" portType="tns:niceViewPortType"/>
+    </plnk:partnerLinkType>
+</definitions>
