@@ -9,7 +9,6 @@
 <%@page import="java.util.List"%>
 <%@page import="dk.dtu.travelgood.commons.FlightType"%>
 <%@page import="lameduck.model.FlightsHolder"%>
-<%@page import="lameduck.model.ReservationData"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -29,13 +28,15 @@
                 for (FlightType ft : flights) {
             %>
             <li>
-                Flight ID: <% out.print(ft.getId());%>
+                Flight ID: <% out.print(ft.getId());%><br/>
+                Booking Number: <% out.print(ft.getBookingNumber());%>
                 <ul>
                     <li>From: <% out.print(ft.getFrom());%></li>
                     <li>To <% out.print(ft.getTo());%></li>
-                    <li>Places left: <% out.print(ft.getPlacesLeft());%></li>
                     <li>Price: <% out.print(ft.getPrice());%></li>
-                    <li>Departure: <% out.print(new Date(ft.getTimestamp()).toString());%> (Timestamp: <% out.print(ft.getTimestamp());%>)</li>
+                    <li>Carrier <% out.print(ft.getCarrier());%></li>
+                    <li>Lift off: <% out.print(ft.getLiftOffDate().toString());%></li>
+                    <li>Landing <% out.print(ft.getLandingDate().toString());%></li>
                 </ul>
             </li>
             <%
@@ -46,22 +47,17 @@
         <h2>Reservations:</h2>
         <ul>
             <%
-                Map<String, ReservationData> reservations = FlightsHolder.getInstance().getReservations();
-                for (Map.Entry<String, ReservationData> reservation : reservations.entrySet()) {
+                Map<String, FlightType> reservations = FlightsHolder.getInstance().getReservations();
+                for (Map.Entry<String, FlightType> reservation : reservations.entrySet()) {
             %>
             <li>
-                Reservation ID: <% out.print(reservation.getKey());%>
-                <ul>
-                    <li>Flight ID: <% out.print(reservation.getValue().getFlight().getId());%></li>
-                    <li>Places reserved: <% out.print(reservation.getValue().getPlacesReserved());%></li>
-                </ul>
+                Reservation ID: <% out.print(reservation.getKey());%><br/>
+                Flight ID: <% out.print(reservation.getValue().getBookingNumber());%>
             </li>
             <%
                 }
             %>
         </ul>
-
-
 
     </body>
 </html>

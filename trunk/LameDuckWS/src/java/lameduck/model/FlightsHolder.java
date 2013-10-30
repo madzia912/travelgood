@@ -17,7 +17,7 @@ public class FlightsHolder {
 
     private static FlightsHolder INSTANCE = new FlightsHolder();
     private List<FlightType> flights = new ArrayList<FlightType>();
-    private Map<String, ReservationData> reservations = new HashMap<String, ReservationData>();
+    private Map<String, FlightType> reservations = new HashMap<String, FlightType>();
 
     private FlightsHolder() {
         init();
@@ -31,16 +31,16 @@ public class FlightsHolder {
         return flights;
     }
 
-    public FlightType getFlightById(String id) {
+    public FlightType getFlightByBookingNumber(String nr) {
         for (FlightType ft : flights) {
-            if (StringUtils.equals(ft.getId(), id)) {
+            if (StringUtils.equals(ft.getBookingNumber(), nr)) {
                 return ft;
             }
         }
         return null;
     }
 
-    public Map<String, ReservationData> getReservations() {
+    public Map<String, FlightType> getReservations() {
         return reservations;
     }
 
@@ -51,46 +51,56 @@ public class FlightsHolder {
          */
         FlightType ft = new FlightType();
         ft.setId("flight1");
+        ft.setBookingNumber("bookingNr1");
         ft.setFrom("ABC");
         ft.setTo("CBA");
-        ft.setPlacesLeft(100);
-        ft.setTimestamp(DateUtils.getTimestamp(2013, 10, 10, 12, 00));
+        ft.setCarrier("SAS");
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
         ft.setPrice(100);
         flights.add(ft);
 
         ft = new FlightType();
         ft.setId("flight2");
+        ft.setBookingNumber("bookingNr2");
         ft.setFrom("ASD");
         ft.setTo("DSA");
-        ft.setPlacesLeft(100);
-        ft.setTimestamp(DateUtils.getTimestamp(2013, 10, 10, 15, 00));
+        ft.setCarrier("SAS");
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 12));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 12));
         ft.setPrice(200);
         flights.add(ft);
 
         ft = new FlightType();
         ft.setId("flight3");
+        ft.setBookingNumber("bookingNr3");
         ft.setFrom("QWE");
         ft.setTo("EWQ");
-        ft.setPlacesLeft(200);
-        ft.setTimestamp(1370612954);
+        ft.setCarrier("SAS");
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 14));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 15));
         ft.setPrice(120);
         flights.add(ft);
 
         ft = new FlightType();
         ft.setId("flight4");
+        ft.setBookingNumber("bookingNr4");
         ft.setFrom("ERT");
         ft.setTo("TRE");
-        ft.setPlacesLeft(100);
-        ft.setTimestamp(DateUtils.getTimestamp(2013, 10, 12, 16, 00));
+        ft.setCarrier("SAS");
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 16));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 17));
         ft.setPrice(250);
         flights.add(ft);
 
         ft = new FlightType();
         ft.setId("flight5");
+        ft.setBookingNumber("bookingNr5");
         ft.setFrom("POI");
         ft.setTo("IOP");
-        ft.setPlacesLeft(0);
-        ft.setTimestamp(DateUtils.getTimestamp(2013, 10, 15, 18, 00));
+        ft.setCarrier("SAS");
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
         ft.setPrice(555);
         flights.add(ft);
         /*

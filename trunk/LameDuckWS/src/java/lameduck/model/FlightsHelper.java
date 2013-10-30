@@ -6,11 +6,13 @@ import dk.dtu.lameduck.BookFlightResponse;
 import dk.dtu.lameduck.CancelReservationFault;
 import dk.dtu.lameduck.CancelReservationFault_Exception;
 import dk.dtu.lameduck.CancelReservationResponse;
+import dk.dtu.travelgood.commons.CreditCardType;
 import dk.dtu.travelgood.commons.FlightType;
 import dk.dtu.travelgood.commons.FlightsType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -18,14 +20,14 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class FlightsHelper {
 
-    public FlightsType getFlights(String from, String to, long dateFrom, long dateTo) {
+    public FlightsType getFlights(String from, String to, XMLGregorianCalendar date) {
         List<FlightType> flights = FlightsHolder.getInstance().getFlights();
         List<FlightType> sortedFlights = new ArrayList<FlightType>();
-        
+
         for (FlightType ft : flights) {
             boolean flightMatches = true;
-            
-            if (ft.getTimestamp() >= dateFrom && ft.getTimestamp() <= dateTo) {
+
+            if (ft.getLiftOffDate().equals(date)) {
                 flightMatches &= true;
             }
             if (StringUtils.isNotBlank(from)) {
@@ -34,60 +36,51 @@ public class FlightsHelper {
             if (StringUtils.isNotBlank(to)) {
                 flightMatches &= StringUtils.equals(to, ft.getTo());
             }
-            
+
             if (flightMatches) {
                 sortedFlights.add(ft);
             }
-        }            
-        
+        }
+
         FlightsType ft = new FlightsType();
         ft.getFlight().addAll(sortedFlights);
         return ft;
     }
 
-    public BookFlightResponse bookFlight(String flightId, int places) throws BookFlightFault_Exception {
-        FlightType flight = FlightsHolder.getInstance().getFlightById(flightId);
+    public BookFlightResponse bookFlight(String bookingNumber, CreditCardType creditCard) throws BookFlightFault_Exception {
+        FlightType flight = FlightsHolder.getInstance().getFlightByBookingNumber(bookingNumber);
         if (flight == null) {
             BookFlightFault fault = new BookFlightFault();
             fault.setReason("Does not exist.");
-            fault.setFlightId(flightId);
-            throw new BookFlightFault_Exception("Could not book flight " + flightId + ": does not exist.", fault);
+            fault.setBookingNumber(bookingNumber);
+            throw new BookFlightFault_Exception("Could not book flight " + bookingNumber + ": does not exist.", fault);
         }
-        if (flight.getPlacesLeft() < places) {
-            BookFlightFault fault = new BookFlightFault();
-            fault.setReason("No places left.");
-            fault.setFlightId(flightId);
-            throw new BookFlightFault_Exception("Could not book flight " + flightId + ": no places left.", fault);
-        }
-        
-        String reservationId = "flt" + System.nanoTime();
-        
-        Map<String, ReservationData> reservations = FlightsHolder.getInstance().getReservations();
-        flight.setPlacesLeft(flight.getPlacesLeft() - places);
-        reservations.put(reservationId, new ReservationData(flight, places));
-        
+
+        // payment
+
+        Map<String, FlightType> reservations = FlightsHolder.getInstance().getReservations();
+        reservations.put(flight.getBookingNumber(), flight);
+
         BookFlightResponse response = new BookFlightResponse();
-        response.setReservationId(reservationId);
-        response.setPrice(places * flight.getPrice());
-        
+        response.setBooked(true);
         return response;
     }
 
-    public CancelReservationResponse cancelFlight(String reservationId) throws CancelReservationFault_Exception {
-        Map<String, ReservationData> reservations = FlightsHolder.getInstance().getReservations();
-        if (reservations.containsKey(reservationId)) {
-            ReservationData reservationData = reservations.remove(reservationId);
-            reservationData.getFlight().setPlacesLeft(reservationData.getFlight().getPlacesLeft() + reservationData.getPlacesReserved());
+    public CancelReservationResponse cancelFlight(String bookingNumber, CreditCardType creditCard, int price) throws CancelReservationFault_Exception {
+        Map<String, FlightType> reservations = FlightsHolder.getInstance().getReservations();
+        if (reservations.containsKey(bookingNumber)) {
+            reservations.remove(bookingNumber);
         } else {
             CancelReservationFault fault = new CancelReservationFault();
             fault.setReason("Does not exist.");
-            fault.setReservationId(reservationId);
-            throw new CancelReservationFault_Exception("Could not remove reservation " + reservationId + ": does not exist.", fault);
+            fault.setBookingNumber(bookingNumber);
+            throw new CancelReservationFault_Exception("Could not remove reservation " + bookingNumber + ": does not exist.", fault);
         }
-        
+
+        // refund card
+
         CancelReservationResponse response = new CancelReservationResponse();
-        response.setStatus("Cancelled");
-        
+        response.setCanceled(true);
         return response;
     }
 }
