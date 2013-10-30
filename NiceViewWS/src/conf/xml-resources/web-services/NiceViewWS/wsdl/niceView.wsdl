@@ -34,15 +34,16 @@
             </xsd:element>
             <xsd:element name="getHotelsRequest">
                 <xsd:complexType>
-                    <xsd:choice>
+                    <xsd:all>
                         <xsd:element name="city" type="xsd:string"></xsd:element>
                         <xsd:element name="arrivalDate" type="xsd:date"></xsd:element>
-                    </xsd:choice>
+                        <xsd:element name="departureDate" type="xsd:date"></xsd:element>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="getHotelsResponse">
                 <xsd:complexType>
-                    <xsd:sequence>
+                    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
                         <xsd:element name="hotels" type="ct:hotelsType"></xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
@@ -57,7 +58,7 @@
             <xsd:element name="cancelHotelResponse">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="canceled" type="xsd:string"></xsd:element>
+                        <xsd:element name="canceled" type="xsd:boolean"></xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
