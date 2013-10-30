@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    author: Magdalena Furman
+-->
 <definitions name="niceViewWSDL" targetNamespace="urn:niceview.dtu.dk"
              xmlns="http://schemas.xmlsoap.org/wsdl/"
              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
@@ -6,41 +9,47 @@
     <types>
         <xsd:schema targetNamespace="urn:niceview.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk">
             <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="commonTypes.xsd"/>
-            <xsd:element name="bookHotelResponse">
-                <xsd:complexType>
-                    <xsd:sequence>
-                        <xsd:element name="bookID" type="xsd:int"></xsd:element>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
             <xsd:element name="bookHotelRequest">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="name" type="xsd:string"></xsd:element>
+                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
                         <xsd:element name="startDate" type="xsd:date"></xsd:element>
                         <xsd:element name="endDate" type="xsd:date"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="bookHotelResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
+                        <xsd:element name="places" type="xsd:int"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="bookHotelFault">
+                <xsd:complexType>
+                    <xsd:sequence/>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getHotelsRequest">
+                <xsd:complexType>
+                    <xsd:choice>
+                        <xsd:element name="name" type="xsd:string"></xsd:element>
+                        <xsd:element name="location" type="xsd:string"></xsd:element>
+                    </xsd:choice>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getHotelsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="hotels" type="ct:hotelsType"></xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelHotelRequest">
                 <xsd:complexType>
                     <xsd:sequence>
-                        <xsd:element name="bookID" type="xsd:int"></xsd:element>
-                    </xsd:sequence>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="getHotelRequest">
-                <xsd:complexType>
-                    <xsd:choice>
-                        <xsd:element name="location" type="xsd:string"></xsd:element>
-                        <xsd:element name="name" type="xsd:string"></xsd:element>
-                    </xsd:choice>
-                </xsd:complexType>
-            </xsd:element>
-            <xsd:element name="getHotelResponse">
-                <xsd:complexType>
-                    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xsd:element ref="ct:hotel"/>
+                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
@@ -51,6 +60,11 @@
                     </xsd:sequence>
                 </xsd:complexType>
             </xsd:element>
+            <xsd:element name="cancelHotelFault">
+                <xsd:complexType>
+                    <xsd:sequence/>
+                </xsd:complexType>
+            </xsd:element>
         </xsd:schema>
     </types>
     <message name="bookHotelRequest">
@@ -59,30 +73,38 @@
     <message name="bookHotelResponse">
         <part name="bookHotelResponsePart" element="tns:bookHotelResponse"/>
     </message>
+    <message name="bookHotelFault">
+        <part name="bookHotelFaultPart" element="tns:bookHotelFault"/>
+    </message>
     <message name="cancelHotelRequest">
-        <part name="part1" element="tns:cancelHotelRequest"/>
+        <part name="cancelHotelRequestPart" element="tns:cancelHotelRequest"/>
     </message>
     <message name="cancelHotelResponse">
-        <part name="part1" element="tns:cancelHotelResponse"/>
+        <part name="cancelHotelResponsePart" element="tns:cancelHotelResponse"/>
     </message>
-    <message name="getHotelRequest">
-        <part name="part1" element="tns:getHotelRequest"/>
+    <message name="cancelHotelFault">
+        <part name="cancelHotelFault" element="tns:cancelHotelFault"/>
     </message>
-    <message name="getHotelResponse">
-        <part name="part1" element="tns:getHotelResponse"/>
+    <message name="getHotelsRequest">
+        <part name="getHotelsRequestPart" element="tns:getHotelsRequest"/>
+    </message>
+    <message name="getHotelsResponse">
+        <part name="getHotelsResponsePart" element="tns:getHotelsResponse"/>
     </message>
     <portType name="niceViewPortType">
         <operation name="bookHotel">
             <input name="bookHotelInput" message="tns:bookHotelRequest"/>
             <output name="bookHotelOutput" message="tns:bookHotelResponse"/>
+            <fault name="bookHotelFault" message="tns:bookHotelFault"/>
         </operation>
         <operation name="cancelHotel">
             <input name="cancelHotelInput" message="tns:cancelHotelRequest"/>
             <output name="cancelHotelOutput" message="tns:cancelHotelResponse"/>
+            <fault name="cancelHotelFault" message="tns:cancelHotelFault"/>
         </operation>
-        <operation name="getHotel">
-            <input name="getHotelInput" message="tns:getHotelRequest"/>
-            <output name="getHotelOutput" message="tns:getHotelResponse"/>
+        <operation name="getHotels">
+            <input name="getHotelsInput" message="tns:getHotelsRequest"/>
+            <output name="getHotelsOutput" message="tns:getHotelsResponse"/>
         </operation>
     </portType>
     <binding name="niceViewPortTypeBinding" type="tns:niceViewPortType">
@@ -95,6 +117,9 @@
             <output name="bookHotelOutput">
                 <soap:body use="literal"/>
             </output>
+            <fault name="bookHotelFault">
+                <soap:fault name="bookHotelFault" use="literal"/>
+            </fault>
         </operation>
         <operation name="cancelHotel">
             <soap:operation/>
@@ -104,13 +129,16 @@
             <output name="cancelHotelOutput">
                 <soap:body use="literal"/>
             </output>
+            <fault name="cancelHotelFault">
+                <soap:fault name="cancelHotelFault" use="literal"/>
+            </fault>
         </operation>
-        <operation name="getHotel">
+        <operation name="getHotels">
             <soap:operation/>
-            <input name="getHotelInput">
+            <input name="getHotelsInput">
                 <soap:body use="literal"/>
             </input>
-            <output name="getHotelOutput">
+            <output name="getHotelsOutput">
                 <soap:body use="literal"/>
             </output>
         </operation>
