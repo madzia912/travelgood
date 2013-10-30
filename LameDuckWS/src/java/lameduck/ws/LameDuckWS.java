@@ -18,28 +18,20 @@ import lameduck.model.FlightsHelper;
 @WebService(serviceName = "lameDuckService", portName = "lameDuckPort", endpointInterface = "dk.dtu.lameduck.LameDuckPortType", targetNamespace = "urn:lameduck.dtu.dk", wsdlLocation = "WEB-INF/wsdl/LameDuckWS/lameDuck.wsdl")
 public class LameDuckWS {
 
+    private FlightsHelper fh = new FlightsHelper();
+
     public GetFlightsResponse getFlights(GetFlightsRequest request) {
-        FlightsHelper helper = new FlightsHelper();
-        FlightsType flightsType = helper.getFlights(request.getFrom(), request.getTo(), request.getDateFrom(), request.getDateTo());
+        FlightsType flightsType = fh.getFlights(request.getFrom(), request.getTo(), request.getDateFrom(), request.getDateTo());
         GetFlightsResponse response = new GetFlightsResponse();
         response.setFlights(flightsType);
         return response;
     }
 
     public BookFlightResponse bookFlight(BookFlightRequest request) throws BookFlightFault_Exception {
-        FlightsHelper helper = new FlightsHelper();
-        String reservationId = helper.bookFlight(request.getFlightId());
-        BookFlightResponse response = new BookFlightResponse();
-        response.setReservationId(reservationId);
-        return response;
+        return fh.bookFlight(request.getFlightId(), request.getPlaces());
     }
 
     public CancelReservationResponse cancelReservation(CancelReservationRequest request) throws CancelReservationFault_Exception {
-        FlightsHelper helper = new FlightsHelper();
-        String status = helper.cancelFlight(request.getReservationId());
-        CancelReservationResponse response = new CancelReservationResponse();
-        response.setStatus(status);
-        return response;
+        return fh.cancelFlight(request.getReservationId());
     }
-    
 }
