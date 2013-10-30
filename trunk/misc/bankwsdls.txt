@@ -1,0 +1,2 @@
+http://fastmoney.imm.dtu.dk:8080/BankSecureService?wsdl
+http://fastmoney.imm.dtu.dk:8080/BankService?wsdl

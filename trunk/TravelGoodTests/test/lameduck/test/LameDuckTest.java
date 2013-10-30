@@ -66,8 +66,8 @@ public class LameDuckTest {
         
         CreditCardType creditCard = new CreditCardType();
         creditCard.setName("Anne Strandberg");
-        creditCard.setExpMonth("5");
-        creditCard.setExpYear("9");
+        creditCard.setExpMonth(5);
+        creditCard.setExpYear(9);
         creditCard.setNumber("50408816");
 
         BookFlightRequest bookRequest = new BookFlightRequest();
@@ -92,6 +92,20 @@ public class LameDuckTest {
     public void testFailBook1() throws BookFlightFault_Exception {
         BookFlightRequest bookRequest = new BookFlightRequest();
         bookRequest.setBookingNumber("SOME_INVALID_AND_FAKE_AND_WRONG_FLIGHT_ID");
+        getPort().bookFlight(bookRequest);
+    }
+    
+    @Test(expected=BookFlightFault_Exception.class)
+    public void testFailBook2() throws BookFlightFault_Exception {
+        BookFlightRequest bookRequest = new BookFlightRequest();
+        bookRequest.setBookingNumber("flight5");
+        CreditCardType creditCard = new CreditCardType();
+        creditCard.setName("Thor-Jensen Claus");
+        creditCard.setExpMonth(5);
+        creditCard.setExpYear(9);
+        creditCard.setNumber("50408825");
+        bookRequest.setCreditCard(creditCard);
+        
         getPort().bookFlight(bookRequest);
     }
     
