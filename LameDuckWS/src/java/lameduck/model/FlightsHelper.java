@@ -1,5 +1,7 @@
 package lameduck.model;
 
+import bank.unsecure.ws.CreditCardFaultMessage;
+import bank.utils.BankUtils;
 import dk.dtu.lameduck.BookFlightFault;
 import dk.dtu.lameduck.BookFlightFault_Exception;
 import dk.dtu.lameduck.BookFlightResponse;
@@ -19,6 +21,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author Bartosz Grzegorz Cichecki
  */
 public class FlightsHelper {
+
+    private final static String ACCOUNT_NAME = "LameDuck";
+    private final static String ACCOUNT_NUMBER = "50208812";
 
     public FlightsType getFlights(String from, String to, XMLGregorianCalendar date) {
         List<FlightType> flights = FlightsHolder.getInstance().getFlights();
@@ -56,7 +61,15 @@ public class FlightsHelper {
             throw new BookFlightFault_Exception("Could not book flight " + bookingNumber + ": does not exist.", fault);
         }
 
-        // payment
+        try {
+            BankUtils.chargeCreditCard(flight.getPrice(), creditCard.getName(), creditCard.getExpMonth(), creditCard.getExpYear(), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
+        } catch (CreditCardFaultMessage e) {
+            System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
+            BookFlightFault fault = new BookFlightFault();
+            fault.setReason(e.getFaultInfo().getMessage());
+            fault.setBookingNumber(bookingNumber);
+            throw new BookFlightFault_Exception("Could not book flight " + bookingNumber + ": payment fail.", fault);
+        }
 
         Map<String, FlightType> reservations = FlightsHolder.getInstance().getReservations();
         reservations.put(flight.getBookingNumber(), flight);
@@ -77,7 +90,16 @@ public class FlightsHelper {
             throw new CancelReservationFault_Exception("Could not remove reservation " + bookingNumber + ": does not exist.", fault);
         }
 
-        // refund card
+
+        try {
+            BankUtils.refundCreditCard(price, creditCard.getName(), creditCard.getExpMonth(), creditCard.getExpYear(), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
+        } catch (CreditCardFaultMessage e) {
+            System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
+            CancelReservationFault fault = new CancelReservationFault();
+            fault.setReason(e.getFaultInfo().getMessage());
+            fault.setBookingNumber(bookingNumber);
+            throw new CancelReservationFault_Exception("Could not cancel flight " + bookingNumber + ": refund fail.", fault);
+        }
 
         CancelReservationResponse response = new CancelReservationResponse();
         response.setCanceled(true);

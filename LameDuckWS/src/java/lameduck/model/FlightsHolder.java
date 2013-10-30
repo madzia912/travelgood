@@ -101,7 +101,7 @@ public class FlightsHolder {
         ft.setCarrier("SAS");
         ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
         ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
-        ft.setPrice(555);
+        ft.setPrice(100000);
         flights.add(ft);
         /*
          * End of sample flights used for tests.

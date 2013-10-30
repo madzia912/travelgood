@@ -77,8 +77,8 @@
         <xsd:sequence>
             <xsd:element name="name" type="xsd:string"></xsd:element>
             <xsd:element name="number" type="xsd:string"></xsd:element>
-            <xsd:element name="expMonth" type="xsd:string"></xsd:element>
-            <xsd:element name="expYear" type="xsd:string"></xsd:element>
+            <xsd:element name="expMonth" type="xsd:int"></xsd:element>
+            <xsd:element name="expYear" type="xsd:int"></xsd:element>
         </xsd:sequence>
     </xsd:complexType>
     <xsd:element name="flight" type="tns:flightType"></xsd:element>
