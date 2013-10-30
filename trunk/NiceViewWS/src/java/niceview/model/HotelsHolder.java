@@ -1,8 +1,8 @@
 package niceview.model;
 
+import dk.dtu.travelgood.commons.HotelType;
 import java.util.ArrayList;
 import java.util.List;
-import travelgood.utils.model.Hotel;
 
 /**
  * Holds all available hotels.
@@ -11,7 +11,7 @@ import travelgood.utils.model.Hotel;
  */
 public class HotelsHolder {
 
-    private List<Hotel> hotels = new ArrayList<Hotel>();
+    private List<HotelType> hotels = new ArrayList<HotelType>();
     private static HotelsHolder INSTANCE = new HotelsHolder();
 
     private HotelsHolder() {
@@ -21,7 +21,7 @@ public class HotelsHolder {
         return INSTANCE;
     }
 
-    public List<Hotel> getHotels() {
+    public List<HotelType> getHotels() {
         return hotels;
     }
 }
