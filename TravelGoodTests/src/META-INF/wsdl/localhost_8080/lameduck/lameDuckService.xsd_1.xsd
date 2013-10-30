@@ -4,21 +4,31 @@
     <xsd:complexType name="flightType">
         <xsd:all>
             <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="bookingNumber" type="xsd:string"/>
+            <xsd:element name="carrier" type="xsd:string"/>
             <xsd:element name="from" type="xsd:string"/>
             <xsd:element name="to" type="xsd:string"/>
-            <xsd:element name="timestamp" type="xsd:long"/>
-            <xsd:element name="placesLeft" type="xsd:int"/>
+            <xsd:element name="liftOffDate" type="xsd:date"/>
+            <xsd:element name="landingDate" type="xsd:date"/>
             <xsd:element name="price" type="xsd:int"/>
+        </xsd:all>
+    </xsd:complexType>
+    <xsd:complexType name="addressType">
+        <xsd:all>
+            <xsd:element name="city" type="xsd:string"/>
+            <xsd:element name="street" type="xsd:string"/>
+            <xsd:element name="zipCode" type="xsd:string"/>
         </xsd:all>
     </xsd:complexType>
     <xsd:complexType name="hotelType">
         <xsd:all>
             <xsd:element name="id" type="xsd:string"/>
+            <xsd:element name="bookingNumber" type="xsd:string"/>
             <xsd:element name="name" type="xsd:string"/>
-            <xsd:element name="location" type="xsd:string"/>
-            <xsd:element name="pricePerDay" type="xsd:int"/>
-            <xsd:element name="from" type="xsd:date"/>
-            <xsd:element name="to" type="xsd:date"/>
+            <xsd:element name="address" type="tns:addressType"/>
+            <xsd:element name="provider" type="xsd:string"/>
+            <xsd:element name="price" type="xsd:int"/>
+            <xsd:element name="creditCardGuarantee" type="xsd:boolean"/>
         </xsd:all>
     </xsd:complexType>
     <xsd:complexType name="flightsType">
@@ -58,6 +68,15 @@
             </xsd:element>
         </xsd:all>
     </xsd:complexType>
+    <xsd:complexType name="creditCardType">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="number" type="xsd:string"/>
+            <xsd:element name="expMonth" type="xsd:string"/>
+            <xsd:element name="expYear" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
     <xsd:element name="flight" type="tns:flightType"/>
     <xsd:element name="hotel" type="tns:hotelType"/>
+    <xsd:element name="creditCard" type="tns:creditCardType"/>
 </xsd:schema>

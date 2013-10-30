@@ -21,17 +21,17 @@ public class LameDuckWS {
     private FlightsHelper fh = new FlightsHelper();
 
     public GetFlightsResponse getFlights(GetFlightsRequest request) {
-        FlightsType flightsType = fh.getFlights(request.getFrom(), request.getTo(), request.getDateFrom(), request.getDateTo());
+        FlightsType flightsType = fh.getFlights(request.getFrom(), request.getTo(), request.getTakeOffDate());
         GetFlightsResponse response = new GetFlightsResponse();
         response.setFlights(flightsType);
         return response;
     }
 
     public BookFlightResponse bookFlight(BookFlightRequest request) throws BookFlightFault_Exception {
-        return fh.bookFlight(request.getFlightId(), request.getPlaces());
+        return fh.bookFlight(request.getBookingNumber(), request.getCreditCard());
     }
 
     public CancelReservationResponse cancelReservation(CancelReservationRequest request) throws CancelReservationFault_Exception {
-        return fh.cancelFlight(request.getReservationId());
+        return fh.cancelFlight(request.getBookingNumber(), request.getCreditCard(), request.getPrice());
     }
 }

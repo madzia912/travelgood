@@ -14,8 +14,7 @@
                     <xsd:all>
                         <xsd:element name="from" type="xsd:string"></xsd:element>
                         <xsd:element name="to" type="xsd:string"></xsd:element>
-                        <xsd:element name="dateFrom" type="xsd:long"></xsd:element>
-                        <xsd:element name="dateTo" type="xsd:long"></xsd:element>
+                        <xsd:element name="takeOffDate" type="xsd:date"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
@@ -29,23 +28,22 @@
             <xsd:element name="bookFlightRequest">
                 <xsd:complexType>
                     <xsd:all>
-                        <xsd:element name="flightId" type="xsd:string"></xsd:element>
-                        <xsd:element name="places" type="xsd:int"></xsd:element>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="creditCard" type="ct:creditCardType"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="bookFlightResponse">
                 <xsd:complexType>
                     <xsd:all>
-                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
-                        <xsd:element name="price" type="xsd:int"></xsd:element>
+                        <xsd:element name="booked" type="xsd:boolean"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="bookFlightFault">
                 <xsd:complexType>
                     <xsd:all>
-                        <xsd:element name="flightId" type="xsd:string"></xsd:element>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
                         <xsd:element name="reason" type="xsd:string"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
@@ -53,19 +51,23 @@
             <xsd:element name="cancelReservationRequest">
                 <xsd:complexType>
                     <xsd:all>
-                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="creditCard" type="ct:creditCardType"></xsd:element>
+                        <xsd:element name="price" type="xsd:int"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelReservationResponse">
                 <xsd:complexType>
-                    <xsd:element name="status" type="xsd:string"></xsd:element>
+                    <xsd:all>
+                        <xsd:element name="canceled" type="xsd:boolean"></xsd:element>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelReservationFault">
                 <xsd:complexType>
                     <xsd:all>
-                        <xsd:element name="reservationId" type="xsd:string"></xsd:element>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
                         <xsd:element name="reason" type="xsd:string"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
