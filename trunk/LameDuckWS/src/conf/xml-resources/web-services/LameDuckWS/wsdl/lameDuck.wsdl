@@ -30,6 +30,7 @@
                 <xsd:complexType>
                     <xsd:all>
                         <xsd:element name="flightId" type="xsd:string"></xsd:element>
+                        <xsd:element name="places" type="xsd:int"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
@@ -37,6 +38,7 @@
                 <xsd:complexType>
                     <xsd:all>
                         <xsd:element name="reservationId" type="xsd:string"></xsd:element>
+                        <xsd:element name="price" type="xsd:int"></xsd:element>
                     </xsd:all>
                 </xsd:complexType>
             </xsd:element>
