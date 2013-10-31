@@ -11,17 +11,17 @@
             <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="commonTypes.xsd"/>
             <xsd:element name="bookHotelRequest">
                 <xsd:complexType>
-                    <xsd:sequence>
+                    <xsd:all>
                         <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
                         <xsd:element name="creditCard" type="ct:creditCardType" minOccurs="0"></xsd:element>
-                    </xsd:sequence>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="bookHotelResponse">
                 <xsd:complexType>
-                    <xsd:sequence>
+                    <xsd:all>
                         <xsd:element name="booked" type="xsd:boolean"></xsd:element>
-                    </xsd:sequence>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="bookHotelFault">
@@ -43,23 +43,23 @@
             </xsd:element>
             <xsd:element name="getHotelsResponse">
                 <xsd:complexType>
-                    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                    <xsd:all>
                         <xsd:element name="hotels" type="ct:hotelsType"></xsd:element>
-                    </xsd:sequence>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelHotelRequest">
                 <xsd:complexType>
-                    <xsd:sequence>
+                    <xsd:all>
                         <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
-                    </xsd:sequence>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelHotelResponse">
                 <xsd:complexType>
-                    <xsd:sequence>
+                    <xsd:all>
                         <xsd:element name="canceled" type="xsd:boolean"></xsd:element>
-                    </xsd:sequence>
+                    </xsd:all>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="cancelHotelFault">
