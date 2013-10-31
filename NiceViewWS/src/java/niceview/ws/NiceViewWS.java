@@ -8,7 +8,9 @@ import dk.dtu.niceview.CancelHotelRequest;
 import dk.dtu.niceview.CancelHotelResponse;
 import dk.dtu.niceview.GetHotelsRequest;
 import dk.dtu.niceview.GetHotelsResponse;
+import dk.dtu.travelgood.commons.HotelsType;
 import javax.jws.WebService;
+import niceview.model.HotelsHelper;
 
 /**
  * @author Magdalena Furman
@@ -16,19 +18,20 @@ import javax.jws.WebService;
 @WebService(serviceName = "niceViewService", portName = "niceViewPortTypeBindingPort", endpointInterface = "dk.dtu.niceview.NiceViewPortType", targetNamespace = "urn:niceview.dtu.dk", wsdlLocation = "WEB-INF/wsdl/NiceViewWS/niceView.wsdl")
 public class NiceViewWS {
 
+    HotelsHelper hh = new HotelsHelper();
+    
     public BookHotelResponse bookHotel(BookHotelRequest request) throws BookHotelFault_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return hh.bookHotel(request.getBookingNumber(), request.getCreditCard());
     }
 
     public CancelHotelResponse cancelHotel(CancelHotelRequest request) throws CancelHotelFault_Exception {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return hh.cancelFlight(request.getBookingNumber());
     }
-
     public GetHotelsResponse getHotels(GetHotelsRequest request) {
-        //TODO implement this method
-        throw new UnsupportedOperationException("Not implemented yet.");
+        HotelsType hotelsType = hh.getHotels(request.getCity(), request.getArrivalDate(), request.getDepartureDate());
+        GetHotelsResponse response = new GetHotelsResponse();
+        response.setHotels(hotelsType);
+        return response;
     }
-    
+  
 }
