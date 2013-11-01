@@ -12,6 +12,7 @@ import dk.dtu.niceview.BookHotelResponse;
 import dk.dtu.niceview.CancelHotelFault;
 import dk.dtu.niceview.CancelHotelFault_Exception;
 import dk.dtu.niceview.CancelHotelResponse;
+import dk.dtu.niceview.GetHotelsResponse;
 import dk.dtu.travelgood.commons.CreditCardType;
 import dk.dtu.travelgood.commons.HotelType;
 import dk.dtu.travelgood.commons.HotelsType;
@@ -28,7 +29,7 @@ public class HotelsHelper {
     private final static String ACCOUNT_NAME = "NiceView";
     private final static String ACCOUNT_NUMBER = "50308815";
     
-    public HotelsType getHotels(String name, XMLGregorianCalendar arrival, XMLGregorianCalendar departure)
+    public GetHotelsResponse getHotels(String name, XMLGregorianCalendar arrival, XMLGregorianCalendar departure)
     {
         List<HotelType> hotels = HotelsHolder.getInstance().getHotels();
         HotelsType hotelsList = new HotelsType();
@@ -38,8 +39,10 @@ public class HotelsHelper {
                 hotelsList.getHotel().add(ht);
             }
         }
-
-        return hotelsList;
+        GetHotelsResponse ghr = new GetHotelsResponse();
+        ghr.setHotels(hotelsList);
+        ghr.setHotelReservationName(ACCOUNT_NAME);
+        return ghr;
     }
     
     public BookHotelResponse bookHotel(String bookingNumber, CreditCardType creditCard) throws BookHotelFault_Exception
@@ -52,6 +55,20 @@ public class HotelsHelper {
             throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": does not exist.", fault);
         }
         
+        if(hotel.isCreditCardGuarantee())
+        {
+            try
+            {
+                BankUtils.validateCreditCard(hotel.getPrice(), creditCard.getName(), Integer.parseInt(creditCard.getExpMonth()), Integer.parseInt(creditCard.getExpYear()), creditCard.getNumber());
+            } catch (CreditCardFaultMessage e)
+            {
+                System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
+                BookHotelFault fault = new BookHotelFault();
+                fault.setReason(e.getFaultInfo().getMessage());
+                fault.setBookingNumber(bookingNumber);
+                throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": invalid credit card.", fault);
+            }
+        }
         try {
             BankUtils.chargeCreditCard(hotel.getPrice(), creditCard.getName(), Integer.parseInt(creditCard.getExpMonth()), Integer.parseInt(creditCard.getExpYear()), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
         } catch (CreditCardFaultMessage e) {
