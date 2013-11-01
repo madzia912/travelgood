@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package niceview.model;
 
 import bank.unsecure.ws.CreditCardFaultMessage;
@@ -16,37 +12,33 @@ import dk.dtu.niceview.GetHotelsResponse;
 import dk.dtu.travelgood.commons.CreditCardType;
 import dk.dtu.travelgood.commons.HotelType;
 import dk.dtu.travelgood.commons.HotelsType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- *
- * @author Magda
+ * @author Magdalena Furman
  */
 public class HotelsHelper {
+
     private final static String ACCOUNT_NAME = "NiceView";
     private final static String ACCOUNT_NUMBER = "50308815";
-    
-    public GetHotelsResponse getHotels(String name, XMLGregorianCalendar arrival, XMLGregorianCalendar departure)
-    {
+
+    public GetHotelsResponse getHotels(String name, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
         List<HotelType> hotels = HotelsHolder.getInstance().getHotels();
         HotelsType hotelsList = new HotelsType();
 
         for (HotelType ht : hotels) {
-            if(ht.getName().equals(name)) {
+            if (ht.getName().equals(name)) {
                 hotelsList.getHotel().add(ht);
             }
         }
         GetHotelsResponse ghr = new GetHotelsResponse();
         ghr.setHotels(hotelsList);
-        ghr.setHotelReservationName(ACCOUNT_NAME);
         return ghr;
     }
-    
-    public BookHotelResponse bookHotel(String bookingNumber, CreditCardType creditCard) throws BookHotelFault_Exception
-    {
+
+    public BookHotelResponse bookHotel(String bookingNumber, CreditCardType creditCard) throws BookHotelFault_Exception {
         HotelType hotel = HotelsHolder.getInstance().getHotelByBookingNumber(bookingNumber);
         if (hotel == null) {
             BookHotelFault fault = new BookHotelFault();
@@ -54,14 +46,11 @@ public class HotelsHelper {
             fault.setBookingNumber(bookingNumber);
             throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": does not exist.", fault);
         }
-        
-        if(hotel.isCreditCardGuarantee())
-        {
-            try
-            {
+
+        if (hotel.isCreditCardGuarantee()) {
+            try {
                 BankUtils.validateCreditCard(hotel.getPrice(), creditCard.getName(), Integer.parseInt(creditCard.getExpMonth()), Integer.parseInt(creditCard.getExpYear()), creditCard.getNumber());
-            } catch (CreditCardFaultMessage e)
-            {
+            } catch (CreditCardFaultMessage e) {
                 System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
                 BookHotelFault fault = new BookHotelFault();
                 fault.setReason(e.getFaultInfo().getMessage());
@@ -86,7 +75,7 @@ public class HotelsHelper {
         response.setBooked(true);
         return response;
     }
-    
+
     public CancelHotelResponse cancelFlight(String bookingNumber) throws CancelHotelFault_Exception {
         Map<String, HotelType> reservations = HotelsHolder.getInstance().getReservations();
         if (reservations.containsKey(bookingNumber)) {
@@ -102,4 +91,5 @@ public class HotelsHelper {
         response.setCanceled(true);
         return response;
     }
+    
 }
