@@ -5,7 +5,7 @@
     <client name="lameDuckService">
       <wsdl-url>http://localhost:8080/lameduck/lameDuckService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/lameduck/lameDuckService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">lameduck.test.client</package-name>
+      <package-name forceReplace="true">lameduck.ws.client</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -30,14 +30,18 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>lameduck.test.client</wsimport-option-value>
+          <wsimport-option-value>lameduck.ws.client</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>target</wsimport-option-name>
+          <wsimport-option-value>2.1</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>
     <client name="niceViewService">
       <wsdl-url>http://localhost:8080/niceview/niceViewService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/niceview/niceViewService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">niceview.test.client</package-name>
+      <package-name forceReplace="true">niceview.ws.client</package-name>
       <catalog-file>catalog.xml</catalog-file>
       <wsimport-options>
         <wsimport-option>
@@ -62,7 +66,11 @@
         </wsimport-option>
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>niceview.test.client</wsimport-option-value>
+          <wsimport-option-value>niceview.ws.client</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>target</wsimport-option-name>
+          <wsimport-option-value>2.1</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>
