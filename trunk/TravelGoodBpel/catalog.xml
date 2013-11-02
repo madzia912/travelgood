@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <nextCatalog catalog="nbproject/private/retriever/catalog.xml"/>
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?wsdl" uri="src/localhost_8080/lameduck/lameDuckService.wsdl"/>
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?xsd=1" uri="src/localhost_8080/lameduck/lameDuckService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?wsdl" uri="src/localhost_8080/niceview/niceViewService.wsdl"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?xsd=1" uri="src/localhost_8080/niceview/niceViewService.xsd_1.xsd"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankService?wsdl" uri="src/fastmoney.imm.dtu.dk_8080/BankService.wsdl"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankService?xsd=1" uri="src/fastmoney.imm.dtu.dk_8080/BankService.xsd_1.xsd"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankSecureService?wsdl" uri="src/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankSecureService?xsd=1" uri="src/fastmoney.imm.dtu.dk_8080/BankSecureService.xsd_1.xsd"/>
 </catalog>
