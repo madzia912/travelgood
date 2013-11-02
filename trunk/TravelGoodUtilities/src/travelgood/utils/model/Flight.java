@@ -1,115 +1,83 @@
 package travelgood.utils.model;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.util.Date;
 
 /**
- * This class represents single flight.
  *
- * @author Bartosz Cichecki
+ * @author Bartosz Grzegorz Cichecki
  */
-public class Flight implements Serializable {
+public class Flight {
 
-    private String id;
-    private String from;
-    private String to;
-    private Long timestamp;
-    private int placesLeft;
-    private int price;
+    protected String id;
+    protected String bookingNumber;
+    protected String carrier;
+    protected String from;
+    protected String to;
+    private Date liftOffDate;
+    protected Date landingDate;
+    protected int price;
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String value) {
+        this.id = value;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String value) {
+        this.bookingNumber = value;
+    }
+
+    public String getCarrier() {
+        return carrier;
+    }
+
+    public void setCarrier(String value) {
+        this.carrier = value;
     }
 
     public String getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFrom(String value) {
+        this.from = value;
     }
 
     public String getTo() {
         return to;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setTo(String value) {
+        this.to = value;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
+    public Date getLiftOffDate() {
+        return liftOffDate;
     }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
+    public void setLiftOffDate(Date value) {
+        this.liftOffDate = value;
     }
 
-    public int getPlacesLeft() {
-        return placesLeft;
+    public Date getLandingDate() {
+        return landingDate;
     }
 
-    public void setPlacesLeft(int placesLeft) {
-        this.placesLeft = placesLeft;
+    public void setLandingDate(Date value) {
+        this.landingDate = value;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setPrice(int value) {
+        this.price = value;
     }
-
-    @Override
-    public String toString() {
-        return "Flight{" + "id=" + id + ", from=" + from + ", to=" + to + ", timestamp=" + timestamp + ", placesLeft=" + placesLeft + ", price=" + price + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Objects.hashCode(this.from);
-        hash = 53 * hash + Objects.hashCode(this.to);
-        hash = 53 * hash + Objects.hashCode(this.timestamp);
-        hash = 53 * hash + this.placesLeft;
-        hash = 53 * hash + this.price;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Flight other = (Flight) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.from, other.from)) {
-            return false;
-        }
-        if (!Objects.equals(this.to, other.to)) {
-            return false;
-        }
-        if (!Objects.equals(this.timestamp, other.timestamp)) {
-            return false;
-        }
-        if (this.placesLeft != other.placesLeft) {
-            return false;
-        }
-        if (this.price != other.price) {
-            return false;
-        }
-        return true;
-    }
-    
 }

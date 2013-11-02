@@ -49,7 +49,7 @@ public class HotelsHelper {
 
         if (hotel.isCreditCardGuarantee()) {
             try {
-                BankUtils.validateCreditCard(hotel.getPrice(), creditCard.getName(), Integer.parseInt(creditCard.getExpMonth()), Integer.parseInt(creditCard.getExpYear()), creditCard.getNumber());
+                BankUtils.validateCreditCard(hotel.getPrice(), creditCard.getName(), creditCard.getExpMonth(), creditCard.getExpYear(), creditCard.getNumber());
             } catch (CreditCardFaultMessage e) {
                 System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
                 BookHotelFault fault = new BookHotelFault();
@@ -59,7 +59,7 @@ public class HotelsHelper {
             }
         }
         try {
-            BankUtils.chargeCreditCard(hotel.getPrice(), creditCard.getName(), Integer.parseInt(creditCard.getExpMonth()), Integer.parseInt(creditCard.getExpYear()), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
+            BankUtils.chargeCreditCard(hotel.getPrice(), creditCard.getName(), creditCard.getExpMonth(), creditCard.getExpYear(), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
         } catch (CreditCardFaultMessage e) {
             System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
             BookHotelFault fault = new BookHotelFault();
@@ -91,5 +91,4 @@ public class HotelsHelper {
         response.setCanceled(true);
         return response;
     }
-    
 }
