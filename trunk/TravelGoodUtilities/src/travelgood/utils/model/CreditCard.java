@@ -1,9 +1,12 @@
 package travelgood.utils.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Bartosz Grzegorz Cichecki
  */
+@XmlRootElement
 public class CreditCard {
 
     protected String name;
