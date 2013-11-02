@@ -28,9 +28,9 @@
         <variable name="backendGetFlightsRequest" xmlns:tns="urn:lameduck.dtu.dk" messageType="tns:getFlightsRequest"/>
         <variable name="customerGetFlightsRequest" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getFlightsRequest"/>
     </variables>
-    <pick name="Pick1">
+    <pick name="Pick" createInstance="yes">
         <onMessage partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsRequest">
-            <sequence name="Sequence2">
+            <sequence name="SearchFlights">
                 <assign name="Assign1">
                     <copy>
                             <from variable="customerGetFlightsRequest"/>
@@ -48,7 +48,7 @@
             </sequence>
         </onMessage>
         <onMessage partnerLink="PartnerLink3" operation="getHotels" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetHotelsRequest">
-            <sequence name="Sequence3">
+            <sequence name="SearchHotels">
                 <assign name="Assign3">
                     <copy>
                         <from variable="customerGetHotelsRequest"/>
@@ -63,6 +63,39 @@
                     </copy>
                 </assign>
                 <reply name="Reply2" partnerLink="PartnerLink3" operation="getHotels" portType="tns:travelGoodPortType" variable="customerGetHotelsResponse"/>
+            </sequence>
+        </onMessage>
+        <onMessage partnerLink="PartnerLink3" operation="createItinerary" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType">
+            <sequence name="Sequence4">
+                <while name="ThisIsNotGood">
+                    <pick name="Pick2">
+                        <onMessage partnerLink="PartnerLink3" operation="addFlight" portType="tns:travelGoodPortType">
+                            <sequence name="Sequence5">
+                                <invoke name="Invoke3" partnerLink="LameDuck" operation="bookFlight" xmlns:tns="urn:lameduck.dtu.dk" portType="tns:lameDuckPortType"/>
+                                <reply name="Reply3" partnerLink="PartnerLink3" operation="addFlight" portType="tns:travelGoodPortType"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink3" operation="addHotel" portType="tns:travelGoodPortType">
+                            <sequence name="Sequence6">
+                                <invoke name="Invoke4" partnerLink="NiceView" operation="bookHotel" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType"/>
+                                <reply name="Reply4" partnerLink="PartnerLink3" operation="addHotel" portType="tns:travelGoodPortType"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink3" operation="bookItinerary" portType="tns:travelGoodPortType">
+                            <sequence name="Sequence7">
+                                <assign name="Assign5"/>
+                                <reply name="Reply5" partnerLink="PartnerLink3" operation="bookItinerary" portType="tns:travelGoodPortType"/>
+                            </sequence>
+                        </onMessage>
+                        <onMessage partnerLink="PartnerLink3" operation="cancelItinerary" portType="tns:travelGoodPortType">
+                            <sequence name="Sequence8">
+                                <invoke name="Invoke6"/>
+                                <reply name="Reply6"/>
+                            </sequence>
+                        </onMessage>
+                    </pick>
+                </while>
+                <receive name="Receive1" partnerLink="PartnerLink3" operation="cancelItinerary" portType="tns:travelGoodPortType"/>
             </sequence>
         </onMessage>
     </pick>
