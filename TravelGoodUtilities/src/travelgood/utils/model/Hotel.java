@@ -1,116 +1,72 @@
 package travelgood.utils.model;
 
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Objects;
-
 /**
- * This class represents a hotel or a hotel booking.
  * 
- * @author Bartosz Cichecki
+ * @author Bartosz Grzegorz Cichecki
  */
-public class Hotel implements Serializable {
-    
-    private String id;
-    private String name;
-    private String location;
-    private int pricePerDay;
-    private Calendar from;
-    private Calendar to;
+public class Hotel {
+
+    protected String id;
+    protected String bookingNumber;
+    protected String name;
+    protected Address address;
+    protected String provider;
+    protected int price;
+    protected boolean creditCardGuarantee;
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String value) {
+        this.id = value;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
+    }
+
+    public void setBookingNumber(String value) {
+        this.bookingNumber = value;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String value) {
+        this.name = value;
     }
 
-    public String getLocation() {
-        return location;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddress(Address value) {
+        this.address = value;
     }
 
-    public int getPricePerDay() {
-        return pricePerDay;
+    public String getProvider() {
+        return provider;
     }
 
-    public void setPricePerDay(int pricePerDay) {
-        this.pricePerDay = pricePerDay;
+    public void setProvider(String value) {
+        this.provider = value;
     }
 
-    public Calendar getFrom() {
-        return from;
+    public int getPrice() {
+        return price;
     }
 
-    public void setFrom(Calendar from) {
-        this.from = from;
+    public void setPrice(int value) {
+        this.price = value;
     }
 
-    public Calendar getTo() {
-        return to;
+    public boolean isCreditCardGuarantee() {
+        return creditCardGuarantee;
     }
 
-    public void setTo(Calendar to) {
-        this.to = to;
+    public void setCreditCardGuarantee(boolean value) {
+        this.creditCardGuarantee = value;
     }
-
-    @Override
-    public String toString() {
-        return "Hotel{" + "id=" + id + ", name=" + name + ", location=" + location + ", pricePerDay=" + pricePerDay + ", from=" + from + ", to=" + to + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.name);
-        hash = 67 * hash + Objects.hashCode(this.location);
-        hash = 67 * hash + this.pricePerDay;
-        hash = 67 * hash + Objects.hashCode(this.from);
-        hash = 67 * hash + Objects.hashCode(this.to);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Hotel other = (Hotel) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.location, other.location)) {
-            return false;
-        }
-        if (this.pricePerDay != other.pricePerDay) {
-            return false;
-        }
-        if (!Objects.equals(this.from, other.from)) {
-            return false;
-        }
-        if (!Objects.equals(this.to, other.to)) {
-            return false;
-        }
-        return true;
-    }
-    
 }
