@@ -13,7 +13,7 @@ import bank.unsecure.ws.ExpirationDateType;
  */
 public class BankUtils {
     
-    private static final int GROUP = -1;
+    private static final int GROUP = 1;
     
     private BankUtils() {
         
