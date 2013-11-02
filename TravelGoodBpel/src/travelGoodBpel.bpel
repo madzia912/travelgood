@@ -10,7 +10,60 @@
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
     xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
-    <sequence>
-        <empty name="Dummy"/>
-    </sequence>
+    <import namespace="urn:lameduck.dtu.dk" location="http://localhost:8080/lameduck/lameDuckService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="urn:niceview.dtu.dk" location="http://localhost:8080/niceview/niceViewService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <import namespace="urn:travelgood.dtu.dk" location="wsdl/travelGood.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <partnerLinks>
+        <partnerLink name="PartnerLink3" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodWSDL" myRole="travelGoodPortTypeRole"/>
+        <partnerLink name="LameDuck" xmlns:tns="urn:lameduck.dtu.dk" partnerLinkType="tns:lameDuckWSDL" partnerRole="lameDuckPortTypeRole"/>
+        <partnerLink name="NiceView" xmlns:tns="urn:niceview.dtu.dk" partnerLinkType="tns:niceViewWSDL" partnerRole="niceViewPortTypeRole"/>
+    </partnerLinks>
+    <variables>
+        <variable name="customerGetHotelsResponse" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getHotelsResponse"/>
+        <variable name="backendGetHotelsResponse" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:getHotelsResponse"/>
+        <variable name="backendGetHotelsRequest" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:getHotelsRequest"/>
+        <variable name="customerGetHotelsRequest" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getHotelsRequest"/>
+        <variable name="customerGetFlightsResponse" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getFlightsResponse"/>
+        <variable name="backendGetFlightsResponse" xmlns:tns="urn:lameduck.dtu.dk" messageType="tns:getFlightsResponse"/>
+        <variable name="backendGetFlightsRequest" xmlns:tns="urn:lameduck.dtu.dk" messageType="tns:getFlightsRequest"/>
+        <variable name="customerGetFlightsRequest" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getFlightsRequest"/>
+    </variables>
+    <pick name="Pick1">
+        <onMessage partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsRequest">
+            <sequence name="Sequence2">
+                <assign name="Assign1">
+                    <copy>
+                            <from variable="customerGetFlightsRequest"/>
+                                <to variable="backendGetFlightsRequest"/>
+                        </copy>
+                </assign>
+                <invoke name="Invoke1" partnerLink="LameDuck" operation="getFlights" xmlns:tns="urn:lameduck.dtu.dk" portType="tns:lameDuckPortType" inputVariable="backendGetFlightsRequest" outputVariable="backendGetFlightsResponse"/>
+                <assign name="Assign2">
+                    <copy>
+                            <from variable="backendGetFlightsResponse"/>
+                                <to variable="customerGetFlightsResponse"/>
+                        </copy>
+                </assign>
+                <reply name="Reply1" partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsResponse"/>
+            </sequence>
+        </onMessage>
+        <onMessage partnerLink="PartnerLink3" operation="getHotels" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetHotelsRequest">
+            <sequence name="Sequence3">
+                <assign name="Assign3">
+                    <copy>
+                        <from variable="customerGetHotelsRequest"/>
+                        <to variable="backendGetHotelsRequest"/>
+                    </copy>
+                </assign>
+                <invoke name="Invoke2" partnerLink="NiceView" operation="getHotels" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType" inputVariable="backendGetHotelsRequest" outputVariable="backendGetHotelsResponse"/>
+                <assign name="Assign4">
+                    <copy>
+                        <from variable="backendGetHotelsResponse"/>
+                        <to variable="customerGetHotelsResponse"/>
+                    </copy>
+                </assign>
+                <reply name="Reply2" partnerLink="PartnerLink3" operation="getHotels" portType="tns:travelGoodPortType" variable="customerGetHotelsResponse"/>
+            </sequence>
+        </onMessage>
+    </pick>
 </process>
