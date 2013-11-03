@@ -7,14 +7,14 @@ import niceview.test.client.BookHotelResponse;
 import niceview.test.client.CancelHotelFault_Exception;
 import niceview.test.client.CancelHotelRequest;
 import niceview.test.client.CancelHotelResponse;
-import org.junit.Test;
-import niceview.test.client.NiceViewPortType;
-import niceview.test.client.NiceViewService;
+import niceview.test.client.CreditCardType;
 import niceview.test.client.GetHotelsRequest;
 import niceview.test.client.GetHotelsResponse;
-import travelgood.utils.DateUtils;
 import niceview.test.client.HotelType;
-import niceview.test.client.CreditCardType;
+import niceview.test.client.NiceViewPortType;
+import niceview.test.client.NiceViewService;
+import org.junit.Test;
+import travelgood.utils.DateUtils;
 
 /**
  *
@@ -86,46 +86,45 @@ public class NiceViewTest {
         Assert.assertTrue(cancelResponse.isCanceled());
     }
 
-    @Test(expected=BookHotelFault_Exception.class)
+    @Test(expected = BookHotelFault_Exception.class)
     public void testFailBook() throws BookHotelFault_Exception {
         BookHotelRequest bookRequest = new BookHotelRequest();
         bookRequest.setBookingNumber("SOME_INVALID_AND_FAKE_AND_WRONG_HOTEL_ID");
         getPort().bookHotel(bookRequest);
     }
-    
-    @Test(expected=BookHotelFault_Exception.class)
+
+    @Test(expected = BookHotelFault_Exception.class)
     public void testFailBook2() throws BookHotelFault_Exception {
         BookHotelRequest bookRequest = new BookHotelRequest();
         bookRequest.setBookingNumber("hotel1");
-        
+
         CreditCardType creditCard = new CreditCardType();
         creditCard.setName("Bech Camilla");
         creditCard.setExpMonth(Integer.toString(7));
         creditCard.setExpYear(Integer.toString(9));
         creditCard.setNumber("50408822");
         bookRequest.setCreditCard(creditCard);
-        
+
         getPort().bookHotel(bookRequest);
-        BookHotelRequest bookRequest2 = new BookHotelRequest();
     }
-    
-    @Test(expected=BookHotelFault_Exception.class)
+
+    @Test(expected = BookHotelFault_Exception.class)
     public void testFailBook3() throws BookHotelFault_Exception {
         BookHotelRequest bookRequest = new BookHotelRequest();
         bookRequest.setBookingNumber("hotel1");
-        
+
         CreditCardType creditCard = new CreditCardType();
         creditCard.setName("Thor-Jensen Claus");
         creditCard.setExpMonth(Integer.toString(5));
         creditCard.setExpYear(Integer.toString(9));
         creditCard.setNumber("50408825");
-        
+
         bookRequest.setCreditCard(creditCard);
 
         getPort().bookHotel(bookRequest);
     }
-    
-    @Test(expected=CancelHotelFault_Exception.class)
+
+    @Test(expected = CancelHotelFault_Exception.class)
     public void testFailCancel() throws BookHotelFault_Exception, CancelHotelFault_Exception {
         CancelHotelRequest cancelRequest = new CancelHotelRequest();
         cancelRequest.setBookingNumber("SOME_INVALID_AND_FAKE_AND_WRONG_RESERVATION_ID");
