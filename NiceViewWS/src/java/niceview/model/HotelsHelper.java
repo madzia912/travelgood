@@ -24,12 +24,12 @@ public class HotelsHelper {
     private final static String ACCOUNT_NAME = "NiceView";
     private final static String ACCOUNT_NUMBER = "50308815";
 
-    public GetHotelsResponse getHotels(String name, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
+    public GetHotelsResponse getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
         List<HotelType> hotels = HotelsHolder.getInstance().getHotels();
         HotelsType hotelsList = new HotelsType();
 
         for (HotelType ht : hotels) {
-            if (ht.getName().equals(name)) {
+            if (ht.getAddress().getCity().equals(city)) {
                 hotelsList.getHotel().add(ht);
             }
         }
