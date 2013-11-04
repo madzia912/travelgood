@@ -2,6 +2,7 @@ package travelgood.model;
 
 import travelgood.utils.model.CreditCard;
 import travelgood.utils.model.Itinerary;
+import travelgood.utils.model.ItineraryState;
 
 /**
  *
@@ -9,9 +10,11 @@ import travelgood.utils.model.Itinerary;
  */
 public class ItineraryHelper {
 
-    public String createItinerary(String userId) {
+    public Itinerary createItinerary(String userId) {
         // TODO Implement
-        return "bookingNumber";
+        Itinerary itinerary = new Itinerary();
+        itinerary.setBookingNumber("bookingNumber");
+        return itinerary;
     }
 
     public Itinerary getItinerary(String bookingNumber) throws ItineraryException {
@@ -19,14 +22,18 @@ public class ItineraryHelper {
         return new Itinerary();
     }
 
-    public boolean bookItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException {
+    public Itinerary bookItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException {
         // TODO Implement
-        return true;
+        Itinerary itinerary = new Itinerary();
+        itinerary.setItineraryState(ItineraryState.BOOKED);
+        return itinerary;
     }
 
-    public boolean cancelItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException {
+    public Itinerary cancelItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException {
         // TODO Implement
-        return true;
+        Itinerary itinerary = new Itinerary();
+        itinerary.setItineraryState(ItineraryState.CANCELLED);
+        return itinerary;
     }
 
     public boolean addFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {

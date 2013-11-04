@@ -1,7 +1,9 @@
 package travelgood.rest.ws;
 
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -14,10 +16,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import travelgood.model.FlightHelper;
+import travelgood.model.HotelHelper;
 import travelgood.model.ItineraryException;
 import travelgood.model.ItineraryHelper;
+import travelgood.rest.utils.NextStepsUtils;
+import travelgood.utils.DateUtils;
 import travelgood.utils.model.CreditCard;
+import travelgood.utils.model.Flights;
+import travelgood.utils.model.Hotels;
 import travelgood.utils.model.Itinerary;
+import travelgood.utils.model.rest.BookFlightResponse;
+import travelgood.utils.model.rest.BookHotelResponse;
+import travelgood.utils.model.rest.BookItineraryResponse;
+import travelgood.utils.model.rest.CancelItineraryResponse;
+import travelgood.utils.model.rest.CreateItineraryResponse;
+import travelgood.utils.model.rest.DeleteFlightResponse;
+import travelgood.utils.model.rest.DeleteHotelResponse;
+import travelgood.utils.model.rest.GetFlightsResponse;
+import travelgood.utils.model.rest.GetHotelsResponse;
+import travelgood.utils.model.rest.GetItineraryResponse;
 
 /**
  *
@@ -27,21 +45,31 @@ import travelgood.utils.model.Itinerary;
 public class ItineraryResource {
 
     private ItineraryHelper itineraryHelper = new ItineraryHelper();
+    private FlightHelper flightHelper = new FlightHelper();
+    private HotelHelper hotelHelper = new HotelHelper();
 
     @PUT
     @Path("/{userId}")
-    public Response createItinerary(@PathParam("userId") String userId, @Context final HttpServletResponse response) {
-        String bookingNumber = itineraryHelper.createItinerary(userId);
-        return Response.status(Response.Status.OK).entity(bookingNumber).build();
+    public Response createItinerary(@PathParam("userId") String userId, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
+        Itinerary itinerary = itineraryHelper.createItinerary(userId);
+
+        CreateItineraryResponse res = new CreateItineraryResponse();
+        res.setBookingNumber(itinerary.getBookingNumber());
+        res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
+        return Response.status(Response.Status.OK).entity(res).build();
     }
 
     @GET
     @Path("/{bookingNumber}")
     @Produces(MediaType.APPLICATION_XML)
-    public Response getItinerary(@PathParam("bookingNumber") String bookingNumber, @Context final HttpServletResponse response) {
+    public Response getItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            Itinerary itinerary = itineraryHelper.getItinerary(bookingNumber);
-            return Response.status(Response.Status.OK).entity(itinerary).build();
+            Itinerary itinerary = itineraryHelper.getItinerary(itineraryBookingNumber);
+
+            GetItineraryResponse res = new GetItineraryResponse();
+            res.setItinerary(itinerary);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -51,10 +79,14 @@ public class ItineraryResource {
     @POST
     @Path("/{bookingNumber}/book")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response bookItinerary(@PathParam("bookingNumber") String bookingNumber, CreditCard creditCard, @Context final HttpServletResponse response) {
+    public Response bookItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.bookItinerary(bookingNumber, creditCard);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            Itinerary itinerary = itineraryHelper.bookItinerary(itineraryBookingNumber, creditCard);
+
+            BookItineraryResponse res = new BookItineraryResponse();
+            res.setBooked(itinerary.isBooked());
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -64,22 +96,46 @@ public class ItineraryResource {
     @DELETE
     @Path("/{bookingNumber}")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response cancelItinerary(@PathParam("bookingNumber") String bookingNumber, CreditCard creditCard, @Context final HttpServletResponse response) {
+    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.cancelItinerary(bookingNumber, creditCard);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, creditCard);
+
+            CancelItineraryResponse res = new CancelItineraryResponse();
+            res.setCancelled(itinerary.isCancelled());
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
 
+    @GET
+    @Path("/{bookingNumber}/flight/{from}/{to}/{date}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getFlights(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("from") String from, @PathParam("to") String to, @PathParam("date") String date, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
+        try {
+            Flights flights = flightHelper.getFlights(from, to, DateUtils.stringToDate(date));
+
+            GetFlightsResponse res = new GetFlightsResponse();
+            res.setFlights(flights);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetFlights(itineraryBookingNumber, flights));
+            return Response.status(Response.Status.OK).entity(res).build();
+        } catch (ParseException ex) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
     @POST
     @Path("/{bookingNumber}/flight/{flightBookingNumber}")
-    public Response addFlight(@PathParam("bookingNumber") String bookingNumber, @PathParam("flightBookingNumber") String flightBookingNumber, @Context final HttpServletResponse response) {
+    public Response addFlight(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("flightBookingNumber") String flightBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.addFlight(bookingNumber, flightBookingNumber);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            boolean booked = itineraryHelper.addFlight(itineraryBookingNumber, flightBookingNumber);
+
+            BookFlightResponse res = new BookFlightResponse();
+            res.setBooked(booked);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookFlight(itineraryBookingNumber, flightBookingNumber));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -88,22 +144,47 @@ public class ItineraryResource {
 
     @DELETE
     @Path("/{bookingNumber}/flight/{flightBookingNumber}")
-    public Response deleteFlight(@PathParam("bookingNumber") String bookingNumber, @PathParam("flightBookingNumber") String flightBookingNumber, @Context final HttpServletResponse response) {
+    public Response deleteFlight(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("flightBookingNumber") String flightBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.deleteFlight(bookingNumber, flightBookingNumber);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            boolean deleted = itineraryHelper.deleteFlight(itineraryBookingNumber, flightBookingNumber);
+
+            DeleteFlightResponse res = new DeleteFlightResponse();
+            res.setDeleted(deleted);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(itineraryBookingNumber, flightBookingNumber));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
 
+    @GET
+    @Path("/{bookingNumber}/hotel/{city}/{arrivalDate}/{departureDate}")
+    @Produces(MediaType.APPLICATION_XML)
+    public Response getHotels(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("city") String city, @PathParam("arrivalDate") String arrivalDate, @PathParam("departureDate") String departureDate, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
+        try {
+            Hotels hotels = hotelHelper.getHotels(city, DateUtils.stringToDate(arrivalDate), DateUtils.stringToDate(departureDate));
+
+            GetHotelsResponse res = new GetHotelsResponse();
+            res.setHotels(hotels);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetHotels(itineraryBookingNumber, hotels));
+            return Response.status(Response.Status.OK).entity(res).build();
+        } catch (ParseException ex) {
+            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
     @POST
     @Path("/{bookingNumber}/hotel/{hotelBookingNumber}")
-    public Response addHotel(@PathParam("bookingNumber") String bookingNumber, @PathParam("hotelBookingNumber") String hotelBookingNumber, @Context final HttpServletResponse response) {
+    public Response addHotel(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("hotelBookingNumber") String hotelBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.addHotel(bookingNumber, hotelBookingNumber);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            boolean booked = itineraryHelper.addHotel(itineraryBookingNumber, hotelBookingNumber);
+
+            BookHotelResponse res = new BookHotelResponse();
+            res.setBooked(booked);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookHotel(itineraryBookingNumber, hotelBookingNumber));
+            return Response.status(Response.Status.OK).entity(res).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -112,10 +193,14 @@ public class ItineraryResource {
 
     @DELETE
     @Path("/{bookingNumber}/hotel/{hotelBookingNumber}")
-    public Response deleteHotel(@PathParam("bookingNumber") String bookingNumber, @PathParam("hotelBookingNumber") String hotelBookingNumber, @Context final HttpServletResponse response) {
+    public Response deleteHotel(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("hotelBookingNumber") String hotelBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         try {
-            boolean booked = itineraryHelper.deleteHotel(bookingNumber, hotelBookingNumber);
-            return Response.status(Response.Status.OK).entity(booked).build();
+            boolean deleted = itineraryHelper.deleteHotel(itineraryBookingNumber, hotelBookingNumber);
+
+            DeleteHotelResponse res = new DeleteHotelResponse();
+            res.setDeleted(deleted);
+            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(itineraryBookingNumber, hotelBookingNumber));
+            return Response.status(Response.Status.OK).entity(deleted).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
