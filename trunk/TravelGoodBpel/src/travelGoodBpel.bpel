@@ -9,7 +9,7 @@
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns0="urn:commons.travelgood.dtu.dk">
     <import namespace="urn:lameduck.dtu.dk" location="http://localhost:8080/lameduck/lameDuckService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="urn:niceview.dtu.dk" location="http://localhost:8080/niceview/niceViewService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="urn:travelgood.dtu.dk" location="wsdl/travelGood.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
@@ -33,16 +33,24 @@
             <sequence name="SearchFlights">
                 <assign name="Assign1">
                     <copy>
-                            <from variable="customerGetFlightsRequest"/>
-                                <to variable="backendGetFlightsRequest"/>
-                        </copy>
+                        <from>$customerGetFlightsRequest.getFlightsRequestPart/from</from>
+                        <to>$backendGetFlightsRequest.getFlightsRequestPart/from</to>
+                    </copy>
+                    <copy>
+                        <from>$customerGetFlightsRequest.getFlightsRequestPart/to</from>
+                        <to>$backendGetFlightsRequest.getFlightsRequestPart/to</to>
+                    </copy>
+                    <copy>
+                        <from>$customerGetFlightsRequest.getFlightsRequestPart/takeOffDate</from>
+                        <to>$backendGetFlightsRequest.getFlightsRequestPart/takeOffDate</to>
+                    </copy>
                 </assign>
                 <invoke name="Invoke1" partnerLink="LameDuck" operation="getFlights" xmlns:tns="urn:lameduck.dtu.dk" portType="tns:lameDuckPortType" inputVariable="backendGetFlightsRequest" outputVariable="backendGetFlightsResponse"/>
                 <assign name="Assign2">
                     <copy>
-                            <from variable="backendGetFlightsResponse"/>
-                                <to variable="customerGetFlightsResponse"/>
-                        </copy>
+                        <from>$backendGetFlightsResponse.getFlightsResponsePart/flights</from>
+                        <to>$customerGetFlightsResponse.getFlightsResponsePart/flights</to>
+                    </copy>
                 </assign>
                 <reply name="Reply1" partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsResponse"/>
             </sequence>
@@ -51,20 +59,29 @@
             <sequence name="SearchHotels">
                 <assign name="Assign3">
                     <copy>
-                        <from variable="customerGetHotelsRequest"/>
-                        <to variable="backendGetHotelsRequest"/>
+                        <from>$customerGetHotelsRequest.getHotelsRequestPart/city</from>
+                        <to>$backendGetHotelsRequest.getHotelsRequestPart/city</to>
+                    </copy>
+                    <copy>
+                        <from>$customerGetHotelsRequest.getHotelsRequestPart/arrivalDate</from>
+                        <to>$backendGetHotelsRequest.getHotelsRequestPart/arrivalDate</to>
+                    </copy>
+                    <copy>
+                        <from>$customerGetHotelsRequest.getHotelsRequestPart/arrivalDate</from>
+                        <to>$backendGetHotelsRequest.getHotelsRequestPart/departureDate</to>
                     </copy>
                 </assign>
                 <invoke name="Invoke2" partnerLink="NiceView" operation="getHotels" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType" inputVariable="backendGetHotelsRequest" outputVariable="backendGetHotelsResponse"/>
                 <assign name="Assign4">
                     <copy>
-                        <from variable="backendGetHotelsResponse"/>
-                        <to variable="customerGetHotelsResponse"/>
+                        <from>$backendGetHotelsResponse.getHotelsResponsePart/hotels</from>
+                        <to>$customerGetHotelsResponse.getHotelsResponsePart/hotels</to>
                     </copy>
                 </assign>
                 <reply name="Reply2" partnerLink="PartnerLink3" operation="getHotels" portType="tns:travelGoodPortType" variable="customerGetHotelsResponse"/>
             </sequence>
         </onMessage>
+        <!--
         <onMessage partnerLink="PartnerLink3" operation="createItinerary" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType">
             <sequence name="Sequence4">
                 <while name="ThisIsNotGood">
@@ -97,6 +114,6 @@
                 </while>
                 <receive name="Receive1" partnerLink="PartnerLink3" operation="cancelItinerary" portType="tns:travelGoodPortType"/>
             </sequence>
-        </onMessage>
+        </onMessage> -->
     </pick>
 </process>

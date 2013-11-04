@@ -50,5 +50,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/niceViewService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/niceview/test/client"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-lameDuckService, wsimport-client-niceViewService"/>
+    <target name="wsimport-client-travelGoodPort" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/travelGoodPort"/>
+        <property name="wsdl-travelGoodPort" location="xml-resources/web-service-references/travelGoodPort/wsdl/travelGoodPort.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/travelGoodPort" destdir="${build.generated.dir}/jax-wsCache/travelGoodPort" wsdl="${wsdl-travelGoodPort}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodPort.wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-travelGoodPort}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/travelGoodPort"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/travelGoodPort">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-travelGoodPort" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/travelGoodPort"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/dk/dtu/travelgood"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-lameDuckService, wsimport-client-niceViewService, wsimport-client-travelGoodPort"/>
 </project>
