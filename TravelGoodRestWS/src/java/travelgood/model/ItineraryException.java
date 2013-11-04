@@ -6,6 +6,9 @@ package travelgood.model;
  */
 public class ItineraryException extends Exception {
 
+    private String reason;
+    private String bookingNumber;
+
     public ItineraryException() {
     }
 
@@ -19,6 +22,22 @@ public class ItineraryException extends Exception {
 
     public ItineraryException(Throwable cause) {
         super(cause);
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setBookingNumber(String bookingNumber) {
+        this.bookingNumber = bookingNumber;
+    }
+
+    public String getBookingNumber() {
+        return bookingNumber;
     }
 
     public ItineraryException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {

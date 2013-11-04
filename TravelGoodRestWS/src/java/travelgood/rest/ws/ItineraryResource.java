@@ -16,6 +16,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lameduck.client.CancelReservationFault_Exception;
+import niceview.client.BookHotelFault_Exception;
+import niceview.client.CancelHotelFault_Exception;
 import travelgood.model.FlightHelper;
 import travelgood.model.HotelHelper;
 import travelgood.model.ItineraryException;
@@ -79,7 +82,7 @@ public class ItineraryResource {
     @POST
     @Path("/{bookingNumber}/book")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response bookItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
+    public Response bookItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.BookFlightFault_Exception, niceview.client.BookHotelFault_Exception {
         try {
             Itinerary itinerary = itineraryHelper.bookItinerary(itineraryBookingNumber, creditCard);
 
@@ -96,7 +99,7 @@ public class ItineraryResource {
     @DELETE
     @Path("/{bookingNumber}")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
+    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception{
         try {
             Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, creditCard);
 

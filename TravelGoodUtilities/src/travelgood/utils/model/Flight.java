@@ -17,6 +17,20 @@ public class Flight {
     protected Date landingDate;
     protected int price;
 
+    public Flight() {
+    }
+
+    public Flight(String id, String bookingNumber, String carrier, String from, String to, Date liftOffDate, Date landingDate, int price) {
+        this.id = id;
+        this.bookingNumber = bookingNumber;
+        this.carrier = carrier;
+        this.from = from;
+        this.to = to;
+        this.liftOffDate = liftOffDate;
+        this.landingDate = landingDate;
+        this.price = price;
+    }
+
     public String getId() {
         return id;
     }
