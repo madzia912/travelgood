@@ -21,7 +21,7 @@ public class LameDuckWS {
     private FlightsHelper fh = new FlightsHelper();
 
     public GetFlightsResponse getFlights(GetFlightsRequest request) {
-        FlightsType flightsType = fh.getFlights(request.getFrom(), request.getTo(), request.getTakeOffDate());
+        FlightsType flightsType = fh.getFlights(request.getBookingNumber(), request.getFrom(), request.getTo(), request.getTakeOffDate());
         GetFlightsResponse response = new GetFlightsResponse();
         response.setFlights(flightsType);
         return response;

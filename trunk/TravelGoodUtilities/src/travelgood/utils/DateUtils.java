@@ -9,24 +9,25 @@ import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
- * 
+ *
  * @author Bartosz Grzegorz Cichecki
  */
 public class DateUtils {
-    
+
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     private DateUtils() {
     }
-    
+
     public static String dateToString(Date date) {
         return sdf.format(date);
     }
-    
+
     public static Date stringToDate(String source) throws ParseException {
         try {
             return sdf.parse(source);
@@ -37,6 +38,10 @@ public class DateUtils {
     }
 
     public static XMLGregorianCalendar toXmlGregorianCalendar(Date date) {
+        if (date == null) {
+            return null;
+        }
+
         GregorianCalendar c = new GregorianCalendar();
         c.setTime(date);
         try {
@@ -46,17 +51,20 @@ public class DateUtils {
             throw new IllegalArgumentException("Bad date: " + date, ex);
         }
     }
-    
+
     public static Date toDate(XMLGregorianCalendar xmlgc) {
+        if (xmlgc == null) {
+            return null;
+        }
         return xmlgc.toGregorianCalendar().getTime();
     }
 
     public static XMLGregorianCalendar getXmlGregorianCalendar(int year, int month, int day) {
-        return getXmlGregorianCalendar(year, month, day, 0, 0);
+        return getXmlGregorianCalendar(year, month, day, DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED);
     }
 
     public static XMLGregorianCalendar getXmlGregorianCalendar(int year, int month, int day, int hour, int minute) {
-        return getXmlGregorianCalendar(year, month, day, hour, minute, 0);
+        return getXmlGregorianCalendar(year, month, day, hour, minute, DatatypeConstants.FIELD_UNDEFINED);
     }
 
     public static XMLGregorianCalendar getXmlGregorianCalendar(int year, int month, int day, int hour, int minute, int seconds) {
