@@ -66,8 +66,8 @@ public class NiceViewTest {
 
         CreditCardType creditCard = new CreditCardType();
         creditCard.setName("Anne Strandberg");
-        creditCard.setExpMonth(Integer.toString(5));
-        creditCard.setExpYear(Integer.toString(9));
+        creditCard.setExpMonth(5);
+        creditCard.setExpYear(9);
         creditCard.setNumber("50408816");
 
         BookHotelRequest bookRequest = new BookHotelRequest();
@@ -100,8 +100,8 @@ public class NiceViewTest {
 
         CreditCardType creditCard = new CreditCardType();
         creditCard.setName("Bech Camilla");
-        creditCard.setExpMonth(Integer.toString(7));
-        creditCard.setExpYear(Integer.toString(9));
+        creditCard.setExpMonth(7);
+        creditCard.setExpYear(9);
         creditCard.setNumber("50408822");
         bookRequest.setCreditCard(creditCard);
 

@@ -29,11 +29,14 @@
             </xsd:element>
             <xsd:element name="getHotelsRequest">
                 <xsd:complexType>
-                    <xsd:all>
-                        <xsd:element name="city" type="xsd:string"/>
-                        <xsd:element name="arrivalDate" type="xsd:date"/>
-                        <xsd:element name="departureDate" type="xsd:date"/>
-                    </xsd:all>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="city" type="xsd:string"/>
+                            <xsd:element name="arrivalDate" type="xsd:date"/>
+                            <xsd:element name="departureDate" type="xsd:date"/>
+                        </xsd:sequence>
+                        <xsd:element name="bookingNumber" type="xsd:string"/>
+                    </xsd:choice>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="getHotelsResponse">
