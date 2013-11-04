@@ -64,7 +64,7 @@ public class HotelsHolder {
         ht.setId("hotel2");
         ht.setBookingNumber("bookingNr2");
         ht.setName("Tivoli");
-        ht.setPrice(200);
+        ht.setPrice(10000);
         ht.setCreditCardGuarantee(true);
         ht.setProvider("Provider2");
         at = new AddressType();

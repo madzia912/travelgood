@@ -58,15 +58,6 @@ public class HotelsHelper {
                 throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": invalid credit card.", fault);
             }
         }
-        try {
-            BankUtils.chargeCreditCard(hotel.getPrice(), creditCard.getName(), creditCard.getExpMonth(), creditCard.getExpYear(), creditCard.getNumber(), ACCOUNT_NAME, ACCOUNT_NUMBER);
-        } catch (CreditCardFaultMessage e) {
-            System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getFaultInfo().getMessage());
-            BookHotelFault fault = new BookHotelFault();
-            fault.setReason(e.getFaultInfo().getMessage());
-            fault.setBookingNumber(bookingNumber);
-            throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": payment fail.", fault);
-        }
 
         Map<String, HotelType> reservations = HotelsHolder.getInstance().getReservations();
         reservations.put(hotel.getBookingNumber(), hotel);
