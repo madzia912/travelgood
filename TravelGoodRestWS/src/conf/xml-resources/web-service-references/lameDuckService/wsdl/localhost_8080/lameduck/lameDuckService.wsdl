@@ -6,11 +6,14 @@
             <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="http://localhost:8080/lameduck/lameDuckService?xsd=1"/>
             <xsd:element name="getFlightsRequest">
                 <xsd:complexType>
-                    <xsd:all>
-                        <xsd:element name="from" type="xsd:string"/>
-                        <xsd:element name="to" type="xsd:string"/>
-                        <xsd:element name="takeOffDate" type="xsd:date"/>
-                    </xsd:all>
+                    <xsd:choice>
+                        <xsd:sequence>
+                            <xsd:element name="from" type="xsd:string"/>
+                            <xsd:element name="to" type="xsd:string"/>
+                            <xsd:element name="takeOffDate" type="xsd:date"/>
+                        </xsd:sequence>
+                        <xsd:element name="bookingNumber" type="xsd:string"/>
+                    </xsd:choice>
                 </xsd:complexType>
             </xsd:element>
             <xsd:element name="getFlightsResponse">
