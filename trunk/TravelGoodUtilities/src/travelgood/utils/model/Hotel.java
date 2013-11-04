@@ -1,7 +1,7 @@
 package travelgood.utils.model;
 
 /**
- * 
+ *
  * @author Bartosz Grzegorz Cichecki
  */
 public class Hotel {
@@ -13,6 +13,19 @@ public class Hotel {
     protected String provider;
     protected int price;
     protected boolean creditCardGuarantee;
+
+    public Hotel() {
+    }
+
+    public Hotel(String id, String bookingNumber, String name, Address address, String provider, int price, boolean creditCardGuarantee) {
+        this.id = id;
+        this.bookingNumber = bookingNumber;
+        this.name = name;
+        this.address = address;
+        this.provider = provider;
+        this.price = price;
+        this.creditCardGuarantee = creditCardGuarantee;
+    }
 
     public String getId() {
         return id;

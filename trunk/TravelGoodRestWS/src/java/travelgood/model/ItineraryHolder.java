@@ -17,7 +17,7 @@ public class ItineraryHolder {
     private ItineraryHolder() {
     }
 
-    public ItineraryHolder getInstance() {
+    public static ItineraryHolder getInstance() {
         return INSTANCE;
     }
 
@@ -25,7 +25,15 @@ public class ItineraryHolder {
         return temporaryItineraries;
     }
 
+    public void addTemporaryItineraries(Itinerary itinerary) {
+        temporaryItineraries.put(itinerary.getBookingNumber(), itinerary);
+    }
+
     public Map<String, Itinerary> getBookedItineraries() {
         return bookedItineraries;
+    }
+
+    public void addBookedItineraries(Itinerary itinerary) {
+        bookedItineraries.put(itinerary.getBookingNumber(), itinerary);
     }
 }
