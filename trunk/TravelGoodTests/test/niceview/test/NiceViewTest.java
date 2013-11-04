@@ -108,22 +108,6 @@ public class NiceViewTest {
         getPort().bookHotel(bookRequest);
     }
 
-    @Test(expected = BookHotelFault_Exception.class)
-    public void testFailBook3() throws BookHotelFault_Exception {
-        BookHotelRequest bookRequest = new BookHotelRequest();
-        bookRequest.setBookingNumber("hotel1");
-
-        CreditCardType creditCard = new CreditCardType();
-        creditCard.setName("Thor-Jensen Claus");
-        creditCard.setExpMonth(Integer.toString(5));
-        creditCard.setExpYear(Integer.toString(9));
-        creditCard.setNumber("50408825");
-
-        bookRequest.setCreditCard(creditCard);
-
-        getPort().bookHotel(bookRequest);
-    }
-
     @Test(expected = CancelHotelFault_Exception.class)
     public void testFailCancel() throws BookHotelFault_Exception, CancelHotelFault_Exception {
         CancelHotelRequest cancelRequest = new CancelHotelRequest();
