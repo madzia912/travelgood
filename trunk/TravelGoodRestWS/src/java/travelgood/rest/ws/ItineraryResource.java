@@ -53,10 +53,10 @@ public class ItineraryResource {
     public Response createItinerary(@PathParam("userId") String userId, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         Itinerary itinerary = itineraryHelper.createItinerary(userId);
 
-        CreateItineraryResponse res = new CreateItineraryResponse();
-        res.setBookingNumber(itinerary.getBookingNumber());
-        res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
-        return Response.status(Response.Status.OK).entity(res).build();
+        CreateItineraryResponse result = new CreateItineraryResponse();
+        result.setBookingNumber(itinerary.getBookingNumber());
+        result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(request, itinerary));
+        return Response.status(Response.Status.OK).entity(result).build();
     }
 
     @GET
@@ -66,10 +66,10 @@ public class ItineraryResource {
         try {
             Itinerary itinerary = itineraryHelper.getItinerary(itineraryBookingNumber);
 
-            GetItineraryResponse res = new GetItineraryResponse();
-            res.setItinerary(itinerary);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
-            return Response.status(Response.Status.OK).entity(res).build();
+            GetItineraryResponse result = new GetItineraryResponse();
+            result.setItinerary(itinerary);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(request, itinerary));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -83,10 +83,10 @@ public class ItineraryResource {
         try {
             Itinerary itinerary = itineraryHelper.bookItinerary(itineraryBookingNumber, creditCard);
 
-            BookItineraryResponse res = new BookItineraryResponse();
-            res.setBooked(itinerary.isBooked());
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
-            return Response.status(Response.Status.OK).entity(res).build();
+            BookItineraryResponse result = new BookItineraryResponse();
+            result.setBooked(itinerary.isBooked());
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(request, itinerary));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -100,10 +100,10 @@ public class ItineraryResource {
         try {
             Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, creditCard);
 
-            CancelItineraryResponse res = new CancelItineraryResponse();
-            res.setCancelled(itinerary.isCancelled());
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(itinerary));
-            return Response.status(Response.Status.OK).entity(res).build();
+            CancelItineraryResponse result = new CancelItineraryResponse();
+            result.setCancelled(itinerary.isCancelled());
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForItinerary(request, itinerary));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -117,11 +117,12 @@ public class ItineraryResource {
         try {
             Flights flights = flightHelper.getFlights(from, to, DateUtils.stringToDate(date));
 
-            GetFlightsResponse res = new GetFlightsResponse();
-            res.setFlights(flights);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetFlights(itineraryBookingNumber, flights));
-            return Response.status(Response.Status.OK).entity(res).build();
+            GetFlightsResponse result = new GetFlightsResponse();
+            result.setFlights(flights);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetFlights(request, itineraryBookingNumber, flights));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ParseException ex) {
+            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
@@ -132,10 +133,10 @@ public class ItineraryResource {
         try {
             boolean booked = itineraryHelper.addFlight(itineraryBookingNumber, flightBookingNumber);
 
-            BookFlightResponse res = new BookFlightResponse();
-            res.setBooked(booked);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookFlight(itineraryBookingNumber, flightBookingNumber));
-            return Response.status(Response.Status.OK).entity(res).build();
+            BookFlightResponse result = new BookFlightResponse();
+            result.setBooked(booked);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookFlight(request, itineraryBookingNumber, flightBookingNumber));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -148,10 +149,10 @@ public class ItineraryResource {
         try {
             boolean deleted = itineraryHelper.deleteFlight(itineraryBookingNumber, flightBookingNumber);
 
-            DeleteFlightResponse res = new DeleteFlightResponse();
-            res.setDeleted(deleted);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(itineraryBookingNumber, flightBookingNumber));
-            return Response.status(Response.Status.OK).entity(res).build();
+            DeleteFlightResponse result = new DeleteFlightResponse();
+            result.setDeleted(deleted);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteFlight(request, itineraryBookingNumber, flightBookingNumber));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -165,10 +166,10 @@ public class ItineraryResource {
         try {
             Hotels hotels = hotelHelper.getHotels(city, DateUtils.stringToDate(arrivalDate), DateUtils.stringToDate(departureDate));
 
-            GetHotelsResponse res = new GetHotelsResponse();
-            res.setHotels(hotels);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetHotels(itineraryBookingNumber, hotels));
-            return Response.status(Response.Status.OK).entity(res).build();
+            GetHotelsResponse result = new GetHotelsResponse();
+            result.setHotels(hotels);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForGetHotels(request, itineraryBookingNumber, hotels));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ParseException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.BAD_REQUEST).build();
@@ -181,10 +182,10 @@ public class ItineraryResource {
         try {
             boolean booked = itineraryHelper.addHotel(itineraryBookingNumber, hotelBookingNumber);
 
-            BookHotelResponse res = new BookHotelResponse();
-            res.setBooked(booked);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookHotel(itineraryBookingNumber, hotelBookingNumber));
-            return Response.status(Response.Status.OK).entity(res).build();
+            BookHotelResponse result = new BookHotelResponse();
+            result.setBooked(booked);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForBookHotel(request, itineraryBookingNumber, hotelBookingNumber));
+            return Response.status(Response.Status.OK).entity(result).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -197,9 +198,9 @@ public class ItineraryResource {
         try {
             boolean deleted = itineraryHelper.deleteHotel(itineraryBookingNumber, hotelBookingNumber);
 
-            DeleteHotelResponse res = new DeleteHotelResponse();
-            res.setDeleted(deleted);
-            res.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(itineraryBookingNumber, hotelBookingNumber));
+            DeleteHotelResponse result = new DeleteHotelResponse();
+            result.setDeleted(deleted);
+            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(request, itineraryBookingNumber, hotelBookingNumber));
             return Response.status(Response.Status.OK).entity(deleted).build();
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);

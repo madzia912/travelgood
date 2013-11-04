@@ -1,18 +1,24 @@
 package travelgood.utils.model.rest;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * @author Bartosz Grzegorz Cichecki
  */
-public abstract class AbstractListResponse<T> {
+public abstract class AbstractListResponse {
 
-    protected List<T> nextStepUrls;
+    protected Collection<NextStep> nextStepUrls;
 
-    public List<T> getNextStepUrls() {
+    public void setNextStepUrls(Collection<NextStep> nextStepUrls) {
+        this.nextStepUrls = nextStepUrls;
+    }
+
+    @XmlElement(name = "url")
+    public Collection<NextStep> getNextStepUrls() {
         if (nextStepUrls == null) {
-            nextStepUrls = new ArrayList<T>();
+            nextStepUrls = new ArrayList();
         }
         return nextStepUrls;
     }
@@ -32,7 +38,7 @@ public abstract class AbstractListResponse<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final AbstractListResponse<T> other = (AbstractListResponse<T>) obj;
+        final AbstractListResponse other = (AbstractListResponse) obj;
         if (this.nextStepUrls != other.nextStepUrls && (this.nextStepUrls == null || !this.nextStepUrls.equals(other.nextStepUrls))) {
             return false;
         }

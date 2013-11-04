@@ -1,10 +1,13 @@
 package travelgood.utils.model.rest;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Bartosz Grzegorz Cichecki
  */
-public class CancelItineraryResponse extends AbstractListResponse<String> {
+@XmlRootElement
+public class CancelItineraryResponse extends AbstractListResponse {
 
     protected boolean cancelled;
 
