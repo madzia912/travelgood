@@ -1,0 +1,15 @@
+MASTERPLAN:
++ Make searching work in BPEL (+ TEST ++ fajne cycki)
+- Make creation of an itenary work in BPEL (correlation sets)
+- Make searching and itenaries work at the same time
+- Add hotels and flights to itenary
+- Book itenary (no payment)
+- Integrate with bank
+- Cancelling, fault handling, and compensation, kurwa
+                            ,
+- Write the report, kurwa mac
+
+Things to remember:
+* Timeouts for itenaries
+* WHAT THE FUCK TO DO with arrival and departure dates when booking hotels, kurwa (and the price, kurwa)
+* 

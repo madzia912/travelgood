@@ -288,7 +288,7 @@
     </binding>
     <service name="travelGoodService">
         <port name="travelGoodPortTypeBindingPort" binding="tns:travelGoodPortTypeBinding">
-            <soap:address location="http://localhost:8080/travelGoodService/travelGoodPort"/>
+            <soap:address location="http://localhost:12345/travelGoodService/travelGoodPort"/>
         </port>
     </service>
     <plnk:partnerLinkType name="travelGoodWSDL">

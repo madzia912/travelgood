@@ -40,13 +40,11 @@
         <connection consumer="endpoint3" provider="endpoint4" state="unchanged"/>
     </connections>
     <porttypes>
-        <link xlink:href="../jbiasa/TravelGoodCompositeApp.wsdl#xpointer(/definitions/portType[@name='dummyCasaPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl#xpointer(/definitions/portType[@name='BankPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankService.wsdl#xpointer(/definitions/portType[@name='BankPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/portType[@name='lameDuckPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/portType[@name='niceViewPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/wsdl/travelGood.wsdl#xpointer(/definitions/portType[@name='travelGoodPortType'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/TravelGoodCompositeApp.wsdl#xpointer(/definitions/portType[@name='dummyCasaPortType'])" xlink:type="simple"/>
     </porttypes>
     <bindings>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl#xpointer(/definitions/binding[@name='BankSecurePortBinding'])" xlink:type="simple"/>
