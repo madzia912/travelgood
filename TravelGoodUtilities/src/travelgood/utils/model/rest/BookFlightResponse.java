@@ -1,10 +1,13 @@
 package travelgood.utils.model.rest;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Bartosz Grzegorz Cichecki
  */
-public class BookFlightResponse extends AbstractListResponse<String> {
+@XmlRootElement
+public class BookFlightResponse extends AbstractListResponse {
 
     protected boolean booked;
 

@@ -7,7 +7,7 @@ import travelgood.utils.model.Hotels;
  * @author Bartosz Grzegorz Cichecki
  */
 @XmlRootElement
-public class GetHotelsResponse extends AbstractListResponse<String> {
+public class GetHotelsResponse extends AbstractListResponse {
 
     protected Hotels hotels;
 

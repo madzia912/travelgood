@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Bartosz Grzegorz Cichecki
  */
 @XmlRootElement
-public class CreateItineraryResponse extends AbstractListResponse<String> {
+public class CreateItineraryResponse extends AbstractListResponse {
 
     protected String bookingNumber;
 

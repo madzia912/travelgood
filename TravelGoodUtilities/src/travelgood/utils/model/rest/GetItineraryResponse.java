@@ -7,7 +7,7 @@ import travelgood.utils.model.Itinerary;
  * @author Bartosz Grzegorz Cichecki
  */
 @XmlRootElement
-public class GetItineraryResponse extends AbstractListResponse<String> {
+public class GetItineraryResponse extends AbstractListResponse {
 
     protected Itinerary itinerary;
 

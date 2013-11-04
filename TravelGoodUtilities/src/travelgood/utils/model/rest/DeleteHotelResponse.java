@@ -1,10 +1,13 @@
 package travelgood.utils.model.rest;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  *
  * @author Bartosz Grzegorz Cichecki
  */
-public class DeleteHotelResponse extends AbstractListResponse<String> {
+@XmlRootElement
+public class DeleteHotelResponse extends AbstractListResponse {
 
     protected boolean deleted;
 

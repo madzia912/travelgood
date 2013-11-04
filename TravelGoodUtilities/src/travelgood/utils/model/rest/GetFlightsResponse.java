@@ -7,7 +7,7 @@ import travelgood.utils.model.Flights;
  * @author Bartosz Grzegorz Cichecki
  */
 @XmlRootElement
-public class GetFlightsResponse extends AbstractListResponse<String> {
+public class GetFlightsResponse extends AbstractListResponse {
 
     protected Flights flights;
 
