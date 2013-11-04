@@ -1,15 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package travelgood.bpel.test;
 
 import dk.dtu.travelgood.GetFlightsRequest;
 import dk.dtu.travelgood.GetFlightsResponse;
 import dk.dtu.travelgood.GetHotelsRequest;
 import dk.dtu.travelgood.GetHotelsResponse;
-import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Test;
 import travelgood.utils.DateUtils;
 
 /**
@@ -17,34 +13,32 @@ import travelgood.utils.DateUtils;
  * @author Jacob
  */
 public class TravelGoodBPELTest {
-    
+
     public TravelGoodBPELTest() {
     }
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
+
     @Test
     public void getFlights() {
         GetFlightsRequest request = new GetFlightsRequest();
-        
+
         request.setFrom("ABC");
         request.setTo("CBA");
         request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
-        
+
         GetFlightsResponse response = getFlights(request);
-        
+
         assertTrue(response.getFlights().getFlight().size() == 1);
     }
-    
+
     @Test
     public void getHotels() {
         GetHotelsRequest request = new GetHotelsRequest();
-        
+
         request.setCity("Paris");
         request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
-        
+
         GetHotelsResponse response = getHotels(request);
-        
+
         assertTrue(response.getHotels().getHotel().get(0).getId().equals("hotel1"));
     }
 

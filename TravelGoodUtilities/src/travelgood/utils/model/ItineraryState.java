@@ -7,6 +7,6 @@ package travelgood.utils.model;
  */
 public enum ItineraryState {
     
-    BOOKED, PAYED, CANCELLED;
+    IN_PROGRESS, BOOKED, CANCELLED;
     
 }
