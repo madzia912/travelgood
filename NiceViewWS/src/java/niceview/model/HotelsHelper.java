@@ -15,21 +15,19 @@ import dk.dtu.travelgood.commons.HotelsType;
 import java.util.List;
 import java.util.Map;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author Magdalena Furman
  */
 public class HotelsHelper {
 
-    private final static String ACCOUNT_NAME = "NiceView";
-    private final static String ACCOUNT_NUMBER = "50308815";
-
-    public GetHotelsResponse getHotels(String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
+    public GetHotelsResponse getHotels(String bookingNumber, String city, XMLGregorianCalendar arrival, XMLGregorianCalendar departure) {
         List<HotelType> hotels = HotelsHolder.getInstance().getHotels();
         HotelsType hotelsList = new HotelsType();
 
         for (HotelType ht : hotels) {
-            if (ht.getAddress().getCity().equals(city)) {
+            if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) ||  StringUtils.equals(city, ht.getAddress().getCity())) {
                 hotelsList.getHotel().add(ht);
             }
         }

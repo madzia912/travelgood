@@ -62,6 +62,8 @@ public class LameDuckTest {
 
         GetFlightsResponse response = getPort().getFlights(request);
 
+        Assert.assertTrue(response != null && response.getFlights() != null && response.getFlights().getFlight() != null && response.getFlights().getFlight().size() > 0);
+        
         FlightType flight = response.getFlights().getFlight().get(0);
         
         CreditCardType creditCard = new CreditCardType();

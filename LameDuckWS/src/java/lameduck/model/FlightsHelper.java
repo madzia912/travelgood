@@ -2,6 +2,7 @@ package lameduck.model;
 
 import bank.unsecure.ws.CreditCardFaultMessage;
 import bank.utils.BankUtils;
+import com.sun.msv.datatype.xsd.DateType;
 import dk.dtu.lameduck.BookFlightFault;
 import dk.dtu.lameduck.BookFlightFault_Exception;
 import dk.dtu.lameduck.BookFlightResponse;
@@ -14,6 +15,7 @@ import dk.dtu.travelgood.commons.FlightsType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.StringUtils;
 
@@ -25,15 +27,18 @@ public class FlightsHelper {
     private final static String ACCOUNT_NAME = "LameDuck";
     private final static String ACCOUNT_NUMBER = "50208812";
 
-    public FlightsType getFlights(String from, String to, XMLGregorianCalendar date) {
+    public FlightsType getFlights(String bookingNumber, String from, String to, XMLGregorianCalendar date) {
         List<FlightType> flights = FlightsHolder.getInstance().getFlights();
         List<FlightType> sortedFlights = new ArrayList<FlightType>();
 
         for (FlightType ft : flights) {
             boolean flightMatches = true;
 
-            if (ft.getLiftOffDate().equals(date)) {
-                flightMatches &= true;
+            if (StringUtils.isNotBlank(bookingNumber)) {
+                flightMatches &= StringUtils.equals(bookingNumber, ft.getBookingNumber());
+            }
+            if (date != null) {
+                flightMatches &= ft.getLiftOffDate().compare(date) == DatatypeConstants.EQUAL;
             }
             if (StringUtils.isNotBlank(from)) {
                 flightMatches &= StringUtils.equals(from, ft.getFrom());
