@@ -75,7 +75,7 @@ public class ItineraryHelper {
         List<Object> bookedFlightsAndHotels = new ArrayList<Object>();
 
         try {
-            
+
             for (Flight f : flights) {
                 lameduck.client.BookFlightRequest bookRequest = new lameduck.client.BookFlightRequest();
                 bookRequest.setBookingNumber(f.getBookingNumber());
@@ -233,11 +233,11 @@ public class ItineraryHelper {
         }
         return false;
     }
-    
-    private List<Hotel> removeHotel(List<Hotel> hotelList, Hotel hotel, String bookingNumber) throws ItineraryException{
+
+    private List<Hotel> removeHotel(List<Hotel> hotelList, Hotel hotel, String bookingNumber) throws ItineraryException {
         int count = 0;
-        for(Hotel h : hotelList){
-            if(h.getId().equals(hotel.getId())){
+        for (Hotel h : hotelList) {
+            if (h.getId().equals(hotel.getId())) {
                 hotelList.remove(count);
                 return hotelList;
             }
@@ -248,11 +248,11 @@ public class ItineraryHelper {
         fault.setBookingNumber(bookingNumber);
         throw new ItineraryException("Could not delete hotel " + hotel.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
     }
-    
-    private List<Flight> removeFlight(List<Flight> flightList, Flight flight, String bookingNumber) throws ItineraryException{
+
+    private List<Flight> removeFlight(List<Flight> flightList, Flight flight, String bookingNumber) throws ItineraryException {
         int count = 0;
-        for(Flight f : flightList){
-            if(f.getId().equals(flight.getId())){
+        for (Flight f : flightList) {
+            if (f.getId().equals(flight.getId())) {
                 flightList.remove(count);
                 return flightList;
             }
@@ -263,18 +263,18 @@ public class ItineraryHelper {
         fault.setBookingNumber(bookingNumber);
         throw new ItineraryException("Could not delete hotel " + flight.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
     }
-    
-    private boolean updateItinerary(Itinerary itinerary) throws ItineraryException{
-        if(ItineraryHolder.getInstance().getTemporaryItineraries().containsKey(itinerary.getBookingNumber())){
+
+    private boolean updateItinerary(Itinerary itinerary) throws ItineraryException {
+        if (ItineraryHolder.getInstance().getTemporaryItineraries().containsKey(itinerary.getBookingNumber())) {
             ItineraryHolder.getInstance().getTemporaryItineraries().put(itinerary.getBookingNumber(), itinerary);
             return true;
         }
-        
-        if(ItineraryHolder.getInstance().getBookedItineraries().containsKey(itinerary.getBookingNumber())){
+
+        if (ItineraryHolder.getInstance().getBookedItineraries().containsKey(itinerary.getBookingNumber())) {
             ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
             return true;
         }
-        
+
         ItineraryException fault = new ItineraryException();
         fault.setReason("Itinerary does not exist.");
         fault.setBookingNumber(itinerary.getBookingNumber());

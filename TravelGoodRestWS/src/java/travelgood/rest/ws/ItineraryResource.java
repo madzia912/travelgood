@@ -93,13 +93,19 @@ public class ItineraryResource {
         } catch (ItineraryException ex) {
             Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        } catch (lameduck.client.CancelReservationFault_Exception ex) {
+            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        } catch (niceview.client.CancelHotelFault_Exception ex) {
+            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
 
     @DELETE
     @Path("/{bookingNumber}")
     @Consumes(MediaType.APPLICATION_XML)
-    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception{
+    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         try {
             Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, creditCard);
 
