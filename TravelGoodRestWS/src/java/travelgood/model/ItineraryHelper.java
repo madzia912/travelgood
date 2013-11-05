@@ -1,5 +1,6 @@
 package travelgood.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import travelgood.utils.DateUtils;
 import travelgood.utils.model.Address;
@@ -46,17 +47,14 @@ public class ItineraryHelper {
             return ItineraryHolder.getInstance().getBookedItineraries().get(bookingNumber);
         }
 
-        return null;
+        ItineraryException fault = new ItineraryException();
+        fault.setReason("Itinerary does not exist.");
+        fault.setBookingNumber(bookingNumber);
+        throw new ItineraryException("Could not book itinerary " + bookingNumber + ": does not exist.", fault);
     }
 
-    public Itinerary bookItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException, lameduck.client.BookFlightFault_Exception, niceview.client.BookHotelFault_Exception {
+    public Itinerary bookItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException, lameduck.client.BookFlightFault_Exception, niceview.client.BookHotelFault_Exception, lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not book itinerary " + bookingNumber + ": does not exist.", fault);
-        }
 
         //Book all the assigned flights and hotels
         List<Flight> flights = itinerary.getFlights();
@@ -74,39 +72,62 @@ public class ItineraryHelper {
         niceViewCreditCard.setName(creditCard.getName());
         niceViewCreditCard.setNumber(creditCard.getNumber());
 
-        for (Flight f : flights) {
-            lameduck.client.BookFlightRequest bookRequest = new lameduck.client.BookFlightRequest();
-            bookRequest.setBookingNumber(f.getBookingNumber());
-            bookRequest.setCreditCard(lameDuckCreditCard);
-            getLameDuckPort().bookFlight(bookRequest);
+        List<Object> bookedFlightsAndHotels = new ArrayList<Object>();
+
+        try {
+            
+            for (Flight f : flights) {
+                lameduck.client.BookFlightRequest bookRequest = new lameduck.client.BookFlightRequest();
+                bookRequest.setBookingNumber(f.getBookingNumber());
+                bookRequest.setCreditCard(lameDuckCreditCard);
+                getLameDuckPort().bookFlight(bookRequest);
+                bookedFlightsAndHotels.add(f);
+            }
+
+            for (Hotel h : hotels) {
+                niceview.client.BookHotelRequest bookRequest = new niceview.client.BookHotelRequest();
+                bookRequest.setBookingNumber(h.getBookingNumber());
+                bookRequest.setCreditCard(niceViewCreditCard);
+                getNiceViewPort().bookHotel(bookRequest);
+                bookedFlightsAndHotels.add(h);
+            }
+
+            itinerary.setItineraryState(ItineraryState.BOOKED);
+
+            // Copy from temporary to booked itineraries
+            ItineraryHolder.getInstance().getTemporaryItineraries().remove(bookingNumber);
+            ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
+
+            return itinerary;
+
+        } catch (Exception ex) { //Rollback all the booked items
+            for (Object obj : bookedFlightsAndHotels) {
+                if (obj instanceof Flight) {
+                    Flight f = (Flight) obj;
+                    lameduck.client.CancelReservationRequest cancelRequest = new lameduck.client.CancelReservationRequest();
+                    cancelRequest.setBookingNumber(f.getBookingNumber());
+                    cancelRequest.setCreditCard(lameDuckCreditCard);
+                    getLameDuckPort().cancelReservation(cancelRequest);
+                } else {
+                    Hotel h = (Hotel) obj;
+                    niceview.client.CancelHotelRequest cancelRequest = new niceview.client.CancelHotelRequest();
+                    cancelRequest.setBookingNumber(h.getBookingNumber());
+                    getNiceViewPort().cancelHotel(cancelRequest);
+                    bookedFlightsAndHotels.add(h);
+                }
+            }
+            ItineraryException fault = new ItineraryException();
+            fault.setReason("Booking of one of the assigned flights or hotels failed.");
+            fault.setBookingNumber(bookingNumber);
+            //throw new ItineraryException("Could not book itinerary " + bookingNumber + ": does not exist.", fault);
+            throw new ItineraryException(ex);
         }
 
-        for (Hotel h : hotels) {
-            niceview.client.BookHotelRequest bookRequest = new niceview.client.BookHotelRequest();
-            bookRequest.setBookingNumber(h.getBookingNumber());
-            bookRequest.setCreditCard(niceViewCreditCard);
-            getNiceViewPort().bookHotel(bookRequest);
-        }
-
-        itinerary.setItineraryState(ItineraryState.BOOKED);
-
-        // Copy from temporary to booked itineraries
-        ItineraryHolder.getInstance().getTemporaryItineraries().remove(bookingNumber);
-        ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
-
-        return itinerary;
     }
 
     public Itinerary cancelItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException, lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not cancel itinerary " + bookingNumber + ": does not exist.", fault);
-        }
 
-        //Book all the assigned flights and hotels
         List<Flight> flights = itinerary.getFlights();
         List<Hotel> hotels = itinerary.getHotels();
 
@@ -142,12 +163,6 @@ public class ItineraryHelper {
 
     public boolean addFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not cancel itinerary " + bookingNumber + ": does not exist.", fault);
-        }
 
         lameduck.client.GetFlightsRequest getFlightRequest = new lameduck.client.GetFlightsRequest();
         getFlightRequest.setBookingNumber(flightBookingNumber);
@@ -166,12 +181,6 @@ public class ItineraryHelper {
 
     public boolean addHotel(String bookingNumber, String hotelBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not cancel itinerary " + bookingNumber + ": does not exist.", fault);
-        }
 
         niceview.client.GetHotelsRequest getHotelRequest = new niceview.client.GetHotelsRequest();
         getHotelRequest.setBookingNumber(hotelBookingNumber);
@@ -190,12 +199,7 @@ public class ItineraryHelper {
 
     public boolean deleteFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not cancel itinerary " + bookingNumber + ": does not exist.", fault);
-        }
+
         lameduck.client.GetFlightsRequest getFlightRequest = new lameduck.client.GetFlightsRequest();
         getFlightRequest.setBookingNumber(flightBookingNumber);
         lameduck.client.GetFlightsResponse getFlightResponse = lameDuckPort.getFlights(getFlightRequest);
@@ -206,6 +210,7 @@ public class ItineraryHelper {
                     DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice());
             if (itinerary.getFlights().contains(flight)) {
                 itinerary.getFlights().remove(flight);
+                // todo
                 return true;
             } else {
                 ItineraryException fault = new ItineraryException();
@@ -219,12 +224,7 @@ public class ItineraryHelper {
 
     public boolean deleteHotel(String bookingNumber, String hotelBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
-        if (itinerary == null) {
-            ItineraryException fault = new ItineraryException();
-            fault.setReason("Itinerary does not exist.");
-            fault.setBookingNumber(bookingNumber);
-            throw new ItineraryException("Could not cancel itinerary " + bookingNumber + ": does not exist.", fault);
-        }
+
         niceview.client.GetHotelsRequest getHotelRequest = new niceview.client.GetHotelsRequest();
         getHotelRequest.setBookingNumber(hotelBookingNumber);
         niceview.client.GetHotelsResponse getHotelResponse = niceViewPort.getHotels(getHotelRequest);
@@ -235,6 +235,7 @@ public class ItineraryHelper {
             Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee());
             if (itinerary.getHotels().contains(hotel)) {
                 itinerary.getHotels().remove(hotel);
+                //todo
                 return true;
             } else {
                 ItineraryException fault = new ItineraryException();
