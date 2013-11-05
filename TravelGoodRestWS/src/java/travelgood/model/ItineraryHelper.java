@@ -122,7 +122,6 @@ public class ItineraryHelper {
             //throw new ItineraryException("Could not book itinerary " + bookingNumber + ": does not exist.", fault);
             throw new ItineraryException(ex);
         }
-
     }
 
     public Itinerary cancelItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException, lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
@@ -173,6 +172,7 @@ public class ItineraryHelper {
                     flightType.getFrom(), flightType.getTo(), DateUtils.toDate(flightType.getLiftOffDate()),
                     DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice());
             itinerary.getFlights().add(flight);
+            updateItinerary(itinerary);
             return true;
         }
 
@@ -191,6 +191,7 @@ public class ItineraryHelper {
             Address address = new Address(addressType.getCity(), addressType.getStreet(), addressType.getZipCode());
             Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee());
             itinerary.getHotels().add(hotel);
+            updateItinerary(itinerary);
             return true;
         }
 
@@ -208,16 +209,9 @@ public class ItineraryHelper {
             Flight flight = new Flight(flightType.getId(), flightType.getBookingNumber(), flightType.getCarrier(),
                     flightType.getFrom(), flightType.getTo(), DateUtils.toDate(flightType.getLiftOffDate()),
                     DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice());
-            if (itinerary.getFlights().contains(flight)) {
-                itinerary.getFlights().remove(flight);
-                // todo
-                return true;
-            } else {
-                ItineraryException fault = new ItineraryException();
-                fault.setReason("Flight was not assigned to this itinerary does not exist.");
-                fault.setBookingNumber(bookingNumber);
-                throw new ItineraryException("Could not delete flight " + flightBookingNumber + ": does not exist in itinerary " + bookingNumber, fault);
-            }
+            itinerary.getFlights().clear();
+            itinerary.getFlights().addAll(removeFlight(itinerary.getFlights(), flight, bookingNumber));
+            updateItinerary(itinerary);
         }
         return false;
     }
@@ -233,17 +227,57 @@ public class ItineraryHelper {
             niceview.client.AddressType addressType = new niceview.client.AddressType();
             Address address = new Address(addressType.getCity(), addressType.getStreet(), addressType.getZipCode());
             Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee());
-            if (itinerary.getHotels().contains(hotel)) {
-                itinerary.getHotels().remove(hotel);
-                //todo
-                return true;
-            } else {
-                ItineraryException fault = new ItineraryException();
-                fault.setReason("Hotel was not assigned to this itinerary does not exist.");
-                fault.setBookingNumber(bookingNumber);
-                throw new ItineraryException("Could not delete hotel " + hotelBookingNumber + ": does not exist in itinerary " + bookingNumber, fault);
-            }
+            itinerary.getHotels().clear();
+            itinerary.getHotels().addAll(removeHotel(itinerary.getHotels(), hotel, bookingNumber));
+            updateItinerary(itinerary);
         }
         return false;
+    }
+    
+    private List<Hotel> removeHotel(List<Hotel> hotelList, Hotel hotel, String bookingNumber) throws ItineraryException{
+        int count = 0;
+        for(Hotel h : hotelList){
+            if(h.getId().equals(hotel.getId())){
+                hotelList.remove(count);
+                return hotelList;
+            }
+            count++;
+        }
+        ItineraryException fault = new ItineraryException();
+        fault.setReason("Hotel was not assigned to this itinerary does not exist.");
+        fault.setBookingNumber(bookingNumber);
+        throw new ItineraryException("Could not delete hotel " + hotel.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
+    }
+    
+    private List<Flight> removeFlight(List<Flight> flightList, Flight flight, String bookingNumber) throws ItineraryException{
+        int count = 0;
+        for(Flight f : flightList){
+            if(f.getId().equals(flight.getId())){
+                flightList.remove(count);
+                return flightList;
+            }
+            count++;
+        }
+        ItineraryException fault = new ItineraryException();
+        fault.setReason("Hotel was not assigned to this itinerary does not exist.");
+        fault.setBookingNumber(bookingNumber);
+        throw new ItineraryException("Could not delete hotel " + flight.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
+    }
+    
+    private boolean updateItinerary(Itinerary itinerary) throws ItineraryException{
+        if(ItineraryHolder.getInstance().getTemporaryItineraries().containsKey(itinerary.getBookingNumber())){
+            ItineraryHolder.getInstance().getTemporaryItineraries().put(itinerary.getBookingNumber(), itinerary);
+            return true;
+        }
+        
+        if(ItineraryHolder.getInstance().getBookedItineraries().containsKey(itinerary.getBookingNumber())){
+            ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
+            return true;
+        }
+        
+        ItineraryException fault = new ItineraryException();
+        fault.setReason("Itinerary does not exist.");
+        fault.setBookingNumber(itinerary.getBookingNumber());
+        throw new ItineraryException("Could not book itinerary " + itinerary.getBookingNumber() + ": does not exist.", fault);
     }
 }
