@@ -16,9 +16,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lameduck.client.CancelReservationFault_Exception;
-import niceview.client.BookHotelFault_Exception;
-import niceview.client.CancelHotelFault_Exception;
 import travelgood.model.FlightHelper;
 import travelgood.model.HotelHelper;
 import travelgood.model.ItineraryException;
@@ -34,8 +31,6 @@ import travelgood.utils.model.rest.BookHotelResponse;
 import travelgood.utils.model.rest.BookItineraryResponse;
 import travelgood.utils.model.rest.CancelItineraryResponse;
 import travelgood.utils.model.rest.CreateItineraryResponse;
-import travelgood.utils.model.rest.DeleteFlightResponse;
-import travelgood.utils.model.rest.DeleteHotelResponse;
 import travelgood.utils.model.rest.GetFlightsResponse;
 import travelgood.utils.model.rest.GetHotelsResponse;
 import travelgood.utils.model.rest.GetItineraryResponse;
@@ -152,22 +147,6 @@ public class ItineraryResource {
         }
     }
 
-    @DELETE
-    @Path("/{bookingNumber}/flight/{flightBookingNumber}")
-    public Response deleteFlight(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("flightBookingNumber") String flightBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
-        try {
-            boolean deleted = itineraryHelper.deleteFlight(itineraryBookingNumber, flightBookingNumber);
-
-            DeleteFlightResponse result = new DeleteFlightResponse();
-            result.setDeleted(deleted);
-            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteFlight(request, itineraryBookingNumber, flightBookingNumber));
-            return Response.status(Response.Status.OK).entity(result).build();
-        } catch (ItineraryException ex) {
-            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-        }
-    }
-
     @GET
     @Path("/{bookingNumber}/hotel/{city}/{arrivalDate}/{departureDate}")
     @Produces(MediaType.APPLICATION_XML)
@@ -200,20 +179,5 @@ public class ItineraryResource {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
-
-    @DELETE
-    @Path("/{bookingNumber}/hotel/{hotelBookingNumber}")
-    public Response deleteHotel(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("hotelBookingNumber") String hotelBookingNumber, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
-        try {
-            boolean deleted = itineraryHelper.deleteHotel(itineraryBookingNumber, hotelBookingNumber);
-
-            DeleteHotelResponse result = new DeleteHotelResponse();
-            result.setDeleted(deleted);
-            result.getNextStepUrls().addAll(NextStepsUtils.getNextStepsForDeleteHotel(request, itineraryBookingNumber, hotelBookingNumber));
-            return Response.status(Response.Status.OK).entity(deleted).build();
-        } catch (ItineraryException ex) {
-            Logger.getLogger(ItineraryResource.class.getName()).log(Level.SEVERE, null, ex);
-            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
-        }
-    }
+    
 }

@@ -69,14 +69,6 @@ public class TravelGoodRestClient {
         return resource.accept(javax.ws.rs.core.MediaType.APPLICATION_XML).get(GetItineraryResponse.class);
     }
 
-    public ClientResponse deleteHotel(String bookingNumber, String hotelBookingNumber) throws UniformInterfaceException {
-        return webResource.path(java.text.MessageFormat.format("{0}/hotel/{1}", new Object[]{bookingNumber, hotelBookingNumber})).delete(ClientResponse.class);
-    }
-
-    public ClientResponse deleteFlight(String bookingNumber, String flightBookingNumber) throws UniformInterfaceException {
-        return webResource.path(java.text.MessageFormat.format("{0}/flight/{1}", new Object[]{bookingNumber, flightBookingNumber})).delete(ClientResponse.class);
-    }
-
     public void close() {
         client.destroy();
     }
