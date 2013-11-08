@@ -1,7 +1,7 @@
 <%-- 
     Document   : index
     Created on : Oct 28, 2013, 7:14:25 PM
-    Author     : Bartosz
+    Author     : Bartosz Grzegorz Cichecki
 --%>
 
 <%@page import="java.util.Map"%>
@@ -15,6 +15,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="serviceInspection" content="inspection.wsil">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Lame Duck Airlines</title>
     </head>
