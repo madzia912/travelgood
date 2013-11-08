@@ -13,11 +13,12 @@ public class Hotel {
     protected String provider;
     protected int price;
     protected boolean creditCardGuarantee;
+    protected BookingState bookingState;
 
     public Hotel() {
     }
 
-    public Hotel(String id, String bookingNumber, String name, Address address, String provider, int price, boolean creditCardGuarantee) {
+    public Hotel(String id, String bookingNumber, String name, Address address, String provider, int price, boolean creditCardGuarantee, BookingState bookingState) {
         this.id = id;
         this.bookingNumber = bookingNumber;
         this.name = name;
@@ -25,6 +26,7 @@ public class Hotel {
         this.provider = provider;
         this.price = price;
         this.creditCardGuarantee = creditCardGuarantee;
+        this.bookingState = bookingState;
     }
 
     public String getId() {
@@ -82,4 +84,13 @@ public class Hotel {
     public void setCreditCardGuarantee(boolean value) {
         this.creditCardGuarantee = value;
     }
+
+    public BookingState getBookingState() {
+        return bookingState;
+    }
+
+    public void setBookingState(BookingState bookingState) {
+        this.bookingState = bookingState;
+    }
+    
 }

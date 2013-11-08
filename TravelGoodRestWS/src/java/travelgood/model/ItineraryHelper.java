@@ -2,13 +2,15 @@ package travelgood.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import niceview.client.AddressType;
+import niceview.client.HotelType;
 import travelgood.utils.DateUtils;
 import travelgood.utils.model.Address;
+import travelgood.utils.model.BookingState;
 import travelgood.utils.model.CreditCard;
 import travelgood.utils.model.Flight;
 import travelgood.utils.model.Hotel;
 import travelgood.utils.model.Itinerary;
-import travelgood.utils.model.ItineraryState;
 import travelgood.utils.model.PaymentStatus;
 
 /**
@@ -31,7 +33,7 @@ public class ItineraryHelper {
     public Itinerary createItinerary(String userId) {
         Itinerary itinerary = new Itinerary();
         itinerary.setBookingNumber(String.valueOf(System.nanoTime())); // generating the random ID
-        itinerary.setItineraryState(ItineraryState.IN_PROGRESS);
+        itinerary.setBookingState(BookingState.IN_PROGRESS);
         itinerary.setPaymentStatus(PaymentStatus.PENDING);
 
         ItineraryHolder.getInstance().addTemporaryItineraries(itinerary);
@@ -81,6 +83,7 @@ public class ItineraryHelper {
                 bookRequest.setBookingNumber(f.getBookingNumber());
                 bookRequest.setCreditCard(lameDuckCreditCard);
                 getLameDuckPort().bookFlight(bookRequest);
+                f.setBookingState(BookingState.BOOKED);
                 bookedFlightsAndHotels.add(f);
             }
 
@@ -89,10 +92,12 @@ public class ItineraryHelper {
                 bookRequest.setBookingNumber(h.getBookingNumber());
                 bookRequest.setCreditCard(niceViewCreditCard);
                 getNiceViewPort().bookHotel(bookRequest);
+                h.setBookingState(BookingState.BOOKED);
                 bookedFlightsAndHotels.add(h);
             }
 
-            itinerary.setItineraryState(ItineraryState.BOOKED);
+            itinerary.setBookingState(BookingState.BOOKED);
+            itinerary.setPaymentStatus(PaymentStatus.SUCCESS);
 
             // Copy from temporary to booked itineraries
             ItineraryHolder.getInstance().getTemporaryItineraries().remove(bookingNumber);
@@ -107,13 +112,15 @@ public class ItineraryHelper {
                     lameduck.client.CancelReservationRequest cancelRequest = new lameduck.client.CancelReservationRequest();
                     cancelRequest.setBookingNumber(f.getBookingNumber());
                     cancelRequest.setCreditCard(lameDuckCreditCard);
+                    cancelRequest.setPrice(f.getPrice());
                     getLameDuckPort().cancelReservation(cancelRequest);
+                    f.setBookingState(BookingState.CANCELLED);
                 } else {
                     Hotel h = (Hotel) obj;
                     niceview.client.CancelHotelRequest cancelRequest = new niceview.client.CancelHotelRequest();
                     cancelRequest.setBookingNumber(h.getBookingNumber());
                     getNiceViewPort().cancelHotel(cancelRequest);
-                    bookedFlightsAndHotels.add(h);
+                    h.setBookingState(BookingState.CANCELLED);
                 }
             }
             ItineraryException fault = new ItineraryException();
@@ -143,20 +150,27 @@ public class ItineraryHelper {
         niceViewCreditCard.setNumber(creditCard.getNumber());
 
         for (Flight f : flights) {
-            lameduck.client.CancelReservationRequest cancelRequest = new lameduck.client.CancelReservationRequest();
-            cancelRequest.setBookingNumber(f.getBookingNumber());
-            cancelRequest.setCreditCard(lameDuckCreditCard);
-            cancelRequest.setPrice(f.getPrice());
-            getLameDuckPort().cancelReservation(cancelRequest);
+            if (f.getBookingState().equals(BookingState.BOOKED)) {
+                lameduck.client.CancelReservationRequest cancelRequest = new lameduck.client.CancelReservationRequest();
+                cancelRequest.setBookingNumber(f.getBookingNumber());
+                cancelRequest.setCreditCard(lameDuckCreditCard);
+                cancelRequest.setPrice(f.getPrice());
+                getLameDuckPort().cancelReservation(cancelRequest);
+            }
+            f.setBookingState(BookingState.CANCELLED);
         }
 
         for (Hotel h : hotels) {
-            niceview.client.CancelHotelRequest cancelRequest = new niceview.client.CancelHotelRequest();
-            cancelRequest.setBookingNumber(h.getBookingNumber());
-            getNiceViewPort().cancelHotel(cancelRequest);
+            if (h.getBookingState().equals(BookingState.BOOKED)) {
+                niceview.client.CancelHotelRequest cancelRequest = new niceview.client.CancelHotelRequest();
+                cancelRequest.setBookingNumber(h.getBookingNumber());
+                getNiceViewPort().cancelHotel(cancelRequest);
+            }
+            h.setBookingState(BookingState.CANCELLED);
         }
 
-        itinerary.setItineraryState(ItineraryState.CANCELLED);
+        itinerary.setBookingState(BookingState.CANCELLED);
+        itinerary.setPaymentStatus(PaymentStatus.CANCELLED);
         return itinerary;
     }
 
@@ -170,9 +184,8 @@ public class ItineraryHelper {
             lameduck.client.FlightType flightType = getFlightResponse.getFlights().getFlight().get(0);
             Flight flight = new Flight(flightType.getId(), flightType.getBookingNumber(), flightType.getCarrier(),
                     flightType.getFrom(), flightType.getTo(), DateUtils.toDate(flightType.getLiftOffDate()),
-                    DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice());
+                    DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice(), BookingState.IN_PROGRESS);
             itinerary.getFlights().add(flight);
-            updateItinerary(itinerary);
             return true;
         }
 
@@ -186,98 +199,14 @@ public class ItineraryHelper {
         getHotelRequest.setBookingNumber(hotelBookingNumber);
         niceview.client.GetHotelsResponse getHotelResponse = niceViewPort.getHotels(getHotelRequest);
         if (getHotelResponse.getHotels().getHotel().size() > 0) {
-            niceview.client.HotelType hotelType = new niceview.client.HotelType();
-            niceview.client.AddressType addressType = new niceview.client.AddressType();
+            HotelType hotelType = getHotelResponse.getHotels().getHotel().get(0);
+            AddressType addressType = hotelType.getAddress();
             Address address = new Address(addressType.getCity(), addressType.getStreet(), addressType.getZipCode());
-            Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee());
+            Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee(), BookingState.IN_PROGRESS);
             itinerary.getHotels().add(hotel);
-            updateItinerary(itinerary);
             return true;
         }
 
         return false;
-    }
-
-    public boolean deleteFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {
-        Itinerary itinerary = getItinerary(bookingNumber);
-
-        lameduck.client.GetFlightsRequest getFlightRequest = new lameduck.client.GetFlightsRequest();
-        getFlightRequest.setBookingNumber(flightBookingNumber);
-        lameduck.client.GetFlightsResponse getFlightResponse = lameDuckPort.getFlights(getFlightRequest);
-        if (getFlightResponse.getFlights().getFlight().size() > 0) {
-            lameduck.client.FlightType flightType = getFlightResponse.getFlights().getFlight().get(0);
-            Flight flight = new Flight(flightType.getId(), flightType.getBookingNumber(), flightType.getCarrier(),
-                    flightType.getFrom(), flightType.getTo(), DateUtils.toDate(flightType.getLiftOffDate()),
-                    DateUtils.toDate(flightType.getLandingDate()), flightType.getPrice());
-            itinerary.getFlights().clear();
-            itinerary.getFlights().addAll(removeFlight(itinerary.getFlights(), flight, bookingNumber));
-            updateItinerary(itinerary);
-        }
-        return false;
-    }
-
-    public boolean deleteHotel(String bookingNumber, String hotelBookingNumber) throws ItineraryException {
-        Itinerary itinerary = getItinerary(bookingNumber);
-
-        niceview.client.GetHotelsRequest getHotelRequest = new niceview.client.GetHotelsRequest();
-        getHotelRequest.setBookingNumber(hotelBookingNumber);
-        niceview.client.GetHotelsResponse getHotelResponse = niceViewPort.getHotels(getHotelRequest);
-        if (getHotelResponse.getHotels().getHotel().size() > 0) {
-            niceview.client.HotelType hotelType = new niceview.client.HotelType();
-            niceview.client.AddressType addressType = new niceview.client.AddressType();
-            Address address = new Address(addressType.getCity(), addressType.getStreet(), addressType.getZipCode());
-            Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee());
-            itinerary.getHotels().clear();
-            itinerary.getHotels().addAll(removeHotel(itinerary.getHotels(), hotel, bookingNumber));
-            updateItinerary(itinerary);
-        }
-        return false;
-    }
-
-    private List<Hotel> removeHotel(List<Hotel> hotelList, Hotel hotel, String bookingNumber) throws ItineraryException {
-        int count = 0;
-        for (Hotel h : hotelList) {
-            if (h.getId().equals(hotel.getId())) {
-                hotelList.remove(count);
-                return hotelList;
-            }
-            count++;
-        }
-        ItineraryException fault = new ItineraryException();
-        fault.setReason("Hotel was not assigned to this itinerary does not exist.");
-        fault.setBookingNumber(bookingNumber);
-        throw new ItineraryException("Could not delete hotel " + hotel.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
-    }
-
-    private List<Flight> removeFlight(List<Flight> flightList, Flight flight, String bookingNumber) throws ItineraryException {
-        int count = 0;
-        for (Flight f : flightList) {
-            if (f.getId().equals(flight.getId())) {
-                flightList.remove(count);
-                return flightList;
-            }
-            count++;
-        }
-        ItineraryException fault = new ItineraryException();
-        fault.setReason("Hotel was not assigned to this itinerary does not exist.");
-        fault.setBookingNumber(bookingNumber);
-        throw new ItineraryException("Could not delete hotel " + flight.getBookingNumber() + ": does not exist in itinerary " + bookingNumber, fault);
-    }
-
-    private boolean updateItinerary(Itinerary itinerary) throws ItineraryException {
-        if (ItineraryHolder.getInstance().getTemporaryItineraries().containsKey(itinerary.getBookingNumber())) {
-            ItineraryHolder.getInstance().getTemporaryItineraries().put(itinerary.getBookingNumber(), itinerary);
-            return true;
-        }
-
-        if (ItineraryHolder.getInstance().getBookedItineraries().containsKey(itinerary.getBookingNumber())) {
-            ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
-            return true;
-        }
-
-        ItineraryException fault = new ItineraryException();
-        fault.setReason("Itinerary does not exist.");
-        fault.setBookingNumber(itinerary.getBookingNumber());
-        throw new ItineraryException("Could not book itinerary " + itinerary.getBookingNumber() + ": does not exist.", fault);
     }
 }

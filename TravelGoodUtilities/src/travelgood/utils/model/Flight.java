@@ -13,14 +13,15 @@ public class Flight {
     protected String carrier;
     protected String from;
     protected String to;
-    private Date liftOffDate;
+    protected Date liftOffDate;
     protected Date landingDate;
     protected int price;
+    protected BookingState bookingState;
 
     public Flight() {
     }
 
-    public Flight(String id, String bookingNumber, String carrier, String from, String to, Date liftOffDate, Date landingDate, int price) {
+    public Flight(String id, String bookingNumber, String carrier, String from, String to, Date liftOffDate, Date landingDate, int price, BookingState bookingState) {
         this.id = id;
         this.bookingNumber = bookingNumber;
         this.carrier = carrier;
@@ -29,6 +30,7 @@ public class Flight {
         this.liftOffDate = liftOffDate;
         this.landingDate = landingDate;
         this.price = price;
+        this.bookingState = bookingState;
     }
 
     public String getId() {
@@ -93,5 +95,13 @@ public class Flight {
 
     public void setPrice(int value) {
         this.price = value;
+    }
+    
+    public BookingState getBookingState() {
+        return bookingState;
+    }
+
+    public void setBookingState(BookingState bookingState) {
+        this.bookingState = bookingState;
     }
 }

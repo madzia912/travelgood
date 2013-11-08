@@ -68,7 +68,7 @@ public class DateUtils {
     }
 
     public static XMLGregorianCalendar getXmlGregorianCalendar(int year, int month, int day, int hour, int minute, int seconds) {
-        return XMLGregorianCalendarImpl.createDateTime(year, month, day, hour, minute, seconds);
+        return XMLGregorianCalendarImpl.createDateTime(year, month, day, hour, minute, seconds, DatatypeConstants.FIELD_UNDEFINED, DatatypeConstants.FIELD_UNDEFINED);
     }
 
     public static Date getDate(int year, int month, int day) {

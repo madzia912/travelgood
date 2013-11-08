@@ -5,7 +5,7 @@ package travelgood.utils.model;
  * 
  * @author Bartosz
  */
-public enum ItineraryState {
+public enum BookingState {
     
     IN_PROGRESS, BOOKED, CANCELLED;
     

@@ -27,7 +27,7 @@ public class HotelsHelper {
         HotelsType hotelsList = new HotelsType();
 
         for (HotelType ht : hotels) {
-            if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) ||  StringUtils.equals(city, ht.getAddress().getCity())) {
+            if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) || StringUtils.equals(city, ht.getAddress().getCity())) {
                 hotelsList.getHotel().add(ht);
             }
         }
@@ -54,6 +54,12 @@ public class HotelsHelper {
                 fault.setReason(e.getFaultInfo().getMessage());
                 fault.setBookingNumber(bookingNumber);
                 throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": invalid credit card.", fault);
+            } catch (Exception e) {
+                System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getMessage());
+                BookHotelFault fault = new BookHotelFault();
+                fault.setReason(e.getMessage());
+                fault.setBookingNumber(bookingNumber);
+                throw new BookHotelFault_Exception("Could not book hotel " + bookingNumber + ": unknown exception.", fault);
             }
         }
 
@@ -65,9 +71,18 @@ public class HotelsHelper {
         return response;
     }
 
-    public CancelHotelResponse cancelFlight(String bookingNumber) throws CancelHotelFault_Exception {
+    public CancelHotelResponse cancelHotel(String bookingNumber) throws CancelHotelFault_Exception {
         Map<String, HotelType> reservations = HotelsHolder.getInstance().getReservations();
         if (reservations.containsKey(bookingNumber)) {
+
+            //Special case for cancelling fail
+            if (StringUtils.equals("bookingNr4", bookingNumber)) {
+                CancelHotelFault fault = new CancelHotelFault();
+                fault.setReason("You are not allowed to cancel this booking!");
+                fault.setBookingNumber(bookingNumber);
+                throw new CancelHotelFault_Exception("Could not remove reservation " + bookingNumber + ": not allowed.", fault);
+            }
+
             reservations.remove(bookingNumber);
         } else {
             CancelHotelFault fault = new CancelHotelFault();

@@ -10,7 +10,7 @@ import travelgood.utils.model.Flights;
 import travelgood.utils.model.Hotel;
 import travelgood.utils.model.Hotels;
 import travelgood.utils.model.Itinerary;
-import travelgood.utils.model.ItineraryState;
+import travelgood.utils.model.BookingState;
 import travelgood.utils.model.rest.NextStep;
 
 /**
@@ -24,7 +24,7 @@ public class NextStepsUtils {
         List<NextStep> nextSteps = new ArrayList<NextStep>();
 
         // I now that repeating code is bad, but repetitions below are so that code looks cleaner
-        if (ItineraryState.IN_PROGRESS.equals(itinerary.getItineraryState())) {
+        if (BookingState.IN_PROGRESS.equals(itinerary.getBookingState())) {
             nextSteps.add(new NextStep(NextStep.NextStepAction.GET, address, itinerary.getBookingNumber()));
             nextSteps.add(new NextStep(NextStep.NextStepAction.POST, address, itinerary.getBookingNumber(), "book"));
             nextSteps.add(new NextStep(NextStep.NextStepAction.DELETE, address, itinerary.getBookingNumber()));
@@ -32,13 +32,13 @@ public class NextStepsUtils {
             nextSteps.add(new NextStep(NextStep.NextStepAction.GET, address, itinerary.getBookingNumber(), "hotel"));
         }
 
-        if (ItineraryState.BOOKED.equals(itinerary.getItineraryState())) {
+        if (BookingState.BOOKED.equals(itinerary.getBookingState())) {
             nextSteps.add(new NextStep(NextStep.NextStepAction.GET, address, itinerary.getBookingNumber()));
             nextSteps.add(new NextStep(NextStep.NextStepAction.DELETE, address, itinerary.getBookingNumber()));
         }
 
         //If the flight has been cancelled then there are no steps
-        //if (ItineraryState.CANCELLED.equals(itinerary.getItineraryState())) {
+        //if (BookingState.CANCELLED.equals(itinerary.getItineraryState())) {
         //}
 
         return nextSteps;
