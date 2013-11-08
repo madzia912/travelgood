@@ -4,6 +4,13 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import travelgood.utils.model.CreditCard;
 import travelgood.utils.model.rest.GetFlightsResponse;
 import travelgood.utils.model.rest.GetHotelsResponse;
 import travelgood.utils.model.rest.GetItineraryResponse;
@@ -37,8 +44,10 @@ public class TravelGoodRestClient {
         return resource.accept(javax.ws.rs.core.MediaType.APPLICATION_XML).get(GetHotelsResponse.class);
     }
 
-    public ClientResponse cancelItinerary(Object requestEntity, String bookingNumber) throws UniformInterfaceException {
-        return webResource.path(java.text.MessageFormat.format("{0}", new Object[]{bookingNumber})).type(javax.ws.rs.core.MediaType.APPLICATION_XML).delete(ClientResponse.class, requestEntity);
+    // Because of limitations of java.net.HttpURLConnection DELETE request cannot transmit entity, so credit card data is send in url.
+    // http://comments.gmane.org/gmane.comp.java.jersey.user/4552
+    public ClientResponse cancelItinerary(CreditCard cc, String bookingNumber) throws UniformInterfaceException {
+        return webResource.path(java.text.MessageFormat.format("{0}/{1}/{2}/{3}/{4}", new Object[]{bookingNumber, cc.getName(), cc.getExpMonth(), cc.getExpYear(), cc.getNumber()})).delete(ClientResponse.class);
     }
 
     public ClientResponse createItinerary(String userId) throws UniformInterfaceException {

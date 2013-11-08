@@ -7,6 +7,6 @@ package travelgood.utils.model;
  */
 public enum PaymentStatus {
     
-    PENDING, SUCCESS, CANCELLED, FAILED;
+    PENDING, SUCCESS, CANCELLED;
     
 }

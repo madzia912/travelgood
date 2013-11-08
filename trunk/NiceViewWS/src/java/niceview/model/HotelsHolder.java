@@ -87,5 +87,19 @@ public class HotelsHolder {
         at.setZipCode("123");
         ht.setAddress(at);
         hotels.add(ht);
+        
+        ht = new HotelType();
+        ht.setId("hotel4");
+        ht.setBookingNumber("bookingNr4");
+        ht.setName("Hotel That Does Not Allow You To Cancel Your Booking!");
+        ht.setPrice(10);
+        ht.setCreditCardGuarantee(false);
+        ht.setProvider("Provider4");
+        at = new AddressType();
+        at.setCity("New York");
+        at.setStreet("Down Street");
+        at.setZipCode("12");
+        ht.setAddress(at);
+        hotels.add(ht);
     }
 }

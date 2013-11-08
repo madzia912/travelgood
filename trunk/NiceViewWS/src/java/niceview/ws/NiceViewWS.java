@@ -25,7 +25,7 @@ public class NiceViewWS {
     }
 
     public CancelHotelResponse cancelHotel(CancelHotelRequest request) throws CancelHotelFault_Exception {
-        return hh.cancelFlight(request.getBookingNumber());
+        return hh.cancelHotel(request.getBookingNumber());
     }
     public GetHotelsResponse getHotels(GetHotelsRequest request) {
         HotelsType hotelsType = hh.getHotels(request.getBookingNumber(), request.getCity(), request.getArrivalDate(), request.getDepartureDate()).getHotels();

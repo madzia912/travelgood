@@ -98,11 +98,18 @@ public class ItineraryResource {
     }
 
     @DELETE
-    @Path("/{bookingNumber}")
-    @Consumes(MediaType.APPLICATION_XML)
-    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, CreditCard creditCard, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
+    // Because of limitations of java.net.HttpURLConnection DELETE request cannot transmit entity, so credit card data is send in url.
+    // http://comments.gmane.org/gmane.comp.java.jersey.user/4552
+    @Path("/{bookingNumber}/{name}/{month}/{year}/{number}")
+    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("name") String name, @PathParam("month") String month, @PathParam("year") String year, @PathParam("number") String number, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         try {
-            Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, creditCard);
+            CreditCard cc = new CreditCard();
+            cc.setName(name);
+            cc.setExpMonth(Integer.parseInt(month));
+            cc.setExpYear(Integer.parseInt(year));
+            cc.setNumber(number);
+
+            Itinerary itinerary = itineraryHelper.cancelItinerary(itineraryBookingNumber, cc);
 
             CancelItineraryResponse result = new CancelItineraryResponse();
             result.setCancelled(itinerary.isCancelled());
@@ -179,5 +186,4 @@ public class ItineraryResource {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
-    
 }

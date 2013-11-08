@@ -31,6 +31,8 @@ public class FlightsHelper {
         List<FlightType> flights = FlightsHolder.getInstance().getFlights();
         List<FlightType> sortedFlights = new ArrayList<FlightType>();
 
+        fixDate(date);
+
         for (FlightType ft : flights) {
             boolean flightMatches = true;
 
@@ -74,6 +76,12 @@ public class FlightsHelper {
             fault.setReason(e.getFaultInfo().getMessage());
             fault.setBookingNumber(bookingNumber);
             throw new BookFlightFault_Exception("Could not book flight " + bookingNumber + ": payment fail.", fault);
+        } catch (Exception e) {
+            System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getMessage());
+            BookFlightFault fault = new BookFlightFault();
+            fault.setReason(e.getMessage());
+            fault.setBookingNumber(bookingNumber);
+            throw new BookFlightFault_Exception("Could not book flight " + bookingNumber + ": unknown exception.", fault);
         }
 
         Map<String, FlightType> reservations = FlightsHolder.getInstance().getReservations();
@@ -104,10 +112,27 @@ public class FlightsHelper {
             fault.setReason(e.getFaultInfo().getMessage());
             fault.setBookingNumber(bookingNumber);
             throw new CancelReservationFault_Exception("Could not cancel flight " + bookingNumber + ": refund fail.", fault);
+        }  catch (Exception e) {
+            System.out.println("SYSOUT: " + e.getMessage() + "\n" + e.getMessage());
+            CancelReservationFault fault = new CancelReservationFault();
+            fault.setReason(e.getMessage());
+            fault.setBookingNumber(bookingNumber);
+            throw new CancelReservationFault_Exception("Could not cancel flight " + bookingNumber + ": unknown exception.", fault);
         }
 
         CancelReservationResponse response = new CancelReservationResponse();
         response.setCanceled(true);
         return response;
+    }
+
+    private void fixDate(XMLGregorianCalendar date) {
+        if (date == null) {
+            return;
+        }
+        date.setHour(DatatypeConstants.FIELD_UNDEFINED);
+        date.setMinute(DatatypeConstants.FIELD_UNDEFINED);
+        date.setSecond(DatatypeConstants.FIELD_UNDEFINED);
+        date.setMillisecond(DatatypeConstants.FIELD_UNDEFINED);
+        date.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
     }
 }

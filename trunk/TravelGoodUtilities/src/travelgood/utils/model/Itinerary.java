@@ -15,7 +15,7 @@ public class Itinerary {
     protected List<Flight> flights;
     protected List<Hotel> hotels;
     protected PaymentStatus paymentStatus;
-    protected ItineraryState itineraryState;
+    protected BookingState bookingState;
 
     public String getId() {
         return id;
@@ -41,6 +41,10 @@ public class Itinerary {
         this.finalPrice = value;
     }
 
+    public void setHotels(List<Hotel> hotels) {
+        this.hotels = hotels;
+    }
+    
     public List<Hotel> getHotels() {
         if (hotels == null) {
             hotels = new ArrayList<Hotel>();
@@ -48,6 +52,10 @@ public class Itinerary {
         return this.hotels;
     }
 
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
+    }
+    
     public List<Flight> getFlights() {
         if (flights == null) {
             flights = new ArrayList<Flight>();
@@ -63,20 +71,20 @@ public class Itinerary {
         this.paymentStatus = value;
     }
 
-    public ItineraryState getItineraryState() {
-        return itineraryState;
+    public BookingState getBookingState() {
+        return bookingState;
     }
 
-    public void setItineraryState(ItineraryState value) {
-        this.itineraryState = value;
+    public void setBookingState(BookingState value) {
+        this.bookingState = value;
     }
     
     public boolean isBooked() {
-        return itineraryState.BOOKED.equals(this.itineraryState);
+        return bookingState.BOOKED.equals(this.bookingState);
     }
     
     public boolean isCancelled() {
-        return itineraryState.CANCELLED.equals(this.itineraryState);
+        return bookingState.CANCELLED.equals(this.bookingState);
     }
 
     @Override
@@ -88,7 +96,7 @@ public class Itinerary {
         hash = 59 * hash + (this.flights != null ? this.flights.hashCode() : 0);
         hash = 59 * hash + (this.hotels != null ? this.hotels.hashCode() : 0);
         hash = 59 * hash + (this.paymentStatus != null ? this.paymentStatus.hashCode() : 0);
-        hash = 59 * hash + (this.itineraryState != null ? this.itineraryState.hashCode() : 0);
+        hash = 59 * hash + (this.bookingState != null ? this.bookingState.hashCode() : 0);
         return hash;
     }
 
@@ -119,7 +127,7 @@ public class Itinerary {
         if (this.paymentStatus != other.paymentStatus) {
             return false;
         }
-        if (this.itineraryState != other.itineraryState) {
+        if (this.bookingState != other.bookingState) {
             return false;
         }
         return true;
