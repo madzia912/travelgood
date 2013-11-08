@@ -1,0 +1,21 @@
+<!-- 
+    Document   : inspection.wsil
+    Created on : Nov 8, 2013, 11:22:51 AM
+    Author     : Bartosz Grzegorz Cichecki
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            <style type="text/css"/>
+    </head>
+    <body>
+        <inspection xmlns="http://schemas.xmlsoap.org/ws/2001/10/inspection/">
+            <service>
+                <name>Lame Duck Service</name>
+                <abstract>Lame Duck Service offers airline reservation services like browsing flights, booking and canceling.</abstract>
+                <description referencednamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8080/lameduck/lameDuckService?wsdl"/>
+            </service>
+            <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/niceview/inspection.wsil"/>
+        </inspection>
+    </body>
+</html>
