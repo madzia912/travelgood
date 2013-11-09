@@ -1,119 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <process
-    name="travelGoodBpel"
-    targetNamespace="http://enterprise.netbeans.org/bpel/TravelGoodBpel/travelGoodBpel"
-    xmlns:tns="http://enterprise.netbeans.org/bpel/TravelGoodBpel/travelGoodBpel"
+    name="travelGoodBPel"
+    targetNamespace="http://enterprise.netbeans.org/bpel/TravelGoodBpel/travelGoodBPel"
+    xmlns:tns="http://enterprise.netbeans.org/bpel/TravelGoodBpel/travelGoodBPel"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
     xmlns:sxt="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Trace" 
     xmlns:sxed="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Editor2"
     xmlns:sxat="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment"
-    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling" xmlns:ns0="urn:commons.travelgood.dtu.dk">
-    <import namespace="urn:lameduck.dtu.dk" location="http://localhost:8080/lameduck/lameDuckService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="urn:niceview.dtu.dk" location="http://localhost:8080/niceview/niceViewService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
-    <import namespace="urn:travelgood.dtu.dk" location="wsdl/travelGood.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    xmlns:sxeh="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/ErrorHandling">
+    <import namespace="urn:travelgood.dtu.dk" location="wsdl/travelGoodRPC.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
-        <partnerLink name="PartnerLink3" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodWSDL" myRole="travelGoodPortTypeRole"/>
-        <partnerLink name="LameDuck" xmlns:tns="urn:lameduck.dtu.dk" partnerLinkType="tns:lameDuckWSDL" partnerRole="lameDuckPortTypeRole"/>
-        <partnerLink name="NiceView" xmlns:tns="urn:niceview.dtu.dk" partnerLinkType="tns:niceViewWSDL" partnerRole="niceViewPortTypeRole"/>
+        <partnerLink name="PartnerLink1" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodRPC" myRole="travelGoodRPCPortTypeRole"/>
     </partnerLinks>
     <variables>
-        <variable name="customerGetHotelsResponse" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getHotelsResponse"/>
-        <variable name="backendGetHotelsResponse" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:getHotelsResponse"/>
-        <variable name="backendGetHotelsRequest" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:getHotelsRequest"/>
-        <variable name="customerGetHotelsRequest" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getHotelsRequest"/>
-        <variable name="customerGetFlightsResponse" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getFlightsResponse"/>
-        <variable name="backendGetFlightsResponse" xmlns:tns="urn:lameduck.dtu.dk" messageType="tns:getFlightsResponse"/>
-        <variable name="backendGetFlightsRequest" xmlns:tns="urn:lameduck.dtu.dk" messageType="tns:getFlightsRequest"/>
-        <variable name="customerGetFlightsRequest" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:getFlightsRequest"/>
+        <variable name="CreateItineraryOut" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:createItineraryResponse"/>
+        <variable name="CreateItineraryIn" xmlns:tns="urn:travelgood.dtu.dk" messageType="tns:createItineraryRequest"/>
     </variables>
-    <pick name="Pick" createInstance="yes">
-        <onMessage partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsRequest">
-            <sequence name="SearchFlights">
-                <assign name="Assign1">
-                    <copy>
-                        <from>$customerGetFlightsRequest.getFlightsRequestPart/from</from>
-                        <to>$backendGetFlightsRequest.getFlightsRequestPart/from</to>
-                    </copy>
-                    <copy>
-                        <from>$customerGetFlightsRequest.getFlightsRequestPart/to</from>
-                        <to>$backendGetFlightsRequest.getFlightsRequestPart/to</to>
-                    </copy>
-                    <copy>
-                        <from>$customerGetFlightsRequest.getFlightsRequestPart/takeOffDate</from>
-                        <to>$backendGetFlightsRequest.getFlightsRequestPart/takeOffDate</to>
-                    </copy>
-                </assign>
-                <invoke name="Invoke1" partnerLink="LameDuck" operation="getFlights" xmlns:tns="urn:lameduck.dtu.dk" portType="tns:lameDuckPortType" inputVariable="backendGetFlightsRequest" outputVariable="backendGetFlightsResponse"/>
-                <assign name="Assign2">
-                    <copy>
-                        <from>$backendGetFlightsResponse.getFlightsResponsePart/flights</from>
-                        <to>$customerGetFlightsResponse.getFlightsResponsePart/flights</to>
-                    </copy>
-                </assign>
-                <reply name="Reply1" partnerLink="PartnerLink3" operation="getFlights" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetFlightsResponse"/>
-            </sequence>
-        </onMessage>
-        <onMessage partnerLink="PartnerLink3" operation="getHotels" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType" variable="customerGetHotelsRequest">
-            <sequence name="SearchHotels">
-                <assign name="Assign3">
-                    <copy>
-                        <from>$customerGetHotelsRequest.getHotelsRequestPart/city</from>
-                        <to>$backendGetHotelsRequest.getHotelsRequestPart/city</to>
-                    </copy>
-                    <copy>
-                        <from>$customerGetHotelsRequest.getHotelsRequestPart/arrivalDate</from>
-                        <to>$backendGetHotelsRequest.getHotelsRequestPart/arrivalDate</to>
-                    </copy>
-                    <copy>
-                        <from>$customerGetHotelsRequest.getHotelsRequestPart/arrivalDate</from>
-                        <to>$backendGetHotelsRequest.getHotelsRequestPart/departureDate</to>
-                    </copy>
-                </assign>
-                <invoke name="Invoke2" partnerLink="NiceView" operation="getHotels" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType" inputVariable="backendGetHotelsRequest" outputVariable="backendGetHotelsResponse"/>
-                <assign name="Assign4">
-                    <copy>
-                        <from>$backendGetHotelsResponse.getHotelsResponsePart/hotels</from>
-                        <to>$customerGetHotelsResponse.getHotelsResponsePart/hotels</to>
-                    </copy>
-                </assign>
-                <reply name="Reply2" partnerLink="PartnerLink3" operation="getHotels" portType="tns:travelGoodPortType" variable="customerGetHotelsResponse"/>
-            </sequence>
-        </onMessage>
-        <!--
-        <onMessage partnerLink="PartnerLink3" operation="createItinerary" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodPortType">
-            <sequence name="Sequence4">
-                <while name="ThisIsNotGood">
-                    <pick name="Pick2">
-                        <onMessage partnerLink="PartnerLink3" operation="addFlight" portType="tns:travelGoodPortType">
-                            <sequence name="Sequence5">
-                                <invoke name="Invoke3" partnerLink="LameDuck" operation="bookFlight" xmlns:tns="urn:lameduck.dtu.dk" portType="tns:lameDuckPortType"/>
-                                <reply name="Reply3" partnerLink="PartnerLink3" operation="addFlight" portType="tns:travelGoodPortType"/>
-                            </sequence>
-                        </onMessage>
-                        <onMessage partnerLink="PartnerLink3" operation="addHotel" portType="tns:travelGoodPortType">
-                            <sequence name="Sequence6">
-                                <invoke name="Invoke4" partnerLink="NiceView" operation="bookHotel" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType"/>
-                                <reply name="Reply4" partnerLink="PartnerLink3" operation="addHotel" portType="tns:travelGoodPortType"/>
-                            </sequence>
-                        </onMessage>
-                        <onMessage partnerLink="PartnerLink3" operation="bookItinerary" portType="tns:travelGoodPortType">
-                            <sequence name="Sequence7">
-                                <assign name="Assign5"/>
-                                <reply name="Reply5" partnerLink="PartnerLink3" operation="bookItinerary" portType="tns:travelGoodPortType"/>
-                            </sequence>
-                        </onMessage>
-                        <onMessage partnerLink="PartnerLink3" operation="cancelItinerary" portType="tns:travelGoodPortType">
-                            <sequence name="Sequence8">
-                                <invoke name="Invoke6"/>
-                                <reply name="Reply6"/>
-                            </sequence>
-                        </onMessage>
-                    </pick>
-                </while>
-                <receive name="Receive1" partnerLink="PartnerLink3" operation="cancelItinerary" portType="tns:travelGoodPortType"/>
-            </sequence>
-        </onMessage> -->
-    </pick>
+    <sequence>
+        <receive name="Receive1" partnerLink="PartnerLink1" operation="createItinerary" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodRPCPortType" createInstance="yes" variable="CreateItineraryIn"/>
+        <assign name="Assign1">
+            <copy>
+                <from variable="CreateItineraryIn" part="userId"/>
+                <to variable="CreateItineraryOut" part="bookingNumber"/>
+            </copy>
+        </assign>
+        <reply name="Reply1" partnerLink="PartnerLink1" operation="createItinerary" xmlns:tns="urn:travelgood.dtu.dk" portType="tns:travelGoodRPCPortType" variable="CreateItineraryOut"/>
+    </sequence>
 </process>

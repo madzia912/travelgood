@@ -1,9 +1,5 @@
 package travelgood.bpel.test;
 
-import dk.dtu.travelgood.GetFlightsRequest;
-import dk.dtu.travelgood.GetFlightsResponse;
-import dk.dtu.travelgood.GetHotelsRequest;
-import dk.dtu.travelgood.GetHotelsResponse;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import travelgood.utils.DateUtils;
@@ -16,7 +12,15 @@ public class TravelGoodBPELTest {
 
     public TravelGoodBPELTest() {
     }
-
+    
+    @Test
+    public void testCreateItinerary() {
+        String bookingNumber = createItinerary("Cow");
+        
+        if(true){}
+    }
+    
+    /*
     @Test
     public void getFlights() {
         GetFlightsRequest request = new GetFlightsRequest();
@@ -52,5 +56,11 @@ public class TravelGoodBPELTest {
         dk.dtu.travelgood.TravelGoodService service = new dk.dtu.travelgood.TravelGoodService();
         dk.dtu.travelgood.TravelGoodPortType port = service.getTravelGoodPortTypeBindingPort();
         return port.getHotels(getHotelsRequestPart);
-    }
+    }*/
+
+    private static String createItinerary(java.lang.String userId) {
+        dk.dtu.travelgood.TravelGoodRPCService service = new dk.dtu.travelgood.TravelGoodRPCService();
+        dk.dtu.travelgood.TravelGoodRPCPortType port = service.getTravelGoodRPCPort();
+        return port.createItinerary(userId);
+    }   
 }

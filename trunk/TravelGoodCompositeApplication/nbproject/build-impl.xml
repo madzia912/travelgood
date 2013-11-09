@@ -3,7 +3,7 @@
             *** GENERATED FROM project.xml - DO NOT EDIT ***
             ***           EDIT ../build.xml INSTEAD      ***
         -->
-<project name="TravelGoodCompositeApp-jbi-impl" default="build" basedir="..">
+<project name="TravelGoodCompositeApplication-jbi-impl" default="build" basedir="..">
     <target name="default" depends="dist"/>
     <!--
                 INITIALIZATION SECTION

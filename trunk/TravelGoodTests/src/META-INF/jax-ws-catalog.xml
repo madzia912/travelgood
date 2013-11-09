@@ -8,4 +8,7 @@
     <system systemId="http://10.16.165.111:12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/10.16.165.111_12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
     <system systemId="file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodPort.wsdl" uri="wsdl/travelGoodPort.wsdl"/>
     <system systemId="http://localhost:12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/localhost_12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
+    <system systemId="http://Klaptop2:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/Klaptop2_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
+    <system systemId="http://10.16.165.240:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/10.16.165.240_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
+    <system systemId="http://localhost:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/localhost_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
 </catalog>
