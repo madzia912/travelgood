@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?wsdl" uri="../TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl"/>
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?xsd=1" uri="../TravelGoodBpel/localhost_8080/lameduck/lameDuckService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?wsdl" uri="../TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?xsd=1" uri="../TravelGoodBpel/localhost_8080/niceview/niceViewService.xsd_1.xsd"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankService?wsdl" uri="../TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankService.wsdl"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankService?xsd=1" uri="../TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankService.xsd_1.xsd"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankSecureService?wsdl" uri="../TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankSecureService.wsdl"/>
+    <system systemId="http://fastmoney.imm.dtu.dk:8080/BankSecureService?xsd=1" uri="../TravelGoodBpel/fastmoney.imm.dtu.dk_8080/BankSecureService.xsd_1.xsd"/>
+    <system systemId="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment" uri="TravelGoodBpel/src/_references/_relative/nbproject/private/retriever/www.oracle.com/us/sun/index.htm"/>
+    <system systemId="http://schemas.xmlsoap.org/wsdl/soap/" uri="TravelGoodBpel/src/_references/_relative/nbproject/private/retriever/schemas.xmlsoap.org/wsdl/soap/index.xsd"/>
+    <system systemId="http://docs.oasis-open.org/wsbpel/2.0/varprop" uri="TravelGoodBpel/src/_references/_relative/nbproject/private/retriever/docs.oasis-open.org/wsbpel/2.0/varprop"/>
+    <system systemId="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/XPathFunctions" uri="TravelGoodBpel/src/_references/_relative/nbproject/private/retriever/www.oracle.com/us/sun/index.htm"/>
+</catalog>
