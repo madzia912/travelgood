@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -99,9 +100,9 @@ public class ItineraryResource {
 
     @DELETE
     // Because of limitations of java.net.HttpURLConnection DELETE request cannot transmit entity, so credit card data is send in url.
-    // http://comments.gmane.org/gmane.comp.java.jersey.user/4552
-    @Path("/{bookingNumber}/{name}/{month}/{year}/{number}")
-    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, @PathParam("name") String name, @PathParam("month") String month, @PathParam("year") String year, @PathParam("number") String number, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
+    // http://bugs.sun.com/view_bug.do?bug_id=7157360
+    @Path("/{bookingNumber}")
+    public Response cancelItinerary(@PathParam("bookingNumber") String itineraryBookingNumber, @QueryParam("name") String name, @QueryParam("month") String month, @QueryParam("year") String year, @QueryParam("number") String number, @Context HttpServletRequest request, @Context final HttpServletResponse response) throws lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         try {
             CreditCard cc = new CreditCard();
             cc.setName(name);
