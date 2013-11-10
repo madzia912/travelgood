@@ -11,6 +11,15 @@
             <xsd:element name="liftOffDate" type="xsd:date"/>
             <xsd:element name="landingDate" type="xsd:date"/>
             <xsd:element name="price" type="xsd:int"/>
+            <xsd:element name="bookingState" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="IN_PROGRESS"/>
+                        <xsd:enumeration value="BOOKED"/>
+                        <xsd:enumeration value="CANCELLED"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
         </xsd:all>
     </xsd:complexType>
     <xsd:complexType name="addressType">
@@ -29,6 +38,17 @@
             <xsd:element name="provider" type="xsd:string"/>
             <xsd:element name="price" type="xsd:int"/>
             <xsd:element name="creditCardGuarantee" type="xsd:boolean"/>
+            <xsd:element name="arrivalDate" type="xsd:date" minOccurs="0"/>
+            <xsd:element name="departureDate" type="xsd:date" minOccurs="0"/>
+            <xsd:element name="bookingState" minOccurs="0">
+                <xsd:simpleType>
+                    <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="IN_PROGRESS"/>
+                        <xsd:enumeration value="BOOKED"/>
+                        <xsd:enumeration value="CANCELLED"/>
+                    </xsd:restriction>
+                </xsd:simpleType>
+            </xsd:element>
         </xsd:all>
     </xsd:complexType>
     <xsd:complexType name="flightsType">
@@ -53,15 +73,14 @@
                         <xsd:enumeration value="PENDING"/>
                         <xsd:enumeration value="IN_PROGRESS"/>
                         <xsd:enumeration value="CANCELLED"/>
-                        <xsd:enumeration value="FAILED"/>
                     </xsd:restriction>
                 </xsd:simpleType>
             </xsd:element>
-            <xsd:element name="itineraryState">
+            <xsd:element name="bookingState">
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
+                        <xsd:enumeration value="IN_PROGRESS"/>
                         <xsd:enumeration value="BOOKED"/>
-                        <xsd:enumeration value="PAYED"/>
                         <xsd:enumeration value="CANCELLED"/>
                     </xsd:restriction>
                 </xsd:simpleType>

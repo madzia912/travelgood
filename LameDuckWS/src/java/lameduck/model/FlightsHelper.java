@@ -2,7 +2,6 @@ package lameduck.model;
 
 import bank.unsecure.ws.CreditCardFaultMessage;
 import bank.utils.BankUtils;
-import com.sun.msv.datatype.xsd.DateType;
 import dk.dtu.lameduck.BookFlightFault;
 import dk.dtu.lameduck.BookFlightFault_Exception;
 import dk.dtu.lameduck.BookFlightResponse;

@@ -1,9 +1,11 @@
 package travelgood.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import niceview.client.AddressType;
 import niceview.client.HotelType;
+import org.apache.commons.collections4.CollectionUtils;
 import travelgood.utils.DateUtils;
 import travelgood.utils.model.Address;
 import travelgood.utils.model.BookingState;
@@ -134,6 +136,10 @@ public class ItineraryHelper {
     public Itinerary cancelItinerary(String bookingNumber, CreditCard creditCard) throws ItineraryException, lameduck.client.CancelReservationFault_Exception, niceview.client.CancelHotelFault_Exception {
         Itinerary itinerary = getItinerary(bookingNumber);
 
+        if (!isMoreThanOneDayLeft(itinerary)) {
+            throw new ItineraryException("Less than one day left!");
+        }
+
         List<Flight> flights = itinerary.getFlights();
         List<Hotel> hotels = itinerary.getHotels();
 
@@ -177,6 +183,10 @@ public class ItineraryHelper {
     public boolean addFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
 
+        if (!itinerary.getBookingState().equals(BookingState.IN_PROGRESS)) {
+            throw new ItineraryException("Itinerary not in progress!");
+        }
+
         lameduck.client.GetFlightsRequest getFlightRequest = new lameduck.client.GetFlightsRequest();
         getFlightRequest.setBookingNumber(flightBookingNumber);
         lameduck.client.GetFlightsResponse getFlightResponse = lameDuckPort.getFlights(getFlightRequest);
@@ -195,6 +205,10 @@ public class ItineraryHelper {
     public boolean addHotel(String bookingNumber, String hotelBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
 
+        if (!itinerary.getBookingState().equals(BookingState.IN_PROGRESS)) {
+            throw new ItineraryException("Itinerary not in progress!");
+        }
+
         niceview.client.GetHotelsRequest getHotelRequest = new niceview.client.GetHotelsRequest();
         getHotelRequest.setBookingNumber(hotelBookingNumber);
         niceview.client.GetHotelsResponse getHotelResponse = niceViewPort.getHotels(getHotelRequest);
@@ -208,5 +222,29 @@ public class ItineraryHelper {
         }
 
         return false;
+    }
+
+    private boolean isMoreThanOneDayLeft(Itinerary itinerary) {
+        return true;
+//        if (CollectionUtils.isEmpty(itinerary.getFlights()) || CollectionUtils.isEmpty(itinerary.getHotels())) {
+//            return true;
+//        }
+//
+//        Date earliestDate = new Date(Long.MAX_VALUE);
+//
+//        for (Flight f : itinerary.getFlights()) {
+//            if (f.getLiftOffDate() != null && earliestDate.after(f.getLiftOffDate())) {
+//                earliestDate = f.getLiftOffDate();
+//            }
+//        }
+//
+//        for (Hotel h : itinerary.getHotels()) {
+//            if (h.getArrivalDate() != null && earliestDate.after(h.getArrivalDate())) {
+//                earliestDate = h.getArrivalDate();
+//            }
+//        }
+//
+//        Date earliestDatePlusOneDay = org.apache.commons.lang3.time.DateUtils.addDays(earliestDate, 1);
+//        return earliestDatePlusOneDay.after(new Date(System.currentTimeMillis()));
     }
 }

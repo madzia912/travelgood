@@ -1,5 +1,7 @@
 package travelgood.utils.model;
 
+import java.util.Date;
+
 /**
  *
  * @author Bartosz Grzegorz Cichecki
@@ -14,6 +16,8 @@ public class Hotel {
     protected int price;
     protected boolean creditCardGuarantee;
     protected BookingState bookingState;
+    protected Date arrivalDate;
+    protected Date departureDate;
 
     public Hotel() {
     }
@@ -93,4 +97,19 @@ public class Hotel {
         this.bookingState = bookingState;
     }
     
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
 }

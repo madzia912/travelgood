@@ -2,6 +2,7 @@ package niceview.model;
 
 import bank.unsecure.ws.CreditCardFaultMessage;
 import bank.utils.BankUtils;
+import com.rits.cloning.Cloner;
 import dk.dtu.niceview.BookHotelFault;
 import dk.dtu.niceview.BookHotelFault_Exception;
 import dk.dtu.niceview.BookHotelResponse;
@@ -28,7 +29,12 @@ public class HotelsHelper {
 
         for (HotelType ht : hotels) {
             if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) || StringUtils.equals(city, ht.getAddress().getCity())) {
-                hotelsList.getHotel().add(ht);
+                Cloner cloner = new Cloner();
+                HotelType htClone = cloner.deepClone(ht);
+                
+                htClone.setArrivalDate(arrival);
+                htClone.setDepartureDate(departure);
+                hotelsList.getHotel().add(htClone);
             }
         }
         GetHotelsResponse ghr = new GetHotelsResponse();

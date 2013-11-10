@@ -1,2 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system"/>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?wsdl" uri="wsdl/localhost_8080/lameduck/lameDuckService.wsdl"/>
+    <system systemId="http://localhost:8080/lameduck/lameDuckService?xsd=1" uri="wsdl/localhost_8080/lameduck/lameDuckService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?wsdl" uri="wsdl/localhost_8080/niceview/niceViewService.wsdl"/>
+    <system systemId="http://localhost:8080/niceview/niceViewService?xsd=1" uri="wsdl/localhost_8080/niceview/niceViewService.xsd_1.xsd"/>
+</catalog>

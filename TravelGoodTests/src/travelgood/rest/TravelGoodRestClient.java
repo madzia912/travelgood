@@ -6,7 +6,6 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 import javax.ws.rs.core.MultivaluedMap;
-import org.apache.commons.collections4.map.MultiValueMap;
 import travelgood.utils.model.CreditCard;
 import travelgood.utils.model.rest.GetFlightsResponse;
 import travelgood.utils.model.rest.GetHotelsResponse;
