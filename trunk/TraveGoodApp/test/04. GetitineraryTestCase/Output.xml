@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <getItineraryResponse xmlns="urn:travelgood.dtu.dk" xmlns:msgns="urn:travelgood.dtu.dk">
+      <itinerary xmlns="">
+        <id xmlns="urn:commons.travelgood.dtu.dk">DELETE_THIS_ASSIGN_LATER</id>
+        <flights xmlns="urn:commons.travelgood.dtu.dk">
+          <flight xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk" xmlns:urn1="urn:commons.travelgood.dtu.dk" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <urn1:id>flight1</urn1:id>
+          <urn1:bookingNumber>bookingNr1</urn1:bookingNumber>
+          <urn1:carrier>SAS</urn1:carrier>
+          <urn1:from>ABC</urn1:from>
+          <urn1:to>CBA</urn1:to>
+          <urn1:liftOffDate>2012-10-10</urn1:liftOffDate>
+          <urn1:landingDate>2012-10-10</urn1:landingDate>
+          <urn1:price>100</urn1:price>
+        </flight>
+        </flights>
+      </itinerary>
+    </getItineraryResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    author: Bartosz Grzegorz Cichecki
+-->
+<definitions name="travelGoodWSDL" targetNamespace="urn:travelgood.dtu.dk"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:travelgood.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop">
+    <types>
+        <xsd:schema targetNamespace="urn:travelgood.dtu.dk">
+            <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="commonTypes.xsd"/>
+            <xsd:element name="createItineraryRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="userId" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createItineraryResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getItineraryRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getItineraryResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="itinerary" type="ct:itineraryType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="addFlightRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="flight" type="ct:flightType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="addFlightResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="added" type="xsd:boolean"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getFlightsRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="from" type="xsd:string"></xsd:element>
+                        <xsd:element name="to" type="xsd:string"></xsd:element>
+                        <xsd:element name="takeOffDate" type="xsd:date"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getFlightsResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="flights" type="ct:flightsType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="addHotelRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="hotel" type="ct:hotelType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="addHotelResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="added" type="xsd:boolean"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getHotelsRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="city" type="xsd:string"></xsd:element>
+                        <xsd:element name="arrivalDate" type="xsd:date"></xsd:element>
+                        <xsd:element name="departureDate" type="xsd:date"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getHotelsResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="hotels" type="ct:hotelsType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="bookItineraryRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="creditCard" type="ct:creditCardType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="bookItineraryResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="booked" type="xsd:boolean"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="bookItineraryFault">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="reason" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="cancelItineraryRequest">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="creditCard" type="ct:creditCardType"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="cancelItineraryResponse">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="canceled" type="xsd:boolean"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="cancelItineraryFault">
+                <xsd:complexType>
+                    <xsd:all>
+                        <xsd:element name="bookingNumber" type="xsd:string"></xsd:element>
+                        <xsd:element name="reason" type="xsd:string"></xsd:element>
+                    </xsd:all>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="createItineraryRequest">
+        <part name="createItineraryRequestPart" element="tns:createItineraryRequest"/>
+    </message>
+    <message name="createItineraryResponse">
+        <part name="createItineraryResponsePart" element="tns:createItineraryResponse"/>
+    </message>
+    <message name="addFlightRequest">
+        <part name="addFlightRequestPart" element="tns:addFlightRequest"/>
+    </message>
+    <message name="addFlightResponse">
+        <part name="addFlightResponsePart" element="tns:addFlightResponse"/>
+    </message>
+    <message name="getFlightsRequest">
+        <part name="getFlightsRequestPart" element="tns:getFlightsRequest"/>
+    </message>
+    <message name="getFlightsResponse">
+        <part name="getFlightsResponsePart" element="tns:getFlightsResponse"/>
+    </message>
+    <message name="addHotelRequest">
+        <part name="addHotelRequestPart" element="tns:addHotelRequest"/>
+    </message>
+    <message name="addHotelResponse">
+        <part name="addHotelResponsePart" element="tns:addHotelResponse"/>
+    </message>
+    <message name="getHotelsRequest">
+        <part name="getHotelsRequestPart" element="tns:getHotelsRequest"/>
+    </message>
+    <message name="getHotelsResponse">
+        <part name="getHotelsResponsePart" element="tns:getHotelsResponse"/>
+    </message>
+    <message name="bookItineraryRequest">
+        <part name="bookItineraryRequestPart" element="tns:bookItineraryRequest"/>
+    </message>
+    <message name="bookItineraryResponse">
+        <part name="bookItineraryResponsePart" element="tns:bookItineraryResponse"/>
+    </message>
+    <message name="bookItineraryFault">
+        <part name="bookItineraryFaultPart" element="tns:bookItineraryFault"/>
+    </message>
+    <message name="cancelItineraryRequest">
+        <part name="cancelItineraryRequestPart" element="tns:cancelItineraryRequest"/>
+    </message>
+    <message name="cancelItineraryResponse">
+        <part name="cancelItineraryResponsePart" element="tns:cancelItineraryResponse"/>
+    </message>
+    <message name="cancelItineraryFault">
+        <part name="cancelItineraryFaultPart" element="tns:cancelItineraryFault"/>
+    </message>
+    <message name="getItineraryRequest">
+        <part name="getItineraryRequestPart" element="tns:getItineraryRequest"/>
+    </message>
+    <message name="getItineraryResponse">
+        <part name="getItineraryResponsePart" element="tns:getItineraryResponse"/>
+    </message>
+    <portType name="travelGoodPortType">
+        <operation name="createItinerary">
+            <input name="createItineraryInput" message="tns:createItineraryRequest"/>
+            <output name="createItineraryOutput" message="tns:createItineraryResponse"/>
+        </operation>
+        <operation name="addFlight">
+            <input name="addFlightInput" message="tns:addFlightRequest"/>
+            <output name="addFlightOutput" message="tns:addFlightResponse"/>
+        </operation>
+        <operation name="getFlights">
+            <input name="getFlightsInput" message="tns:getFlightsRequest"/>
+            <output name="getFlightsOutput" message="tns:getFlightsResponse"/>
+        </operation>
+        <operation name="addHotel">
+            <input name="addHotelInput" message="tns:addHotelRequest"/>
+            <output name="addHotelOutput" message="tns:addHotelResponse"/>
+        </operation>
+        <operation name="getHotels">
+            <input name="getHotelsInput" message="tns:getHotelsRequest"/>
+            <output name="getHotelsOutput" message="tns:getHotelsResponse"/>
+        </operation>
+        <operation name="bookItinerary">
+            <input name="bookItineraryInput" message="tns:bookItineraryRequest"/>
+            <output name="bookItineraryOutput" message="tns:bookItineraryResponse"/>
+            <fault name="bookItineraryFault" message="tns:bookItineraryFault"/>
+        </operation>
+        <operation name="cancelItinerary">
+            <input name="cancelItineraryInput" message="tns:cancelItineraryRequest"/>
+            <output name="cancelItineraryOutput" message="tns:cancelItineraryResponse"/>
+            <fault name="cancelItineraryFault" message="tns:cancelItineraryFault"/>
+        </operation>
+        <operation name="getItinerary">
+            <input name="getItineraryInput" message="tns:getItineraryRequest"/>
+            <output name="getItineraryOutput" message="tns:getItineraryResponse"/>
+        </operation>
+    </portType>
+    <binding name="travelGoodPortTypeBinding" type="tns:travelGoodPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="createItinerary">
+            <soap:operation/>
+            <input name="createItineraryInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="createItineraryOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="addFlight">
+            <soap:operation/>
+            <input name="addFlightInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="addFlightOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getFlights">
+            <soap:operation/>
+            <input name="getFlightsInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="getFlightsOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="addHotel">
+            <soap:operation/>
+            <input name="addHotelInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="addHotelOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="getHotels">
+            <soap:operation/>
+            <input name="getHotelsInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="getHotelsOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="bookItinerary">
+            <soap:operation/>
+            <input name="bookItineraryInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="bookItineraryOutput">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="bookItineraryFault">
+                <soap:fault name="bookItineraryFault" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="cancelItinerary">
+            <soap:operation/>
+            <input name="cancelItineraryInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="cancelItineraryOutput">
+                <soap:body use="literal"/>
+            </output>
+            <fault name="cancelItineraryFault">
+                <soap:fault name="cancelItineraryFault" use="literal"/>
+            </fault>
+        </operation>
+        <operation name="getItinerary">
+            <soap:operation/>
+            <input name="getItineraryInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="getItineraryOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="travelGoodService">
+        <port name="travelGoodPortTypeBindingPort" binding="tns:travelGoodPortTypeBinding">
+            <soap:address location="http://localhost:8085/travelGoodBpelService"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="travelGoodWSDL">
+        <plnk:role name="travelGoodPortTypeRole" portType="tns:travelGoodPortType"/>
+    </plnk:partnerLinkType>
+    <vprop:property name="bookingNumber" type="xsd:string"/>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:createItineraryResponse" part="createItineraryResponsePart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:addFlightRequest" part="addFlightRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:addHotelRequest" part="addHotelRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:getFlightsRequest" part="getFlightsRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:getHotelsRequest" part="getHotelsRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:bookItineraryRequest" part="bookItineraryRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:cancelItineraryRequest" part="cancelItineraryRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+    <vprop:propertyAlias propertyName="tns:bookingNumber" messageType="tns:getItineraryRequest" part="getItineraryRequestPart">
+        <vprop:query>bookingNumber</vprop:query>
+    </vprop:propertyAlias>
+</definitions>
