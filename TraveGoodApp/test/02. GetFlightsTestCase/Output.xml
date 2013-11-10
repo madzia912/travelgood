@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <getFlightsResponse xmlns="urn:travelgood.dtu.dk" xmlns:msgns="urn:travelgood.dtu.dk">
+      <flights xmlns="" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:msgns="urn:lameduck.dtu.dk" xmlns:ns0="urn:travelgood.dtu.dk" xmlns:ns2="urn:commons.travelgood.dtu.dk" xmlns:ns3="urn:lameduck.dtu.dk">
+        <ns2:flight>
+          <ns2:id>flight1</ns2:id>
+          <ns2:bookingNumber>bookingNr1</ns2:bookingNumber>
+          <ns2:carrier>SAS</ns2:carrier>
+          <ns2:from>ABC</ns2:from>
+          <ns2:to>CBA</ns2:to>
+          <ns2:liftOffDate>2012-10-10</ns2:liftOffDate>
+          <ns2:landingDate>2012-10-10</ns2:landingDate>
+          <ns2:price>100</ns2:price>
+        </ns2:flight>
+      </flights>
+    </getFlightsResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

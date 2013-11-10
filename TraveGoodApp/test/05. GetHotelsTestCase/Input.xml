@@ -1,0 +1,10 @@
+<soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk">
+  <soapenv:Body>
+    <urn:getHotelsRequest>
+      <bookingNumber>DELETE_THIS_ASSIGN_LATER</bookingNumber>
+      <city>Paris</city>
+      <arrivalDate>2012-10-10</arrivalDate>
+      <departureDate>2012-10-15</departureDate>
+    </urn:getHotelsRequest>
+  </soapenv:Body>
+</soapenv:Envelope>

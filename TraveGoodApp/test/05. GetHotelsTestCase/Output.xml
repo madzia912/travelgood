@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <getHotelsResponse xmlns="urn:travelgood.dtu.dk" xmlns:msgns="urn:travelgood.dtu.dk">
+      <hotels xmlns="" xmlns:S="http://schemas.xmlsoap.org/soap/envelope/" xmlns:msgns="urn:niceview.dtu.dk" xmlns:ns0="urn:travelgood.dtu.dk" xmlns:ns2="urn:niceview.dtu.dk" xmlns:ns3="urn:commons.travelgood.dtu.dk">
+        <ns3:hotel>
+          <ns3:id>hotel1</ns3:id>
+          <ns3:bookingNumber>bookingNr1</ns3:bookingNumber>
+          <ns3:name>Hilton</ns3:name>
+          <ns3:address>
+            <ns3:city>Paris</ns3:city>
+            <ns3:street>Rue de lEtoile</ns3:street>
+            <ns3:zipCode>75017</ns3:zipCode>
+          </ns3:address>
+          <ns3:provider>Provider1</ns3:provider>
+          <ns3:price>500</ns3:price>
+          <ns3:creditCardGuarantee>true</ns3:creditCardGuarantee>
+        </ns3:hotel>
+      </hotels>
+    </getHotelsResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
