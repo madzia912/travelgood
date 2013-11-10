@@ -14,6 +14,8 @@
           <urn1:provider>Provider1</urn1:provider>
           <urn1:price>500</urn1:price>
           <urn1:creditCardGuarantee>true</urn1:creditCardGuarantee>
+          <urn1:arrivalDate>2012-10-10</urn1:arrivalDate>
+          <urn1:departureDate>2012-10-15</urn1:departureDate>
       </hotel>
     </urn:addHotelRequest>
   </soapenv:Body>
