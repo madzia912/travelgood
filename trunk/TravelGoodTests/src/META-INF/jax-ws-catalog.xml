@@ -1,14 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://localhost:8080/lameduck/lameDuckService?wsdl" uri="wsdl/localhost_8080/lameduck/lameDuckService.wsdl"/>
-    <system systemId="http://localhost:8080/lameduck/lameDuckService?xsd=1" uri="wsdl/localhost_8080/lameduck/lameDuckService.xsd_1.xsd"/>
-    <system systemId="http://localhost:8080/niceview/niceViewService?wsdl" uri="wsdl/localhost_8080/niceview/niceViewService.wsdl"/>
-    <system systemId="http://localhost:8080/niceview/niceViewService?xsd=1" uri="wsdl/localhost_8080/niceview/niceViewService.xsd_1.xsd"/>
-    <system systemId="http://localhost:12345/travelGoodService/travelGoodPort?wsdl" uri="wsdl/localhost_12345/travelGoodService/travelGoodPort.wsdl"/>
-    <system systemId="http://10.16.165.111:12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/10.16.165.111_12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
-    <system systemId="file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodPort.wsdl" uri="wsdl/travelGoodPort.wsdl"/>
-    <system systemId="http://localhost:12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/localhost_12345/TravelGoodCompositeApp-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
-    <system systemId="http://Klaptop2:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/Klaptop2_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
-    <system systemId="http://10.16.165.240:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/10.16.165.240_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
-    <system systemId="http://localhost:12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd" uri="wsdl/localhost_12345/TravelGoodCompositeApplication-sun-http-binding/TravelGoodBpel/wsdl/commonTypes.xsd"/>
-</catalog>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system"/>
