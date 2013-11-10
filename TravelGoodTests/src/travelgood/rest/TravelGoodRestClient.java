@@ -4,12 +4,9 @@ import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.sun.jersey.core.util.MultivaluedMapImpl;
+import javax.ws.rs.core.MultivaluedMap;
+import org.apache.commons.collections4.map.MultiValueMap;
 import travelgood.utils.model.CreditCard;
 import travelgood.utils.model.rest.GetFlightsResponse;
 import travelgood.utils.model.rest.GetHotelsResponse;
@@ -45,9 +42,14 @@ public class TravelGoodRestClient {
     }
 
     // Because of limitations of java.net.HttpURLConnection DELETE request cannot transmit entity, so credit card data is send in url.
-    // http://comments.gmane.org/gmane.comp.java.jersey.user/4552
+    // http://bugs.sun.com/view_bug.do?bug_id=7157360
     public ClientResponse cancelItinerary(CreditCard cc, String bookingNumber) throws UniformInterfaceException {
-        return webResource.path(java.text.MessageFormat.format("{0}/{1}/{2}/{3}/{4}", new Object[]{bookingNumber, cc.getName(), cc.getExpMonth(), cc.getExpYear(), cc.getNumber()})).delete(ClientResponse.class);
+        MultivaluedMap<String, String> params = new MultivaluedMapImpl();
+        params.putSingle("name", cc.getName());
+        params.putSingle("month", Integer.toString(cc.getExpMonth()));
+        params.putSingle("year", Integer.toString(cc.getExpYear()));
+        params.putSingle("number", cc.getNumber());
+        return webResource.path(java.text.MessageFormat.format("{0}", new Object[]{bookingNumber})).queryParams(params).delete(ClientResponse.class);
     }
 
     public ClientResponse createItinerary(String userId) throws UniformInterfaceException {
