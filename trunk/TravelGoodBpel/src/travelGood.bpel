@@ -20,6 +20,14 @@
         <partnerLink name="TravelGoodPartnerLink" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodWSDL" myRole="travelGoodPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="earliestDate" type="xs:date"/>
+        <variable name="BookItineraryFalseOut" messageType="ns0:bookItineraryResponse"/>
+        <variable name="CancelItineraryOut" messageType="ns0:cancelItineraryResponse"/>
+        <variable name="CancelItineraryIn" messageType="ns0:cancelItineraryRequest"/>
+        <variable name="BookItineraryOut" messageType="ns0:bookItineraryResponse"/>
+        <variable name="BookItineraryIn" messageType="ns0:bookItineraryRequest"/>
+        <variable name="AddHotelFalseOut" messageType="ns0:addHotelResponse"/>
+        <variable name="AddFlightFalseOut" messageType="ns0:addFlightResponse"/>
         <variable name="AddHotelIn" messageType="ns0:addHotelRequest"/>
         <variable name="AddHotelOut" messageType="ns0:addHotelResponse"/>
         <variable name="AddFlightOut" messageType="ns0:addFlightResponse"/>
@@ -67,6 +75,18 @@
                         <from>false()</from>
                         <to variable="isCanceled"/>
                     </copy>
+                    <copy>
+                        <from>'IN_PROGRESS'</from>
+                        <to>$itinerary/ns1:bookingState</to>
+                    </copy>
+                    <copy>
+                        <from>'PENDING'</from>
+                        <to>$itinerary/ns1:paymentStatus</to>
+                    </copy>
+                    <copy>
+                        <from>sxxf:current-date()</from>
+                        <to variable="earliestDate"/>
+                    </copy>
                 </assign>
                 <assign name="DELETE_ME_LATER">
                     <copy>
@@ -94,7 +114,7 @@
                         <correlations>
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
-                        <sequence name="Sequence2">
+                        <sequence name="GetItinerarySequence">
                             <assign name="GetItineraryAssign">
                                 <copy>
                                     <from variable="itinerary"/>
@@ -168,27 +188,60 @@
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
                         <sequence name="AddFlightSequence">
-                            <assign name="UpdateFlightsCounterAssign">
-                                <copy>
-                                    <from>1 + count($itinerary/ns1:flights/ns1:flight)</from>
-                                    <to variable="flightsCounter"/>
-                                </copy>
-                            </assign>
-                            <assign name="AddFlightAssign">
-                                <copy>
-                                    <from>true()</from>
-                                    <to>$AddFlightOut.addFlightResponsePart/added</to>
-                                </copy>
-                                <copy>
-                                    <from>$AddFlightIn.addFlightRequestPart/flight</from>
-                                    <to>$itinerary/ns1:flights/ns1:flight[$flightsCounter]
+                            <if name="IfNotBookedAndNotCanceled_AddFlight">
+                                <condition>not($isBooked) and not($isCanceled)</condition>
+                                <sequence name="IfNotBookedAndNotCanceled_AddFlight_true">
+                                    <assign name="UpdateFlightsCounterAssign">
+                                        <copy>
+                                            <from>1 + count($itinerary/ns1:flights/ns1:flight)</from>
+                                                <to variable="flightsCounter"/>
+                                        </copy>
+                                    </assign>
+                                    <assign name="AddFlightAssign">
+                                        <copy>
+                                                <from>true()</from>
+                                                    <to>$AddFlightOut.addFlightResponsePart/added</to>
+                                            </copy>
+                                            <copy>
+                                                <from>$AddFlightIn.addFlightRequestPart/flight</from>
+                                                    <to>$itinerary/ns1:flights/ns1:flight[$flightsCounter]
                                         <sxed:editor>
-                                            <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
-                                        </sxed:editor>
-                                    </to>
-                                </copy>
-                            </assign>
-                            <reply name="AddFlightReply" partnerLink="TravelGoodPartnerLink" operation="addFlight" portType="ns0:travelGoodPortType" variable="AddFlightOut"/>
+                                                                <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
+                                                            </sxed:editor>
+                                                    </to>
+                                            </copy>
+                                        <copy>
+                                            <from>'IN_PROGRESS'</from>
+                                            <to>$itinerary/ns1:flights/ns1:flight[$flightsCounter]/ns1:bookingState
+                                                <sxed:editor>
+                                                    <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
+                                                </sxed:editor>
+                                            </to>
+                                        </copy>
+                                    </assign>
+                                    <reply name="AddFlightReply" partnerLink="TravelGoodPartnerLink" operation="addFlight" portType="ns0:travelGoodPortType" variable="AddFlightOut"/>
+                                    <if name="IfLiftOfDateBeforeEarliestDate">
+                                        <condition>sxxf:date-less-than($AddFlightIn.addFlightRequestPart/flight/ns1:liftOffDate, $earliestDate)</condition>
+                                        <assign name="AssignLiftOffDateToEarliestDate">
+                                            <copy>
+                                                <from>$AddFlightIn.addFlightRequestPart/flight/ns1:liftOffDate</from>
+                                                <to variable="earliestDate"/>
+                                            </copy>
+                                        </assign>
+                                    </if>
+                                </sequence>
+                                <else>
+                                    <sequence name="IfNotBookedAndNotCanceled_AddFlight_false">
+                                        <assign name="AddFlightFalseReplyAssign">
+                                            <copy>
+                                                <from>false()</from>
+                                                <to>$AddFlightFalseOut.addFlightResponsePart/added</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="AddFlightFalseReply" partnerLink="TravelGoodPartnerLink" operation="addFlight" portType="ns0:travelGoodPortType" variable="AddFlightFalseOut"/>
+                                    </sequence>
+                                </else>
+                            </if>
                         </sequence>
                     </onMessage>
                     <onMessage partnerLink="TravelGoodPartnerLink" operation="addHotel" portType="ns0:travelGoodPortType" variable="AddHotelIn">
@@ -196,32 +249,124 @@
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
                         <sequence name="AddHotelSequence">
-                            <assign name="UpdateHotelsCounterAssign">
+                            <if name="IfNotBookedAndNotCanceled_AddHotel">
+                                <condition>not($isBooked) and not($isCanceled)</condition>
+                                <sequence name="IfNotBookedAndNotCanceled_AddHotel_true">
+                                    <assign name="UpdateHotelsCounterAssign">
+                                        <copy>
+                                            <from>1 + count($itinerary/ns1:hotels/ns1:hotel)</from>
+                                                <to variable="hotelsCounter"/>
+                                        </copy>
+                                    </assign>
+                                    <assign name="AddHotelAssign">
+                                        <copy>
+                                                <from>true()</from>
+                                                    <to>$AddHotelOut.addHotelResponsePart/added</to>
+                                            </copy>
+                                            <copy>
+                                                <from>$AddHotelIn.addHotelRequestPart/hotel</from>
+                                                    <to>$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]
+                                        <sxed:editor>
+                                                                <sxed:predicate path="$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]" source="to"/>
+                                                            </sxed:editor>
+                                                    </to>
+                                            </copy>
+                                        <copy>
+                                            <from>'IN_PROGRESS'</from>
+                                            <to>$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]/ns1:bookingState
+                                                <sxed:editor>
+                                                    <sxed:predicate path="$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]" source="to"/>
+                                                </sxed:editor>
+                                            </to>
+                                        </copy>
+                                    </assign>
+                                    <reply name="AddHotelReply" partnerLink="TravelGoodPartnerLink" operation="addHotel" portType="ns0:travelGoodPortType" variable="AddHotelOut"/>
+                                    <if name="IfArrivalDateBeforeEarliestDate">
+                                        <condition>sxxf:date-less-than($AddHotelIn.addHotelRequestPart/hotel/ns1:arrivalDate, $earliestDate)</condition>
+                                        <assign name="AssignArrivalDateToEarliestDate">
+                                            <copy>
+                                                <from>$AddHotelIn.addHotelRequestPart/hotel/ns1:arrivalDate</from>
+                                                <to variable="earliestDate"/>
+                                            </copy>
+                                        </assign>
+                                    </if>
+                                </sequence>
+                                <else>
+                                    <sequence name="IfNotBookedAndNotCanceled_AddHotel_false">
+                                        <assign name="AddHotelFalseReplyAssign">
+                                            <copy>
+                                                <from>false()</from>
+                                                <to>$AddHotelFalseOut.addHotelResponsePart/added</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="AddHotelFalseReply" partnerLink="TravelGoodPartnerLink" operation="addHotel" portType="ns0:travelGoodPortType" variable="AddHotelFalseOut"/>
+                                    </sequence>
+                                </else>
+                            </if>
+                        </sequence>
+                    </onMessage>
+                    <onMessage partnerLink="TravelGoodPartnerLink" operation="bookItinerary" portType="ns0:travelGoodPortType" variable="BookItineraryIn">
+                        <correlations>
+                            <correlation set="BookingNumberCorrelationSet" initiate="no"/>
+                        </correlations>
+                        <sequence name="BookItinerarySequence">
+                            <if name="IfNotCancelled_BookItinerary">
+                                <condition>not($isCanceled)</condition>
+                                <sequence name="IfNotCancelled_BookItinerary_true">
+                                    <empty name="DO_BOOKING_MAGIC_HERE"/>
+                                    <assign name="IsBookedAssign">
+                                        <copy>
+                                                <from>true()</from>
+                                                    <to variable="isBooked"/>
+                                            </copy>
+                                    </assign>
+                                    <assign name="AsignBookItineraryOut">
+                                        <copy>
+                                                <from>true()</from>
+                                                    <to>$BookItineraryOut.bookItineraryResponsePart/booked</to>
+                                            </copy>
+                                    </assign>
+                                    <reply name="BookItineraryReply" partnerLink="TravelGoodPartnerLink" operation="bookItinerary" portType="ns0:travelGoodPortType" variable="BookItineraryOut"/>
+                                </sequence>
+                                <else>
+                                    <sequence name="IfNotCancelled_BookItinerary_false">
+                                        <assign name="AssignBookItineraryFalse">
+                                            <copy>
+                                                <from>false()</from>
+                                                <to>$BookItineraryFalseOut.bookItineraryResponsePart/booked</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="BookItineraryFalseReply" partnerLink="TravelGoodPartnerLink" operation="bookItinerary" portType="ns0:travelGoodPortType" variable="BookItineraryFalseOut"/>
+                                    </sequence>
+                                </else>
+                            </if>
+                        </sequence>
+                    </onMessage>
+                    <onMessage partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryIn">
+                        <correlations>
+                            <correlation set="BookingNumberCorrelationSet" initiate="no"/>
+                        </correlations>
+                        <sequence name="Sequence1">
+                            <empty name="CHECK_IF_EARLIER_THAN_DAY_BEFORE"/>
+                            <empty name="DO_CANCELLING_MAGIC_HERE"/>
+                            <assign name="IsCanceledAssign">
                                 <copy>
-                                    <from>1 + count($itinerary/ns1:hotels/ns1:hotel)</from>
-                                    <to variable="hotelsCounter"/>
-                                </copy>
+                                        <from>true()</from>
+                                            <to variable="isCanceled"/>
+                                    </copy>
                             </assign>
-                            <assign name="AddHotelAssign">
+                            <assign name="AssignCancelItineraryOut">
                                 <copy>
                                     <from>true()</from>
-                                    <to>$AddHotelOut.addHotelResponsePart/added</to>
-                                </copy>
-                                <copy>
-                                    <from>$AddHotelIn.addHotelRequestPart/hotel</from>
-                                    <to>$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]
-                                        <sxed:editor>
-                                            <sxed:predicate path="$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]" source="to"/>
-                                        </sxed:editor>
-                                    </to>
+                                    <to>$CancelItineraryOut.cancelItineraryResponsePart/canceled</to>
                                 </copy>
                             </assign>
-                            <reply name="AddHotelReply" partnerLink="TravelGoodPartnerLink" operation="addHotel" portType="ns0:travelGoodPortType" variable="AddHotelOut"/>
+                            <reply name="CancelItineraryOut" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryOut"/>
                         </sequence>
                     </onMessage>
                 </pick>
             </sequence>
-            <condition>$isCanceled</condition>
+            <condition>false()</condition>
         </repeatUntil>
     </sequence>
 </process>

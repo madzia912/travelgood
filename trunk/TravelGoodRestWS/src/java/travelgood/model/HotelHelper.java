@@ -43,6 +43,8 @@ public class HotelHelper {
         h.setName(hotelType.getName());
         h.setPrice(hotelType.getPrice());
         h.setProvider(hotelType.getProvider());
+        h.setArrivalDate(DateUtils.toDate(hotelType.getArrivalDate()));
+        h.setDepartureDate(DateUtils.toDate(hotelType.getDepartureDate()));
         return h;
     }
 

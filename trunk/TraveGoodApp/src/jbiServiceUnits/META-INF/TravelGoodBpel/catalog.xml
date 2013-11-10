@@ -4,4 +4,5 @@
     <system systemId="http://localhost:8080/lameduck/lameDuckService?xsd=1" uri="../localhost_8080/lameduck/lameDuckService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/niceview/niceViewService?wsdl" uri="../localhost_8080/niceview/niceViewService.wsdl"/>
     <system systemId="http://localhost:8080/niceview/niceViewService?xsd=1" uri="../localhost_8080/niceview/niceViewService.xsd_1.xsd"/>
+    <system systemId="http://www.sun.com/wsbpel/2.0/process/executable/SUNExtension/Attachment" uri="src/_references/_relative/nbproject/private/retriever/www.oracle.com/us/sun/index.htm"/>
 </catalog>
