@@ -55,8 +55,8 @@ public class FlightsHolder {
         ft.setFrom("ABC");
         ft.setTo("CBA");
         ft.setCarrier("SAS");
-        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
-        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
         ft.setPrice(100);
         flights.add(ft);
 
@@ -66,8 +66,8 @@ public class FlightsHolder {
         ft.setFrom("ASD");
         ft.setTo("DSA");
         ft.setCarrier("SAS");
-        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 12));
-        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 12));
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 12));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2014, 10, 12));
         ft.setPrice(200);
         flights.add(ft);
 
@@ -77,8 +77,8 @@ public class FlightsHolder {
         ft.setFrom("QWE");
         ft.setTo("EWQ");
         ft.setCarrier("SAS");
-        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 14));
-        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 15));
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 14));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2014, 10, 15));
         ft.setPrice(120);
         flights.add(ft);
 
@@ -88,8 +88,8 @@ public class FlightsHolder {
         ft.setFrom("ERT");
         ft.setTo("TRE");
         ft.setCarrier("SAS");
-        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 16));
-        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 17));
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 16));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2014, 10, 17));
         ft.setPrice(250);
         flights.add(ft);
 
@@ -99,8 +99,8 @@ public class FlightsHolder {
         ft.setFrom("POI");
         ft.setTo("IOP");
         ft.setCarrier("SAS");
-        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
-        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        ft.setLiftOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
+        ft.setLandingDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
         ft.setPrice(100000);
         flights.add(ft);
         /*

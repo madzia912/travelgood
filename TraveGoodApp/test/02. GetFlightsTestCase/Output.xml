@@ -11,8 +11,8 @@
           <ns2:carrier>SAS</ns2:carrier>
           <ns2:from>ABC</ns2:from>
           <ns2:to>CBA</ns2:to>
-          <ns2:liftOffDate>2012-10-10</ns2:liftOffDate>
-          <ns2:landingDate>2012-10-10</ns2:landingDate>
+          <ns2:liftOffDate>2014-10-10</ns2:liftOffDate>
+          <ns2:landingDate>2014-10-10</ns2:landingDate>
           <ns2:price>100</ns2:price>
         </ns2:flight>
       </flights>

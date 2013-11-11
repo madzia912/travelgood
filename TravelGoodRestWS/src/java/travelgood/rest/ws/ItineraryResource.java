@@ -49,6 +49,7 @@ public class ItineraryResource {
 
     @PUT
     @Path("/{userId}")
+    @Produces(MediaType.APPLICATION_XML)
     public Response createItinerary(@PathParam("userId") String userId, @Context HttpServletRequest request, @Context final HttpServletResponse response) {
         Itinerary itinerary = itineraryHelper.createItinerary(userId);
 

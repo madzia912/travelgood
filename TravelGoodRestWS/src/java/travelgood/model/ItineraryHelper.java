@@ -216,7 +216,7 @@ public class ItineraryHelper {
             HotelType hotelType = getHotelResponse.getHotels().getHotel().get(0);
             AddressType addressType = hotelType.getAddress();
             Address address = new Address(addressType.getCity(), addressType.getStreet(), addressType.getZipCode());
-            Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee(), BookingState.IN_PROGRESS);
+            Hotel hotel = new Hotel(hotelType.getId(), hotelType.getBookingNumber(), hotelType.getName(), address, hotelType.getProvider(), hotelType.getPrice(), hotelType.isCreditCardGuarantee(), BookingState.IN_PROGRESS, DateUtils.toDate(hotelType.getArrivalDate()), DateUtils.toDate(hotelType.getDepartureDate()));
             itinerary.getHotels().add(hotel);
             return true;
         }
@@ -225,26 +225,26 @@ public class ItineraryHelper {
     }
 
     private boolean isMoreThanOneDayLeft(Itinerary itinerary) {
-        return true;
-//        if (CollectionUtils.isEmpty(itinerary.getFlights()) || CollectionUtils.isEmpty(itinerary.getHotels())) {
-//            return true;
-//        }
-//
-//        Date earliestDate = new Date(Long.MAX_VALUE);
-//
-//        for (Flight f : itinerary.getFlights()) {
-//            if (f.getLiftOffDate() != null && earliestDate.after(f.getLiftOffDate())) {
-//                earliestDate = f.getLiftOffDate();
-//            }
-//        }
-//
-//        for (Hotel h : itinerary.getHotels()) {
-//            if (h.getArrivalDate() != null && earliestDate.after(h.getArrivalDate())) {
-//                earliestDate = h.getArrivalDate();
-//            }
-//        }
-//
-//        Date earliestDatePlusOneDay = org.apache.commons.lang3.time.DateUtils.addDays(earliestDate, 1);
-//        return earliestDatePlusOneDay.after(new Date(System.currentTimeMillis()));
+//        return true;
+        if (CollectionUtils.isEmpty(itinerary.getFlights()) || CollectionUtils.isEmpty(itinerary.getHotels())) {
+            return true;
+        }
+
+        Date earliestDate = new Date(Long.MAX_VALUE);
+
+        for (Flight f : itinerary.getFlights()) {
+            if (f.getLiftOffDate() != null && earliestDate.after(f.getLiftOffDate())) {
+                earliestDate = f.getLiftOffDate();
+            }
+        }
+
+        for (Hotel h : itinerary.getHotels()) {
+            if (h.getArrivalDate() != null && earliestDate.after(h.getArrivalDate())) {
+                earliestDate = h.getArrivalDate();
+            }
+        }
+
+        Date earliestDatePlusOneDay = org.apache.commons.lang3.time.DateUtils.addDays(earliestDate, 1);
+        return earliestDatePlusOneDay.after(new Date(System.currentTimeMillis()));
     }
 }

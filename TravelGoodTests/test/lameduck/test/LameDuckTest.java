@@ -31,7 +31,7 @@ public class LameDuckTest {
     @Test
     public void testGetFlights1() {
         GetFlightsRequest request = new GetFlightsRequest();
-        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
 
         GetFlightsResponse response = getPort().getFlights(request);
 
@@ -44,7 +44,7 @@ public class LameDuckTest {
         GetFlightsRequest request = new GetFlightsRequest();
         request.setFrom("ABC");
         request.setTo("CBA");
-        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
 
         GetFlightsResponse response = getPort().getFlights(request);
 
@@ -58,7 +58,7 @@ public class LameDuckTest {
         GetFlightsRequest request = new GetFlightsRequest();
         request.setFrom("ABC");
         request.setTo("CBA");
-        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2012, 10, 10));
+        request.setTakeOffDate(DateUtils.getXmlGregorianCalendar(2014, 10, 10));
 
         GetFlightsResponse response = getPort().getFlights(request);
 
