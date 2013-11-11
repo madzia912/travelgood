@@ -21,6 +21,10 @@ public class DateUtils {
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+    public static XMLGregorianCalendar toXmlGregorianCalendar(String date) throws ParseException {
+        return toXmlGregorianCalendar(stringToDate(date));
+    }
+
     private DateUtils() {
     }
 
