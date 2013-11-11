@@ -66,5 +66,33 @@
         </wsimport-option>
       </wsimport-options>
     </client>
+    <client name="travelGoodBpel">
+      <wsdl-url>file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodBpel.wsdl</wsdl-url>
+      <local-wsdl-file>travelGoodBpel.wsdl</local-wsdl-file>
+      <package-name>dk.dtu.travelgood</package-name>
+      <catalog-file>catalog.xml</catalog-file>
+      <wsimport-options>
+        <wsimport-option>
+          <wsimport-option-name>extension</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>verbose</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>wsdlLocation</wsimport-option-name>
+          <wsimport-option-value>file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodBpel.wsdl</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xnocompile</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xendorsed</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+      </wsimport-options>
+    </client>
   </clients>
 </jax-ws>

@@ -50,5 +50,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/niceViewService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/niceview/test/client"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-lameDuckService, wsimport-client-niceViewService"/>
+    <target name="wsimport-client-travelGoodBpel" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/travelGoodBpel"/>
+        <property name="wsdl-travelGoodBpel" location="xml-resources/web-service-references/travelGoodBpel/wsdl/travelGoodBpel.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/travelGoodBpel" destdir="${build.generated.dir}/jax-wsCache/travelGoodBpel" wsdl="${wsdl-travelGoodBpel}" catalog="catalog.xml" extension="true" verbose="true" wsdlLocation="file:/C:/Users/Jacob/Documents/Web%20Services%20Final%20Project/travelGoodBpel.wsdl" xnocompile="true" xendorsed="true">
+            <depends file="${wsdl-travelGoodBpel}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/travelGoodBpel"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/travelGoodBpel">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-travelGoodBpel" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/travelGoodBpel"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/dk/dtu/travelgood"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-lameDuckService, wsimport-client-niceViewService, wsimport-client-travelGoodBpel"/>
 </project>
