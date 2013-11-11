@@ -43,19 +43,16 @@
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/portType[@name='lameDuckPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/portType[@name='niceViewPortType'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/travelGood.wsdl#xpointer(/definitions/portType[@name='travelGoodPortType'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/TravelGoodBpel/wsdl/horse.wsdl#xpointer(/definitions/portType[@name='horsePortType'])" xlink:type="simple"/>
     </porttypes>
     <bindings>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/binding[@name='lameDuckPortTypeBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/binding[@name='niceViewPortTypeBinding'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/travelGood.wsdl#xpointer(/definitions/binding[@name='travelGoodPortTypeBinding'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/TravelGoodBpel/wsdl/horse.wsdl#xpointer(/definitions/binding[@name='horseBinding'])" xlink:type="simple"/>
     </bindings>
     <services>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/service[@name='lameDuckService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/service[@name='niceViewService'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/travelGood.wsdl#xpointer(/definitions/service[@name='travelGoodService'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/TravelGoodBpel/wsdl/horse.wsdl#xpointer(/definitions/service[@name='horseService'])" xlink:type="simple"/>
     </services>
     <regions>
         <region name="WSDL Endpoints" width="150"/>

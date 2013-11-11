@@ -88,12 +88,6 @@
                         <to variable="earliestDate"/>
                     </copy>
                 </assign>
-                <assign name="DELETE_ME_LATER">
-                    <copy>
-                        <from>'DELETE_THIS_ASSIGN_LATER'</from>
-                        <to>$itinerary/ns1:id</to>
-                    </copy>
-                </assign>
                 <assign name="CreateItineraryOutAssign">
                     <copy>
                         <from>$itinerary/ns1:id</from>
