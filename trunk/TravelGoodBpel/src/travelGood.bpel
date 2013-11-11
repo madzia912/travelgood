@@ -364,6 +364,9 @@
                             <reply name="CancelItineraryOut" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryOut"/>
                         </sequence>
                     </onMessage>
+                    <onAlarm>
+                        <for>'P0Y0M0DT0H0M0S'</for>
+                    </onAlarm>
                 </pick>
             </sequence>
             <condition>false()</condition>

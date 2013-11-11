@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import travelgood.utils.DateUtils;
 
 /**
  * Holds all available hotels and reservations..
@@ -18,6 +19,7 @@ public class HotelsHolder {
     private List<HotelType> hotels = new ArrayList<HotelType>();
     private static HotelsHolder INSTANCE = new HotelsHolder();
     private Map<String, HotelType> reservations = new HashMap<String, HotelType>();
+
     private HotelsHolder() {
         init();
     }
@@ -29,22 +31,21 @@ public class HotelsHolder {
     public List<HotelType> getHotels() {
         return hotels;
     }
-    
-    public HotelType getHotelByBookingNumber(String nr){
-        for(HotelType ht : hotels){
-            if(StringUtils.equals(ht.getBookingNumber(), nr)){
+
+    public HotelType getHotelByBookingNumber(String nr) {
+        for (HotelType ht : hotels) {
+            if (StringUtils.equals(ht.getBookingNumber(), nr)) {
                 return ht;
             }
         }
         return null;
     }
-    
-    public Map<String, HotelType> getReservations(){
+
+    public Map<String, HotelType> getReservations() {
         return reservations;
     }
-    
-    private void init()
-    {
+
+    private void init() {
         // Sample hotels, remember to modify test when modify sample hotels.
         HotelType ht = new HotelType();
         ht.setId("hotel1");
@@ -58,8 +59,10 @@ public class HotelsHolder {
         at.setStreet("Rue de lEtoile");
         at.setZipCode("75017");
         ht.setAddress(at);
+        ht.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        ht.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
         hotels.add(ht);
-        
+
         ht = new HotelType();
         ht.setId("hotel2");
         ht.setBookingNumber("bookingNr2");
@@ -72,8 +75,10 @@ public class HotelsHolder {
         at.setStreet("Arni Magnussons Gade");
         at.setZipCode("1577");
         ht.setAddress(at);
+        ht.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        ht.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
         hotels.add(ht);
-        
+
         ht = new HotelType();
         ht.setId("hotel3");
         ht.setBookingNumber("bookingNr3");
@@ -86,8 +91,10 @@ public class HotelsHolder {
         at.setStreet("Baker Street");
         at.setZipCode("123");
         ht.setAddress(at);
+        ht.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        ht.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
         hotels.add(ht);
-        
+
         ht = new HotelType();
         ht.setId("hotel4");
         ht.setBookingNumber("bookingNr4");
@@ -100,6 +107,8 @@ public class HotelsHolder {
         at.setStreet("Down Street");
         at.setZipCode("12");
         ht.setAddress(at);
+        ht.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        ht.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
         hotels.add(ht);
     }
 }

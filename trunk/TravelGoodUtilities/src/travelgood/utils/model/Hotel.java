@@ -22,7 +22,7 @@ public class Hotel {
     public Hotel() {
     }
 
-    public Hotel(String id, String bookingNumber, String name, Address address, String provider, int price, boolean creditCardGuarantee, BookingState bookingState) {
+    public Hotel(String id, String bookingNumber, String name, Address address, String provider, int price, boolean creditCardGuarantee, BookingState bookingState, Date arrivalDate, Date departureDate) {
         this.id = id;
         this.bookingNumber = bookingNumber;
         this.name = name;
@@ -31,6 +31,8 @@ public class Hotel {
         this.price = price;
         this.creditCardGuarantee = creditCardGuarantee;
         this.bookingState = bookingState;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
     }
 
     public String getId() {

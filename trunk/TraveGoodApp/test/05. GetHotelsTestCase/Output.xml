@@ -17,8 +17,8 @@
           <ns3:provider>Provider1</ns3:provider>
           <ns3:price>500</ns3:price>
           <ns3:creditCardGuarantee>true</ns3:creditCardGuarantee>
-          <ns3:arrivalDate>2012-10-10</ns3:arrivalDate>
-          <ns3:departureDate>2012-10-15</ns3:departureDate>
+          <ns3:arrivalDate>2014-01-01</ns3:arrivalDate>
+          <ns3:departureDate>2014-01-10</ns3:departureDate>
         </ns3:hotel>
       </hotels>
     </getHotelsResponse>

@@ -4,7 +4,7 @@
             <bookingNumber>DELETE_THIS_ASSIGN_LATER</bookingNumber>
             <from>ABC</from>
             <to>CBA</to>
-            <takeOffDate>2012-10-10</takeOffDate>
+            <takeOffDate>2014-10-10</takeOffDate>
         </urn:getFlightsRequest>
     </soapenv:Body>
 </soapenv:Envelope>

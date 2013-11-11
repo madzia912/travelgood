@@ -32,6 +32,8 @@ public class NiceViewTest {
     public void testGetHotels() {
         GetHotelsRequest request = new GetHotelsRequest();
         request.setCity("Copenhagen");
+        request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        request.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
         GetHotelsResponse response = getPort().getHotels(request);
 
         Assert.assertTrue(response != null && response.getHotels() != null && response.getHotels().getHotel() != null);
@@ -43,8 +45,8 @@ public class NiceViewTest {
     public void testGetHotels2() {
         GetHotelsRequest request = new GetHotelsRequest();
         request.setCity("Copenhagen");
-        request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2013, 1, 1));
-        request.setDepartureDate(DateUtils.getXmlGregorianCalendar(2013, 1, 10));
+        request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        request.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
 
         GetHotelsResponse response = getPort().getHotels(request);
 
@@ -57,8 +59,8 @@ public class NiceViewTest {
     public void testBookCancelOK() throws BookHotelFault_Exception, CancelHotelFault_Exception {
         GetHotelsRequest request = new GetHotelsRequest();
         request.setCity("Copenhagen");
-        request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2013, 1, 1));
-        request.setDepartureDate(DateUtils.getXmlGregorianCalendar(2013, 1, 10));
+        request.setArrivalDate(DateUtils.getXmlGregorianCalendar(2014, 1, 1));
+        request.setDepartureDate(DateUtils.getXmlGregorianCalendar(2014, 1, 10));
 
         GetHotelsResponse response = getPort().getHotels(request);
 

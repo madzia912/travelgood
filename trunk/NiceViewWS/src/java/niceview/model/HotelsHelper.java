@@ -2,7 +2,6 @@ package niceview.model;
 
 import bank.unsecure.ws.CreditCardFaultMessage;
 import bank.utils.BankUtils;
-import com.rits.cloning.Cloner;
 import dk.dtu.niceview.BookHotelFault;
 import dk.dtu.niceview.BookHotelFault_Exception;
 import dk.dtu.niceview.BookHotelResponse;
@@ -15,6 +14,7 @@ import dk.dtu.travelgood.commons.HotelType;
 import dk.dtu.travelgood.commons.HotelsType;
 import java.util.List;
 import java.util.Map;
+import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,15 +27,33 @@ public class HotelsHelper {
         List<HotelType> hotels = HotelsHolder.getInstance().getHotels();
         HotelsType hotelsList = new HotelsType();
 
+        fixDate(arrival);
+        fixDate(departure);
+        
         for (HotelType ht : hotels) {
-            if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) || StringUtils.equals(city, ht.getAddress().getCity())) {
-                Cloner cloner = new Cloner();
-                HotelType htClone = cloner.deepClone(ht);
-                
-                htClone.setArrivalDate(arrival);
-                htClone.setDepartureDate(departure);
-                hotelsList.getHotel().add(htClone);
+            boolean hotelMatches = true;
+
+            if (StringUtils.isNotBlank(bookingNumber)) {
+                hotelMatches &= StringUtils.equals(bookingNumber, ht.getBookingNumber());
             }
+
+            if (StringUtils.isNotBlank(city)) {
+                hotelMatches &= StringUtils.equals(city, ht.getAddress().getCity());
+            }
+            if (arrival != null) {
+                hotelMatches &= ht.getArrivalDate().compare(arrival) == DatatypeConstants.EQUAL;
+            }
+            if (departure != null) {
+                hotelMatches &= ht.getDepartureDate().compare(departure) == DatatypeConstants.EQUAL;
+            }
+
+            if (hotelMatches) {
+                hotelsList.getHotel().add(ht);
+            }
+
+//            if (StringUtils.equals(bookingNumber, ht.getBookingNumber()) || StringUtils.equals(city, ht.getAddress().getCity())) {
+//                hotelsList.getHotel().add(ht);
+//            }
         }
         GetHotelsResponse ghr = new GetHotelsResponse();
         ghr.setHotels(hotelsList);
@@ -100,5 +118,16 @@ public class HotelsHelper {
         CancelHotelResponse response = new CancelHotelResponse();
         response.setCanceled(true);
         return response;
+    }
+    
+    private void fixDate(XMLGregorianCalendar date) {
+        if (date == null) {
+            return;
+        }
+        date.setHour(DatatypeConstants.FIELD_UNDEFINED);
+        date.setMinute(DatatypeConstants.FIELD_UNDEFINED);
+        date.setSecond(DatatypeConstants.FIELD_UNDEFINED);
+        date.setMillisecond(DatatypeConstants.FIELD_UNDEFINED);
+        date.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
     }
 }

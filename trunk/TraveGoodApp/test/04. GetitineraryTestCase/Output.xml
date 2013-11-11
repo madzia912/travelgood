@@ -13,8 +13,8 @@
           <urn1:carrier>SAS</urn1:carrier>
           <urn1:from>ABC</urn1:from>
           <urn1:to>CBA</urn1:to>
-          <urn1:liftOffDate>2012-10-10</urn1:liftOffDate>
-          <urn1:landingDate>2012-10-10</urn1:landingDate>
+          <urn1:liftOffDate>2014-10-10</urn1:liftOffDate>
+          <urn1:landingDate>2014-10-10</urn1:landingDate>
           <urn1:price>100</urn1:price>
         <bookingState>IN_PROGRESS</bookingState>
           </flight>

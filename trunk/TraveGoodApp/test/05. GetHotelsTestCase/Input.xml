@@ -3,8 +3,8 @@
     <urn:getHotelsRequest>
       <bookingNumber>DELETE_THIS_ASSIGN_LATER</bookingNumber>
       <city>Paris</city>
-      <arrivalDate>2012-10-10</arrivalDate>
-      <departureDate>2012-10-15</departureDate>
+      <arrivalDate>2014-01-01</arrivalDate>
+      <departureDate>2014-01-10</departureDate>
     </urn:getHotelsRequest>
   </soapenv:Body>
 </soapenv:Envelope>

@@ -33,7 +33,7 @@ public class TravelGoodRestfulTest {
         Assert.assertTrue(cir != null);
 
         // First flight
-        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2012-10-10");
+        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -41,7 +41,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight1.getBookingNumber());
 
         // First hotel
-        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2012-10-10", "2012-10-15");
+        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -49,7 +49,7 @@ public class TravelGoodRestfulTest {
         c.addHotel(cir.getBookingNumber(), hotel1.getBookingNumber());
 
         // Second flight
-        flightsResponse = c.getFlights(cir.getBookingNumber(), "ASD", "DSA", "2012-10-12");
+        flightsResponse = c.getFlights(cir.getBookingNumber(), "ASD", "DSA", "2014-10-12");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr2", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -57,7 +57,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight2.getBookingNumber());
 
         // Third flight
-        flightsResponse = c.getFlights(cir.getBookingNumber(), "QWE", "EWQ", "2012-10-14");
+        flightsResponse = c.getFlights(cir.getBookingNumber(), "QWE", "EWQ", "2014-10-14");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr3", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -65,7 +65,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight3.getBookingNumber());
 
         //Second hotel
-        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Copenhagen", "2012-10-14", "2012-10-15");
+        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Copenhagen", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr2", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -102,7 +102,7 @@ public class TravelGoodRestfulTest {
         Assert.assertTrue(cir != null);
 
         // First flight
-        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2012-10-10");
+        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -126,7 +126,7 @@ public class TravelGoodRestfulTest {
         Assert.assertTrue(cir != null);
 
         // First flight
-        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2012-10-10");
+        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -134,7 +134,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight1.getBookingNumber());
 
         //First hotel
-        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Copenhagen", "2012-10-14", "2012-10-15");
+        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Copenhagen", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr2", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -142,7 +142,7 @@ public class TravelGoodRestfulTest {
         c.addHotel(cir.getBookingNumber(), hotel1.getBookingNumber());
 
         //Second hotel
-        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2012-10-10", "2012-10-15");
+        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -206,7 +206,7 @@ public class TravelGoodRestfulTest {
         Assert.assertTrue(cir != null);
 
         // First flight
-        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2012-10-10");
+        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -214,7 +214,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight1.getBookingNumber());
 
         //First hotel
-        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2012-10-10", "2012-10-15");
+        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -222,7 +222,7 @@ public class TravelGoodRestfulTest {
         c.addHotel(cir.getBookingNumber(), hotel1.getBookingNumber());
 
         //Second hotel
-        hotelsResponse = c.getHotels(cir.getBookingNumber(), "London", "2012-10-10", "2012-10-15");
+        hotelsResponse = c.getHotels(cir.getBookingNumber(), "London", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr3", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -308,7 +308,7 @@ public class TravelGoodRestfulTest {
         Assert.assertTrue(cir != null);
 
         // First flight
-        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2012-10-10");
+        GetFlightsResponse flightsResponse = c.getFlights(cir.getBookingNumber(), "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse.getFlights() != null && flightsResponse.getFlights().getFlights() != null && flightsResponse.getFlights().getFlights().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlights().get(0).getBookingNumber());
 
@@ -316,7 +316,7 @@ public class TravelGoodRestfulTest {
         c.addFlight(cir.getBookingNumber(), flight1.getBookingNumber());
 
         //First hotel
-        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "New York", "2012-10-10", "2012-10-15");
+        GetHotelsResponse hotelsResponse = c.getHotels(cir.getBookingNumber(), "New York", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr4", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
@@ -324,7 +324,7 @@ public class TravelGoodRestfulTest {
         c.addHotel(cir.getBookingNumber(), hotel1.getBookingNumber());
 
         //Second hotel
-        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2012-10-10", "2012-10-15");
+        hotelsResponse = c.getHotels(cir.getBookingNumber(), "Paris", "2014-01-01", "2014-01-10");
         Assert.assertTrue(hotelsResponse.getHotels() != null && hotelsResponse.getHotels().getHotels() != null && hotelsResponse.getHotels().getHotels().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotels().get(0).getBookingNumber());
 
