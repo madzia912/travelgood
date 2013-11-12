@@ -16,7 +16,7 @@
           <urn1:liftOffDate>2014-10-10</urn1:liftOffDate>
           <urn1:landingDate>2014-10-10</urn1:landingDate>
           <urn1:price>100</urn1:price>
-        <bookingState>IN_PROGRESS</bookingState>
+        <bookingState>BOOKED</bookingState>
           </flight>
         </flights>
         <hotels xmlns="urn:commons.travelgood.dtu.dk">
@@ -34,12 +34,12 @@
           <urn1:creditCardGuarantee>true</urn1:creditCardGuarantee>
           <urn1:arrivalDate>2014-10-01</urn1:arrivalDate>
           <urn1:departureDate>2014-10-10</urn1:departureDate>
-      <bookingState>IN_PROGRESS</bookingState>
+      <bookingState>BOOKED</bookingState>
           </hotel>
         </hotels>
         <finalPrice xmlns="urn:commons.travelgood.dtu.dk">600</finalPrice>
-        <paymentStatus xmlns="urn:commons.travelgood.dtu.dk">PENDING</paymentStatus>
-        <bookingState xmlns="urn:commons.travelgood.dtu.dk">IN_PROGRESS</bookingState>
+        <paymentStatus xmlns="urn:commons.travelgood.dtu.dk">DONE</paymentStatus>
+        <bookingState xmlns="urn:commons.travelgood.dtu.dk">BOOKED</bookingState>
       </itinerary>
     </getItineraryResponse>
   </SOAP-ENV:Body>

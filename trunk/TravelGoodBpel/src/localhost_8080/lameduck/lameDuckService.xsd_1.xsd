@@ -71,7 +71,7 @@
                 <xsd:simpleType>
                     <xsd:restriction base="xsd:string">
                         <xsd:enumeration value="PENDING"/>
-                        <xsd:enumeration value="IN_PROGRESS"/>
+                        <xsd:enumeration value="DONE"/>
                         <xsd:enumeration value="CANCELLED"/>
                     </xsd:restriction>
                 </xsd:simpleType>
