@@ -89,12 +89,14 @@
                         <to variable="earliestDate"/>
                     </copy>
                 </assign>
-                <!--<assign name="DELETE_ME_LATER">
+                <!-- Uncomment this if you want to use Composite Application tests!
+                <assign name="DELETE_ME_LATER">
                     <copy>
                         <from>'DELETE_THIS_ASSIGN_LATER'</from>
                         <to>$itinerary/ns1:id</to>
                     </copy>
-                </assign>-->
+                </assign>
+                -->
                 <assign name="CreateItineraryOutAssign">
                     <copy>
                         <from>$itinerary/ns1:id</from>
@@ -318,7 +320,117 @@
                         <correlations>
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
-                        <sequence name="BookItinerarySequence">
+                        <scope name="BookItineraryScope">
+                            <variables>
+                                <variable name="BookItineraryFaultVar" messageType="ns0:bookItineraryFault"/>
+                            </variables>
+                            <faultHandlers>
+                                <catchAll>
+                                    <sequence name="RollbackFlightAndHotelReservations">
+                                        <sequence name="FlightAndHotelRollbackSequence">
+                                            <forEach name="RollbackFlightsForEach" parallel="no" counterName="RollbackFlightsForEachCounter">
+                                                <startCounterValue>1</startCounterValue>
+                                                <finalCounterValue>count($itinerary/ns1:flights/ns1:flight)</finalCounterValue>
+                                                <scope name="RollbackSingleFlightSequence">
+                                                    <variables>
+                                                        <variable name="RollbackReservationOut_LameDuck" messageType="tns:cancelReservationResponse"/>
+                                                        <variable name="RollbackReservationIn_LameDuck" messageType="tns:cancelReservationRequest"/>
+                                                    </variables>
+                                                    <sequence name="RollbackFlightsForEachSequence">
+                                                        <if name="IfFlightBooked">
+                                                            <condition>'BOOKED' = $itinerary/ns1:flights/ns1:flight[$RollbackFlightsForEachCounter]/ns1:bookingState</condition>
+                                                            <sequence name="IfFlightBooked_true">
+                                                                <assign name="FlightBookingNumberAssign">
+                                                                    <copy>
+                                                                        <from>$BookItineraryIn.bookItineraryRequestPart/creditCard/ns1:name</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:name</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$BookItineraryIn.bookItineraryRequestPart/creditCard/ns1:number</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:number</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$BookItineraryIn.bookItineraryRequestPart/creditCard/ns1:expMonth</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:expMonth</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$BookItineraryIn.bookItineraryRequestPart/creditCard/ns1:expYear</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:expYear</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$itinerary/ns1:flights/ns1:flight[$RollbackFlightsForEachCounter]/ns1:bookingNumber</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/bookingNumber</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$itinerary/ns1:flights/ns1:flight[$RollbackFlightsForEachCounter]/ns1:price</from>
+                                                                        <to>$RollbackReservationIn_LameDuck.cancelReservationRequestPart/price</to>
+                                                                    </copy>
+                                                                </assign>
+                                                                <invoke name="RollbackFlight_LameDuck" partnerLink="LameDuckPartnerLink" operation="cancelReservation" portType="tns:lameDuckPortType" inputVariable="RollbackReservationIn_LameDuck" outputVariable="RollbackReservationOut_LameDuck"/>
+                                                                <if name="IfRollbackFlightSucceeded">
+                                                                    <condition>$RollbackReservationOut_LameDuck.cancelReservationResponsePart/canceled</condition>
+                                                                    <assign name="AssignFlightCanceled">
+                                                                        <copy>
+                                                                            <from>'CANCELLED'</from>
+                                                                            <to>$itinerary/ns1:flights/ns1:flight[$RollbackFlightsForEachCounter]/ns1:bookingState
+                                                                                <sxed:editor>
+                                                                                    <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
+                                                                                </sxed:editor>
+                                                                            </to>
+                                                                        </copy>
+                                                                    </assign>
+                                                                </if>
+                                                            </sequence>
+                                                        </if>
+                                                    </sequence>
+                                                </scope>
+                                            </forEach>
+                                            <forEach name="RollbackHotelsForEach" parallel="no" counterName="RollbackHotelsForEachCounter">
+                                                <startCounterValue>1</startCounterValue>
+                                                <finalCounterValue>count($itinerary/ns1:hotels/ns1:hotel)</finalCounterValue>
+                                                <scope name="RollbackSingleHotelsSequence">
+                                                    <variables>
+                                                        <variable name="RollbackHotelOut_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelResponse"/>
+                                                        <variable name="RollbackHotelIn_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelRequest"/>
+                                                    </variables>
+                                                    <if name="IfHotelBooked">
+                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel/ns1:bookingState</condition>
+                                                        <sequence name="IfHotelBooked_true">
+                                                            <assign name="HotelBookingNumberAssign">
+                                                                <copy>
+                                                                    <from>$itinerary/ns1:hotels/ns1:hotel[$RollbackHotelsForEachCounter]/ns1:bookingNumber</from>
+                                                                    <to>$RollbackHotelIn_NiceView.cancelHotelRequestPart/bookingNumber</to>
+                                                                </copy>
+                                                            </assign>
+                                                            <invoke name="RollbackHotel_NiceView" partnerLink="NiceViewPartnerLink" operation="cancelHotel" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType" inputVariable="RollbackHotelIn_NiceView" outputVariable="RollbackHotelOut_NiceView"/>
+                                                            <if name="IfCRollbackHotelSucceeded">
+                                                                <condition>$RollbackHotelOut_NiceView.cancelHotelResponsePart/canceled</condition>
+                                                                <assign name="AssignHotelCanceledStatus">
+                                                                    <copy>
+                                                                        <from>'CANCELLED'</from>
+                                                                        <to>$itinerary/ns1:hotels/ns1:hotel[$RollbackHotelsForEachCounter]/ns1:bookingState</to>
+                                                                    </copy>
+                                                                </assign>
+                                                            </if>
+                                                        </sequence>
+                                                    </if>
+                                                </scope>
+                                            </forEach>
+                                        </sequence>
+                                        <assign name="AssignBookItineraryFaultVar">
+                                            <copy>
+                                                <from>$BookItineraryIn.bookItineraryRequestPart/bookingNumber</from>
+                                                <to>$BookItineraryFaultVar.bookItineraryFaultPart/bookingNumber</to>
+                                            </copy>
+                                            <copy>
+                                                <from>'Book itinerary failed!'</from>
+                                                <to>$BookItineraryFaultVar.bookItineraryFaultPart/reason</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="BookItineraryFaultReply" partnerLink="TravelGoodPartnerLink" operation="bookItinerary" portType="ns0:travelGoodPortType" faultName="ns0:bookItineraryFault" variable="BookItineraryFaultVar"/>
+                                    </sequence>
+                                </catchAll>
+                            </faultHandlers>
                             <if name="IfNotCanceledAndNotBooked_BookItinerary">
                                 <condition>not($isCanceled) and not($isBooked)</condition>
                                 <sequence name="IfNotCanceled_BookItinerary_true">
@@ -448,7 +560,7 @@
                                     </sequence>
                                 </else>
                             </if>
-                        </sequence>
+                        </scope>
                     </onMessage>
                     <onMessage partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryIn">
                         <correlations>
@@ -524,11 +636,7 @@
                                                                     <assign name="AssignFlightCanceled">
                                                                         <copy>
                                                                             <from>'CANCELLED'</from>
-                                                                            <to>$itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:bookingState
-                                                                                <sxed:editor>
-                                                                                    <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
-                                                                                </sxed:editor>
-                                                                            </to>
+                                                                            <to>$itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:bookingState</to>
                                                                         </copy>
                                                                     </assign>
                                                                 </if>
@@ -563,11 +671,7 @@
                                                                 <assign name="AssignHotelCanceledStatus">
                                                                     <copy>
                                                                         <from>'CANCELLED'</from>
-                                                                        <to>$itinerary/ns1:hotels/ns1:hotel[$CancelingHotelsForEachCounter]/ns1:bookingState
-                                                                            <sxed:editor>
-                                                                                <sxed:predicate path="$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]" source="to"/>
-                                                                            </sxed:editor>
-                                                                        </to>
+                                                                        <to>$itinerary/ns1:hotels/ns1:hotel[$CancelingHotelsForEachCounter]/ns1:bookingState</to>
                                                                     </copy>
                                                                 </assign>
                                                             </if>

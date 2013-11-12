@@ -1,0 +1,22 @@
+<soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk" xmlns:urn1="urn:commons.travelgood.dtu.dk">
+  <soapenv:Body>
+    <urn:addHotelRequest>
+      <bookingNumber>DELETE_THIS_ASSIGN_LATER</bookingNumber>
+      <hotel>
+          <urn1:id>hotel2</urn1:id>
+          <urn1:bookingNumber>bookingNr2</urn1:bookingNumber>
+          <urn1:name>Tivoli</urn1:name>
+          <urn1:address>
+            <urn1:city>Copenhagen</urn1:city>
+            <urn1:street>Arni Magnussons Gade</urn1:street>
+            <urn1:zipCode>1577</urn1:zipCode>
+          </urn1:address>
+          <urn1:provider>Provider2</urn1:provider>
+          <urn1:price>10000</urn1:price>
+          <urn1:creditCardGuarantee>true</urn1:creditCardGuarantee>
+          <urn1:arrivalDate>2014-10-01</urn1:arrivalDate>
+          <urn1:departureDate>2014-10-10</urn1:departureDate>
+      </hotel>
+    </urn:addHotelRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
