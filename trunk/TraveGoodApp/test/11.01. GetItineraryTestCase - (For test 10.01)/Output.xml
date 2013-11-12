@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Body>
+    <getItineraryResponse xmlns="urn:travelgood.dtu.dk" xmlns:msgns="urn:travelgood.dtu.dk">
+      <itinerary xmlns="">
+        <id xmlns="urn:commons.travelgood.dtu.dk">DELETE_THIS_ASSIGN_LATER</id>
+        <flights xmlns="urn:commons.travelgood.dtu.dk">
+          <flight xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk" xmlns:urn1="urn:commons.travelgood.dtu.dk" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <urn1:id>flight1</urn1:id>
+          <urn1:bookingNumber>bookingNr1</urn1:bookingNumber>
+          <urn1:carrier>SAS</urn1:carrier>
+          <urn1:from>ABC</urn1:from>
+          <urn1:to>CBA</urn1:to>
+          <urn1:liftOffDate>2014-10-10</urn1:liftOffDate>
+          <urn1:landingDate>2014-10-10</urn1:landingDate>
+          <urn1:price>100</urn1:price>
+        <bookingState>CANCELLED</bookingState>
+          </flight>
+        </flights>
+        <hotels xmlns="urn:commons.travelgood.dtu.dk">
+          <hotel xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk" xmlns:urn1="urn:commons.travelgood.dtu.dk" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+          <urn1:id>hotel4</urn1:id>
+          <urn1:bookingNumber>bookingNr4</urn1:bookingNumber>
+          <urn1:name>Hotel That Does Not Allow You To Cancel Your Booking!</urn1:name>
+          <urn1:address>
+            <urn1:city>New York</urn1:city>
+            <urn1:street>Down Street</urn1:street>
+            <urn1:zipCode>12</urn1:zipCode>
+          </urn1:address>
+          <urn1:provider>Provider4</urn1:provider>
+          <urn1:price>10</urn1:price>
+          <urn1:creditCardGuarantee>false</urn1:creditCardGuarantee>
+          <urn1:arrivalDate>2014-10-01</urn1:arrivalDate>
+          <urn1:departureDate>2014-10-10</urn1:departureDate>
+      <bookingState>BOOKED</bookingState>
+          </hotel>
+        </hotels>
+        <finalPrice xmlns="urn:commons.travelgood.dtu.dk">110</finalPrice>
+        <paymentStatus xmlns="urn:commons.travelgood.dtu.dk">DONE</paymentStatus>
+        <bookingState xmlns="urn:commons.travelgood.dtu.dk">BOOKED</bookingState>
+      </itinerary>
+    </getItineraryResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
