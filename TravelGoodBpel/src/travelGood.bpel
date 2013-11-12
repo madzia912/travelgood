@@ -20,6 +20,7 @@
         <partnerLink name="TravelGoodPartnerLink" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodWSDL" myRole="travelGoodPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="CancelItineraryOutFalse" messageType="ns0:cancelItineraryResponse"/>
         <variable name="earliestDate" type="xs:date"/>
         <variable name="BookItineraryFalseOut" messageType="ns0:bookItineraryResponse"/>
         <variable name="CancelItineraryOut" messageType="ns0:cancelItineraryResponse"/>
@@ -318,10 +319,9 @@
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
                         <sequence name="BookItinerarySequence">
-                            <if name="IfNotCancelled_BookItinerary">
-                                <condition>not($isCanceled)</condition>
-                                <sequence name="IfNotCancelled_BookItinerary_true">
-                                    <empty name="DO_BOOKING_MAGIC_HERE"/>
+                            <if name="IfNotCanceledAndNotBooked_BookItinerary">
+                                <condition>not($isCanceled) and not($isBooked)</condition>
+                                <sequence name="IfNotCanceled_BookItinerary_true">
                                     <scope name="BookingScope">
                                         <sequence name="FlightAndHotelsBookingSequence">
                                             <forEach name="BookingFlightsForEach" parallel="no" counterName="BookingFlightsForEachCounter">
@@ -437,7 +437,7 @@
                                     <reply name="BookItineraryReply" partnerLink="TravelGoodPartnerLink" operation="bookItinerary" portType="ns0:travelGoodPortType" variable="BookItineraryOut"/>
                                 </sequence>
                                 <else>
-                                    <sequence name="IfNotCancelled_BookItinerary_false">
+                                    <sequence name="IfNotCanceled_BookItinerary_false">
                                         <assign name="AssignBookItineraryFalse">
                                             <copy>
                                                 <from>false()</from>
@@ -454,27 +454,141 @@
                         <correlations>
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
-                        <sequence name="Sequence1">
-                            <empty name="CHECK_IF_EARLIER_THAN_DAY_BEFORE"/>
-                            <empty name="DO_CANCELLING_MAGIC_HERE"/>
-                            <assign name="IsCanceledAssign">
-                                <copy>
-                                    <from>true()</from>
-                                    <to variable="isCanceled"/>
-                                </copy>
-                            </assign>
-                            <assign name="AssignCancelItineraryOut">
-                                <copy>
-                                    <from>true()</from>
-                                    <to>$CancelItineraryOut.cancelItineraryResponsePart/canceled</to>
-                                </copy>
-                            </assign>
-                            <reply name="CancelItineraryOut" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryOut"/>
+                        <sequence name="CancelItinerarySequence">
+                            <if name="IfNotCanceled_CancelItinerary">
+                                <condition>not($isCanceled)</condition>
+                                <sequence name="IfNotCanceled_CancelItinerary_true">
+                                    <scope name="CancelingScope">
+                                        <sequence name="FlightAndHotelCancelingSequence">
+                                            <forEach name="CancelingFlightsForEach" parallel="no" counterName="CancelingFlightsForEachCounter">
+                                                <startCounterValue>1</startCounterValue>
+                                                <finalCounterValue>count($itinerary/ns1:flights/ns1:flight)</finalCounterValue>
+                                                <scope name="CancelSingleFlightSequence">
+                                                    <variables>
+                                                        <variable name="CancelReservationOut_LameDuck" messageType="tns:cancelReservationResponse"/>
+                                                        <variable name="CancelReservationIn_LameDuck" messageType="tns:cancelReservationRequest"/>
+                                                    </variables>
+                                                    <sequence name="CancelingFlightsForEachSequence">
+                                                        <if name="IfFlightBooked">
+                                                            <condition>'BOOKED' = $itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:bookingState</condition>
+                                                            <sequence name="IfFlightBooked_true">
+                                                                <assign name="FlightBookingNumberAssign">
+                                                                    <copy>
+                                                                        <from>$CancelItineraryIn.cancelItineraryRequestPart/creditCard/ns1:name</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:name</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$CancelItineraryIn.cancelItineraryRequestPart/creditCard/ns1:number</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:number</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$CancelItineraryIn.cancelItineraryRequestPart/creditCard/ns1:expMonth</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:expMonth</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$CancelItineraryIn.cancelItineraryRequestPart/creditCard/ns1:expYear</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/creditCard/ns1:expYear</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:bookingNumber</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/bookingNumber</to>
+                                                                    </copy>
+                                                                    <copy>
+                                                                        <from>$itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:price</from>
+                                                                        <to>$CancelReservationIn_LameDuck.cancelReservationRequestPart/price</to>
+                                                                    </copy>
+                                                                </assign>
+                                                                <invoke name="CancelFlight_LameDuck" partnerLink="LameDuckPartnerLink" operation="cancelReservation" portType="tns:lameDuckPortType" inputVariable="CancelReservationIn_LameDuck" outputVariable="CancelReservationOut_LameDuck"/>
+                                                                <if name="IfCancelFlightSucceeded">
+                                                                    <condition>$CancelReservationOut_LameDuck.cancelReservationResponsePart/canceled</condition>
+                                                                    <assign name="AssignFlightCanceled">
+                                                                        <copy>
+                                                                            <from>'CANCELLED'</from>
+                                                                            <to>$itinerary/ns1:flights/ns1:flight[$CancelingFlightsForEachCounter]/ns1:bookingState
+                                                                                <sxed:editor>
+                                                                                    <sxed:predicate path="$itinerary/ns1:flights/ns1:flight[$flightsCounter]" source="to"/>
+                                                                                </sxed:editor>
+                                                                            </to>
+                                                                        </copy>
+                                                                    </assign>
+                                                                </if>
+                                                            </sequence>
+                                                        </if>
+                                                    </sequence>
+                                                </scope>
+                                            </forEach>
+                                            <forEach name="CancelingHotelsForEach" parallel="no" counterName="CancelingHotelsForEachCounter">
+                                                <startCounterValue>1</startCounterValue>
+                                                <finalCounterValue>count($itinerary/ns1:hotels/ns1:hotel)</finalCounterValue>
+                                                <completionCondition>
+                                                    <branches/>
+                                                </completionCondition>
+                                                <scope name="CancelSingleHotelsSequence">
+                                                    <variables>
+                                                        <variable name="CancelHotelOut_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelResponse"/>
+                                                        <variable name="CancelHotelIn_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelRequest"/>
+                                                    </variables>
+                                                    <if name="IfHotelBooked">
+                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel/ns1:bookingState</condition>
+                                                        <sequence name="IfHotelBooked_true">
+                                                            <assign name="HotelBookingNumberAssign">
+                                                                <copy>
+                                                                    <from>$itinerary/ns1:hotels/ns1:hotel[$CancelingHotelsForEachCounter]/ns1:bookingNumber</from>
+                                                                    <to>$CancelHotelIn_NiceView.cancelHotelRequestPart/bookingNumber</to>
+                                                                </copy>
+                                                            </assign>
+                                                            <invoke name="CancelHotel_NiceView" partnerLink="NiceViewPartnerLink" operation="cancelHotel" xmlns:tns="urn:niceview.dtu.dk" portType="tns:niceViewPortType" inputVariable="CancelHotelIn_NiceView" outputVariable="CancelHotelOut_NiceView"/>
+                                                            <if name="IfCancelHotelSucceeded">
+                                                                <condition>$CancelHotelOut_NiceView.cancelHotelResponsePart/canceled</condition>
+                                                                <assign name="AssignHotelCanceledStatus">
+                                                                    <copy>
+                                                                        <from>'CANCELLED'</from>
+                                                                        <to>$itinerary/ns1:hotels/ns1:hotel[$CancelingHotelsForEachCounter]/ns1:bookingState
+                                                                            <sxed:editor>
+                                                                                <sxed:predicate path="$itinerary/ns1:hotels/ns1:hotel[$hotelsCounter]" source="to"/>
+                                                                            </sxed:editor>
+                                                                        </to>
+                                                                    </copy>
+                                                                </assign>
+                                                            </if>
+                                                        </sequence>
+                                                    </if>
+                                                </scope>
+                                            </forEach>
+                                        </sequence>
+                                    </scope>
+                                    <assign name="IsCanceledAssign">
+                                        <copy>
+                                            <from>true()</from>
+                                            <to variable="isCanceled"/>
+                                        </copy>
+                                        <copy>
+                                            <from>'CANCELLED'</from>
+                                            <to>$itinerary/ns1:bookingState</to>
+                                        </copy>
+                                    </assign>
+                                    <assign name="AssignCancelItineraryOut">
+                                        <copy>
+                                            <from>true()</from>
+                                            <to>$CancelItineraryOut.cancelItineraryResponsePart/canceled</to>
+                                        </copy>
+                                    </assign>
+                                    <reply name="CancelItineraryOut" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryOut"/>
+                                </sequence>
+                                <else>
+                                    <sequence name="IfNotCanceled_CancelItinerary_false">
+                                        <assign name="AssignItineraryCancelFalse">
+                                            <copy>
+                                                <from>false()</from>
+                                                <to>$CancelItineraryOutFalse.cancelItineraryResponsePart/canceled</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="CancelItineraryOutFalse" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" variable="CancelItineraryOutFalse"/>
+                                    </sequence>
+                                </else>
+                            </if>
                         </sequence>
                     </onMessage>
-                    <!--                    <onAlarm>
-                        <for>'P0Y0M0DT0H0M0S'</for>
-                    </onAlarm>-->
                 </pick>
             </sequence>
             <condition>false()</condition>
