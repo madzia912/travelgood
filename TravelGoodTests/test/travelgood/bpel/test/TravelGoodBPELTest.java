@@ -35,19 +35,14 @@ import travelgood.utils.model.BookingState;
 public class TravelGoodBPELTest {
 
     @Test
-    public void B() {
+    public void B() throws ParseException {
         // create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
 
         // first flight
-        GetFlightsResponse getFlightsResponse = null;
-        try {
-            getFlightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetFlightsResponse getFlightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
 
         Assert.assertTrue(getFlightsResponse != null && getFlightsResponse.getFlights() != null
                 && getFlightsResponse.getFlights().getFlight() != null && getFlightsResponse.getFlights().getFlight().size() == 1);
@@ -57,12 +52,7 @@ public class TravelGoodBPELTest {
         addFlight(bookingNumber, flight1);
 
         //First hotel
-        GetHotelsResponse getHotelsResponse = null;
-        try {
-            getHotelsResponse = getHotels(bookingNumber, "Copenhagen", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetHotelsResponse getHotelsResponse = getHotels(bookingNumber, "Copenhagen", "2014-01-01", "2014-01-10");
 
         Assert.assertTrue(getHotelsResponse != null && getHotelsResponse.getHotels() != null
                 && getHotelsResponse.getHotels().getHotel() != null && getHotelsResponse.getHotels().getHotel().size() == 1);
@@ -72,12 +62,7 @@ public class TravelGoodBPELTest {
         addHotel(bookingNumber, hotel1);
 
         // second hotel
-        getHotelsResponse = null;
-        try {
-            getHotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        getHotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
 
         Assert.assertTrue(getHotelsResponse != null && getHotelsResponse.getHotels() != null
                 && getHotelsResponse.getHotels().getHotel() != null && getHotelsResponse.getHotels().getHotel().size() == 1);
@@ -94,7 +79,6 @@ public class TravelGoodBPELTest {
 
         Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getFlights().getFlight()));
         Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getHotels().getHotel()));
-
 
         Assert.assertEquals("bookingNr1", itinerary.getFlights().getFlight().get(0).getBookingNumber());
         Assert.assertEquals(BookingState.IN_PROGRESS.toString(), itinerary.getFlights().getFlight().get(0).getBookingState());
@@ -145,19 +129,15 @@ public class TravelGoodBPELTest {
     }
 
     @Test
-    public void P1() {
+    public void P1() throws ParseException {
         // Create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
 
         // First flight
-        GetFlightsResponse flightsResponse = null;
-        try {
-            flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetFlightsResponse flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
+
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -166,12 +146,8 @@ public class TravelGoodBPELTest {
         addFlight(bookingNumber, flight1);
 
         // First hotel
-        GetHotelsResponse hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetHotelsResponse hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
@@ -180,12 +156,8 @@ public class TravelGoodBPELTest {
         addHotel(bookingNumber, hotel1);
 
         // Second flight
-        flightsResponse = null;
-        try {
-            flightsResponse = getFlights(bookingNumber, "ASD", "DSA", "2014-10-12");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        flightsResponse = getFlights(bookingNumber, "ASD", "DSA", "2014-10-12");
+        
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr2", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -194,12 +166,8 @@ public class TravelGoodBPELTest {
         addFlight(bookingNumber, flight2);
 
         // Third flight
-        flightsResponse = null;
-        try {
-            flightsResponse = getFlights(bookingNumber, "QWE", "EWQ", "2014-10-14");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        flightsResponse = getFlights(bookingNumber, "QWE", "EWQ", "2014-10-14");
+
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr3", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -208,12 +176,8 @@ public class TravelGoodBPELTest {
         addFlight(bookingNumber, flight3);
 
         //Second hotel
-        hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "Copenhagen", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        hotelsResponse = getHotels(bookingNumber, "Copenhagen", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr2", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
@@ -243,19 +207,15 @@ public class TravelGoodBPELTest {
     }
 
     @Test
-    public void P2() {
+    public void P2() throws ParseException, CancelItineraryFault_Exception {
         // Create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
 
         // First flight
-        GetFlightsResponse flightsResponse = null;
-        try {
-            flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetFlightsResponse flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
+
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -269,42 +229,31 @@ public class TravelGoodBPELTest {
         creditCard.setExpYear(9);
         creditCard.setNumber("50408822");
 
-        try {
-            cancelItinerary(creditCard, bookingNumber);
-        } catch (CancelItineraryFault_Exception ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        cancelItinerary(creditCard, bookingNumber);
     }
 
     @Test
-    public void C1() {
+    public void C1() throws ParseException {
         // Create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
-
+        
         // First flight
-        GetFlightsResponse flightsResponse = null;;
-        try {
-            flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetFlightsResponse flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
+
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
 
         FlightType flight1 = flightsResponse.getFlights().getFlight().get(0);
-        addFlight(bookingNumber, flight1);
-
-
+        AddFlightResponse addFlight = addFlight(bookingNumber, flight1);
+        
+        Assert.assertTrue(addFlight.isAdded());
+        
         //First hotel
-        GetHotelsResponse hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetHotelsResponse hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
@@ -313,12 +262,8 @@ public class TravelGoodBPELTest {
         addHotel(bookingNumber, hotel1);
 
         //Second hotel
-        hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "London", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        hotelsResponse = getHotels(bookingNumber, "London", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr3", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
@@ -404,19 +349,14 @@ public class TravelGoodBPELTest {
     }
 
     @Test
-    public void C2() {
+    public void C2() throws ParseException {
         // Create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
 
         // First flight
-        GetFlightsResponse flightsResponse = null;
-        try {
-            flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetFlightsResponse flightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
         Assert.assertTrue(flightsResponse != null && flightsResponse.getFlights() != null
                 && flightsResponse.getFlights().getFlight() != null && flightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr1", flightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -425,12 +365,8 @@ public class TravelGoodBPELTest {
         addFlight(bookingNumber, flight1);
 
         //First hotel
-        GetHotelsResponse hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "New York", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        GetHotelsResponse hotelsResponse = getHotels(bookingNumber, "New York", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr4", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
@@ -439,12 +375,8 @@ public class TravelGoodBPELTest {
         addHotel(bookingNumber, hotel1);
 
         //Second hotel
-        hotelsResponse = null;
-        try {
-            hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
-        } catch (ParseException ex) {
-            Logger.getLogger(TravelGoodBPELTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        hotelsResponse = getHotels(bookingNumber, "Paris", "2014-01-01", "2014-01-10");
+
         Assert.assertTrue(hotelsResponse != null && hotelsResponse.getHotels() != null
                 && hotelsResponse.getHotels().getHotel() != null && hotelsResponse.getHotels().getHotel().size() == 1);
         Assert.assertEquals("bookingNr1", hotelsResponse.getHotels().getHotel().get(0).getBookingNumber());
