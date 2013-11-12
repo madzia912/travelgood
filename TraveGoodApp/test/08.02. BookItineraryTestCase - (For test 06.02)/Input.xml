@@ -1,0 +1,13 @@
+<soapenv:Envelope xsi:schemaLocation="http://schemas.xmlsoap.org/soap/envelope/ http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:travelgood.dtu.dk" xmlns:urn1="urn:commons.travelgood.dtu.dk">
+  <soapenv:Body>
+    <urn:bookItineraryRequest>
+      <bookingNumber>DELETE_THIS_ASSIGN_LATER</bookingNumber>
+      <creditCard>
+        <urn1:name>Bech Camilla</urn1:name>
+        <urn1:number>50408822</urn1:number>
+        <urn1:expMonth>7</urn1:expMonth>
+        <urn1:expYear>9</urn1:expYear>
+      </creditCard>
+    </urn:bookItineraryRequest>
+  </soapenv:Body>
+</soapenv:Envelope>
