@@ -454,7 +454,27 @@
                         <correlations>
                             <correlation set="BookingNumberCorrelationSet" initiate="no"/>
                         </correlations>
-                        <sequence name="CancelItinerarySequence">
+                        <scope name="CancelItineraryScope">
+                            <variables>
+                                <variable name="CancelItineraryFaultVar" messageType="ns0:cancelItineraryFault"/>
+                            </variables>
+                            <faultHandlers>
+                                <catchAll>
+                                    <sequence name="CancellItineraryFaultSequence">
+                                        <assign name="AssignCancellItineraryFaultVar">
+                                            <copy>
+                                                <from>$CancelItineraryIn.cancelItineraryRequestPart/bookingNumber</from>
+                                                <to>$CancelItineraryFaultVar.cancelItineraryFaultPart/bookingNumber</to>
+                                            </copy>
+                                            <copy>
+                                                <from>'Failed to cancel the trip!'</from>
+                                                <to>$CancelItineraryFaultVar.cancelItineraryFaultPart/reason</to>
+                                            </copy>
+                                        </assign>
+                                        <reply name="CancellItineraryFaultReply" partnerLink="TravelGoodPartnerLink" operation="cancelItinerary" portType="ns0:travelGoodPortType" faultName="ns0:cancelItineraryFault" variable="CancelItineraryFaultVar"/>
+                                    </sequence>
+                                </catchAll>
+                            </faultHandlers>
                             <if name="IfNotCanceled_CancelItinerary">
                                 <condition>not($isCanceled)</condition>
                                 <sequence name="IfNotCanceled_CancelItinerary_true">
@@ -587,7 +607,7 @@
                                     </sequence>
                                 </else>
                             </if>
-                        </sequence>
+                        </scope>
                     </onMessage>
                 </pick>
             </sequence>
