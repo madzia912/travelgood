@@ -19,6 +19,7 @@
         <bookingState>IN_PROGRESS</bookingState>
           </flight>
         </flights>
+        <finalPrice xmlns="urn:commons.travelgood.dtu.dk">100</finalPrice>
         <paymentStatus xmlns="urn:commons.travelgood.dtu.dk">PENDING</paymentStatus>
         <bookingState xmlns="urn:commons.travelgood.dtu.dk">IN_PROGRESS</bookingState>
       </itinerary>

@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.1.1 (branches/2.1-6844; 2011-07-29T12:07:24+0000) JAXWS-RI/2.2.5 JAXWS/2.2. --><definitions xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="travelGoodBpelUtils" targetNamespace="urn:utils.bpel.travelgood.dtu.dk">
+    <types>
+        <xsd:schema xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" xmlns:ct="urn:commons.travelgood.dtu.dk" targetNamespace="urn:utils.bpel.travelgood.dtu.dk">
+            <xsd:import namespace="urn:commons.travelgood.dtu.dk" schemaLocation="http://localhost:8080/TravelGoodBpelUtilsWS/travelGoodBpelUtilsService?xsd=1"/>
+            <xsd:element name="getProcessDeadlineRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="itinerary" type="ct:itineraryType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getProcessDeadlineResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deadline" type="xsd:dateTime"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="getProcessDeadlineRequest">
+        <part name="getProcessDeadlineRequestPart" element="tns:getProcessDeadlineRequest"/>
+    </message>
+    <message name="getProcessDeadlineResponse">
+        <part name="getProcessDeadlineResponse" element="tns:getProcessDeadlineResponse"/>
+    </message>
+    <portType name="travelGoodBpelUtilsPortType">
+        <operation name="getProcessDeadline">
+            <input name="getProcessDeadlineInput" message="tns:getProcessDeadlineRequest"/>
+            <output name="getProcessDeadlineOutput" message="tns:getProcessDeadlineResponse"/>
+        </operation>
+    </portType>
+    <binding name="travelGoodBpelUtilsBinding" type="tns:travelGoodBpelUtilsPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getProcessDeadline">
+            <soap:operation/>
+            <input name="getProcessDeadlineInput">
+                <soap:body use="literal"/>
+            </input>
+            <output name="getProcessDeadlineOutput">
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="travelGoodBpelUtilsService">
+        <port name="travelGoodBpelUtilsPort" binding="tns:travelGoodBpelUtilsBinding">
+            <soap:address location="http://localhost:8080/TravelGoodBpelUtilsWS/travelGoodBpelUtilsService"/>
+        </port>
+    </service>
+    <plnk:partnerLinkType name="travelGoodBpelUtils">
+        <plnk:role name="travelGoodBpelUtilsPortTypeRole" portType="tns:travelGoodBpelUtilsPortType"/>
+    </plnk:partnerLinkType>
+</definitions>

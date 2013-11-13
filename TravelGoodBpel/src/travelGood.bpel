@@ -14,14 +14,20 @@
     <import namespace="urn:lameduck.dtu.dk" location="http://localhost:8080/lameduck/lameDuckService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="urn:niceview.dtu.dk" location="http://localhost:8080/niceview/niceViewService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <import namespace="urn:commons.travelgood.dtu.dk" location="commonTypes.xsd" importType="http://www.w3.org/2001/XMLSchema"/>
+    <import namespace="urn:utils.bpel.travelgood.dtu.dk" location="http://localhost:8080/TravelGoodBpelUtilsWS/travelGoodBpelUtilsService?wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
     <partnerLinks>
         <partnerLink name="LameDuckPartnerLink" xmlns:tns="urn:lameduck.dtu.dk" partnerLinkType="tns:lameDuckWSDL" partnerRole="lameDuckPortTypeRole"/>
         <partnerLink name="NiceViewPartnerLink" xmlns:tns="urn:niceview.dtu.dk" partnerLinkType="tns:niceViewWSDL" partnerRole="niceViewPortTypeRole"/>
+        <partnerLink name="TravelGoodBpelUtilsPartnerLink" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" partnerLinkType="tns:travelGoodBpelUtils" partnerRole="travelGoodBpelUtilsPortTypeRole"/>
         <partnerLink name="TravelGoodPartnerLink" xmlns:tns="urn:travelgood.dtu.dk" partnerLinkType="tns:travelGoodWSDL" myRole="travelGoodPortTypeRole"/>
     </partnerLinks>
     <variables>
+        <variable name="deadline" type="xs:dateTime"/>
+        <variable name="GetProcessDeadlineOut" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" messageType="tns:getProcessDeadlineResponse"/>
+        <variable name="GetProcessDeadlineIn" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" messageType="tns:getProcessDeadlineRequest"/>
+        <variable name="GetInitialProcessDeadlineOut" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" messageType="tns:getProcessDeadlineResponse"/>
+        <variable name="GetInitialProcessDeadlineIn" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" messageType="tns:getProcessDeadlineRequest"/>
         <variable name="CancelItineraryOutFalse" messageType="ns0:cancelItineraryResponse"/>
-        <variable name="earliestDate" type="xs:date"/>
         <variable name="BookItineraryFalseOut" messageType="ns0:bookItineraryResponse"/>
         <variable name="CancelItineraryOut" messageType="ns0:cancelItineraryResponse"/>
         <variable name="CancelItineraryIn" messageType="ns0:cancelItineraryRequest"/>
@@ -84,19 +90,15 @@
                         <from>'PENDING'</from>
                         <to>$itinerary/ns1:paymentStatus</to>
                     </copy>
-                    <copy>
-                        <from>sxxf:current-date()</from>
-                        <to variable="earliestDate"/>
-                    </copy>
                 </assign>
                 <!-- Uncomment this if you want to use Composite Application tests!
+                -->
                 <assign name="DELETE_ME_LATER">
                     <copy>
                         <from>'DELETE_THIS_ASSIGN_LATER'</from>
                         <to>$itinerary/ns1:id</to>
                     </copy>
                 </assign>
-                -->
                 <assign name="CreateItineraryOutAssign">
                     <copy>
                         <from>$itinerary/ns1:id</from>
@@ -110,6 +112,21 @@
                 </reply>
             </sequence>
         </scope>
+        <sequence name="InitialFixDeadlineSequence" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk">
+            <assign name="AssignInitialCheckDeadline">
+                <copy>
+                    <from variable="itinerary"/>
+                    <to>$GetInitialProcessDeadlineIn.getProcessDeadlineRequestPart/itinerary</to>
+                </copy>
+            </assign>
+            <invoke name="InvokeInitialGetDeadline" partnerLink="TravelGoodBpelUtilsPartnerLink" operation="getProcessDeadline" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" portType="tns:travelGoodBpelUtilsPortType" inputVariable="GetInitialProcessDeadlineIn" outputVariable="GetInitialProcessDeadlineOut"/>
+            <assign name="AssignInitialNewDeadline">
+                <copy>
+                    <from>$GetInitialProcessDeadlineOut.getProcessDeadlineResponse/deadline</from>
+                    <to variable="deadline"/>
+                </copy>
+            </assign>
+        </sequence>
         <repeatUntil name="GetAndAddFlightsAndHotelsRepeatUntil">
             <sequence name="GetAndAddFlightsAndHotelsSequence" xmlns:tns="urn:lameduck.dtu.dk">
                 <pick name="GetAndAddFlightsAndHotelsPick">
@@ -227,15 +244,6 @@
                                         </copy>
                                     </assign>
                                     <reply name="AddFlightReply" partnerLink="TravelGoodPartnerLink" operation="addFlight" portType="ns0:travelGoodPortType" variable="AddFlightOut"/>
-                                    <if name="IfLiftOfDateBeforeEarliestDate">
-                                        <condition>sxxf:date-less-than($AddFlightIn.addFlightRequestPart/flight/ns1:liftOffDate, $earliestDate)</condition>
-                                        <assign name="AssignLiftOffDateToEarliestDate">
-                                            <copy>
-                                                <from>$AddFlightIn.addFlightRequestPart/flight/ns1:liftOffDate</from>
-                                                <to variable="earliestDate"/>
-                                            </copy>
-                                        </assign>
-                                    </if>
                                 </sequence>
                                 <else>
                                     <sequence name="IfNotBookedAndNotCanceled_AddFlight_false">
@@ -292,15 +300,6 @@
                                         </copy>
                                     </assign>
                                     <reply name="AddHotelReply" partnerLink="TravelGoodPartnerLink" operation="addHotel" portType="ns0:travelGoodPortType" variable="AddHotelOut"/>
-                                    <if name="IfArrivalDateBeforeEarliestDate">
-                                        <condition>sxxf:date-less-than($AddHotelIn.addHotelRequestPart/hotel/ns1:arrivalDate, $earliestDate)</condition>
-                                        <assign name="AssignArrivalDateToEarliestDate">
-                                            <copy>
-                                                <from>$AddHotelIn.addHotelRequestPart/hotel/ns1:arrivalDate</from>
-                                                <to variable="earliestDate"/>
-                                            </copy>
-                                        </assign>
-                                    </if>
                                 </sequence>
                                 <else>
                                     <sequence name="IfNotBookedAndNotCanceled_AddHotel_false">
@@ -713,7 +712,26 @@
                             </if>
                         </scope>
                     </onMessage>
+                    <onAlarm>
+                        <until>$deadline</until>
+                        <exit name="Exit"/>
+                    </onAlarm>
                 </pick>
+                <sequence name="FixDeadlineSequence">
+                    <assign name="AssignCheckDeadline">
+                        <copy>
+                            <from variable="itinerary"/>
+                            <to>$GetProcessDeadlineIn.getProcessDeadlineRequestPart/itinerary</to>
+                        </copy>
+                    </assign>
+                    <invoke name="InvokeGetDeadline" partnerLink="TravelGoodBpelUtilsPartnerLink" operation="getProcessDeadline" xmlns:tns="urn:utils.bpel.travelgood.dtu.dk" portType="tns:travelGoodBpelUtilsPortType" inputVariable="GetProcessDeadlineIn" outputVariable="GetProcessDeadlineOut"/>
+                    <assign name="AssignNewDeadline">
+                        <copy>
+                            <from>$GetProcessDeadlineOut.getProcessDeadlineResponse/deadline</from>
+                            <to variable="deadline"/>
+                        </copy>
+                    </assign>
+                </sequence>
             </sequence>
             <condition>false()</condition>
         </repeatUntil>
