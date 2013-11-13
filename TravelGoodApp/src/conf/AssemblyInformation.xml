@@ -2,12 +2,12 @@
 <jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/jbi ./jbi.xsd">
     <service-assembly>
         <identification>
-            <name>TraveGoodApp</name>
-            <description>Represents the Service Assembly of TraveGoodApp</description>
+            <name>TravelGoodApp</name>
+            <description>Represents the Service Assembly of TravelGoodApp</description>
         </identification>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-TravelGoodBpel</name>
+                <name>TravelGoodApp-TravelGoodBpel</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -17,7 +17,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-database-binding</name>
+                <name>TravelGoodApp-sun-database-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -27,7 +27,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-email-binding</name>
+                <name>TravelGoodApp-sun-email-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -37,7 +37,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-file-binding</name>
+                <name>TravelGoodApp-sun-file-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -47,7 +47,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-ftp-binding</name>
+                <name>TravelGoodApp-sun-ftp-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -57,7 +57,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-hl7-binding</name>
+                <name>TravelGoodApp-sun-hl7-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -67,7 +67,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-http-binding</name>
+                <name>TravelGoodApp-sun-http-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -77,7 +77,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-jms-binding</name>
+                <name>TravelGoodApp-sun-jms-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -87,7 +87,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-ldap-binding</name>
+                <name>TravelGoodApp-sun-ldap-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -97,7 +97,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-rest-binding</name>
+                <name>TravelGoodApp-sun-rest-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
@@ -107,7 +107,7 @@
         </service-unit>
         <service-unit>
             <identification>
-                <name>TraveGoodApp-sun-scheduler-binding</name>
+                <name>TravelGoodApp-sun-scheduler-binding</name>
                 <description>Represents this Service Unit</description>
             </identification>
             <target>
