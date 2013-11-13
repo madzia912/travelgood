@@ -27,7 +27,7 @@ public class DateUtils {
 
     private DateUtils() {
     }
-
+    
     public static String dateToString(Date date) {
         return sdf.format(date);
     }

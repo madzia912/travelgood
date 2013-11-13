@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns0="urn:bpel.travelgood.dtu.dk" xmlns:ns1="urn:lameduck.dtu.dk" xmlns:ns2="urn:niceview.dtu.dk" xmlns:ns3="urn:travelgood.dtu.dk" xmlns:ns4="http://www.sun.com/jbi/descriptor/service-unit" version="1.0">
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns0="urn:bpel.travelgood.dtu.dk" xmlns:ns1="urn:lameduck.dtu.dk" xmlns:ns2="urn:niceview.dtu.dk" xmlns:ns3="urn:utils.bpel.travelgood.dtu.dk" xmlns:ns4="urn:travelgood.dtu.dk" xmlns:ns5="http://www.sun.com/jbi/descriptor/service-unit" version="1.0">
     <services binding-component="false">
-        <provides endpoint-name="travelGoodPortTypeRole_myRole" interface-name="ns3:travelGoodPortType" service-name="ns0:TravelGoodPartnerLink">
-            <ns4:display-name>TravelGoodPartnerLink</ns4:display-name>
-            <ns4:process-name>travelGood</ns4:process-name>
-            <ns4:file-path>travelGood.bpel</ns4:file-path>
+        <provides endpoint-name="travelGoodPortTypeRole_myRole" interface-name="ns4:travelGoodPortType" service-name="ns0:TravelGoodPartnerLink">
+            <ns5:display-name>TravelGoodPartnerLink</ns5:display-name>
+            <ns5:process-name>travelGood</ns5:process-name>
+            <ns5:file-path>travelGood.bpel</ns5:file-path>
         </provides>
         <consumes endpoint-name="lameDuckPortTypeRole_partnerRole" interface-name="ns1:lameDuckPortType" service-name="ns0:LameDuckPartnerLink">
-            <ns4:display-name>LameDuckPartnerLink</ns4:display-name>
-            <ns4:process-name>travelGood</ns4:process-name>
-            <ns4:file-path>travelGood.bpel</ns4:file-path>
+            <ns5:display-name>LameDuckPartnerLink</ns5:display-name>
+            <ns5:process-name>travelGood</ns5:process-name>
+            <ns5:file-path>travelGood.bpel</ns5:file-path>
         </consumes>
         <consumes endpoint-name="niceViewPortTypeRole_partnerRole" interface-name="ns2:niceViewPortType" service-name="ns0:NiceViewPartnerLink">
-            <ns4:display-name>NiceViewPartnerLink</ns4:display-name>
-            <ns4:process-name>travelGood</ns4:process-name>
-            <ns4:file-path>travelGood.bpel</ns4:file-path>
+            <ns5:display-name>NiceViewPartnerLink</ns5:display-name>
+            <ns5:process-name>travelGood</ns5:process-name>
+            <ns5:file-path>travelGood.bpel</ns5:file-path>
+        </consumes>
+        <consumes endpoint-name="travelGoodBpelUtilsPortTypeRole_partnerRole" interface-name="ns3:travelGoodBpelUtilsPortType" service-name="ns0:TravelGoodBpelUtilsPartnerLink">
+            <ns5:display-name>TravelGoodBpelUtilsPartnerLink</ns5:display-name>
+            <ns5:process-name>travelGood</ns5:process-name>
+            <ns5:file-path>travelGood.bpel</ns5:file-path>
         </consumes>
     </services>
 </jbi>
