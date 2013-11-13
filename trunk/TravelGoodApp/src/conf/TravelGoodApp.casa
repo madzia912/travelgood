@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="urn:niceview.dtu.dk" xmlns:ns2="urn:lameduck.dtu.dk" xmlns:ns3="urn:travelgood.dtu.dk" xmlns:ns4="urn:bpel.travelgood.dtu.dk" xmlns:xlink="http://www.w3.org/2000/xlink">
+<casa xmlns="http://java.sun.com/xml/ns/casa" xmlns:ns1="urn:bpel.travelgood.dtu.dk" xmlns:ns2="urn:travelgood.dtu.dk" xmlns:ns3="urn:lameduck.dtu.dk" xmlns:ns4="urn:niceview.dtu.dk" xmlns:xlink="http://www.w3.org/2000/xlink">
     <endpoints>
-        <endpoint endpoint-name="niceViewPortTypeBindingPort" interface-name="ns1:niceViewPortType" name="endpoint1" service-name="ns1:niceViewService"/>
-        <endpoint endpoint-name="lameDuckPort" interface-name="ns2:lameDuckPortType" name="endpoint2" service-name="ns2:lameDuckService"/>
-        <endpoint endpoint-name="travelGoodPortTypeBindingPort" interface-name="ns3:travelGoodPortType" name="endpoint3" service-name="ns3:travelGoodService"/>
-        <endpoint display-name="TravelGoodPartnerLink" endpoint-name="travelGoodPortTypeRole_myRole" file-path="travelGood.bpel" interface-name="ns3:travelGoodPortType" name="endpoint4" process-name="travelGood" service-name="ns4:TravelGoodPartnerLink"/>
-        <endpoint display-name="LameDuckPartnerLink" endpoint-name="lameDuckPortTypeRole_partnerRole" file-path="travelGood.bpel" interface-name="ns2:lameDuckPortType" name="endpoint5" process-name="travelGood" service-name="ns4:LameDuckPartnerLink"/>
-        <endpoint display-name="NiceViewPartnerLink" endpoint-name="niceViewPortTypeRole_partnerRole" file-path="travelGood.bpel" interface-name="ns1:niceViewPortType" name="endpoint6" process-name="travelGood" service-name="ns4:NiceViewPartnerLink"/>
+        <endpoint display-name="TravelGoodPartnerLink" endpoint-name="travelGoodPortTypeRole_myRole" file-path="travelGood.bpel" interface-name="ns2:travelGoodPortType" name="endpoint1" process-name="travelGood" service-name="ns1:TravelGoodPartnerLink"/>
+        <endpoint display-name="LameDuckPartnerLink" endpoint-name="lameDuckPortTypeRole_partnerRole" file-path="travelGood.bpel" interface-name="ns3:lameDuckPortType" name="endpoint2" process-name="travelGood" service-name="ns1:LameDuckPartnerLink"/>
+        <endpoint display-name="NiceViewPartnerLink" endpoint-name="niceViewPortTypeRole_partnerRole" file-path="travelGood.bpel" interface-name="ns4:niceViewPortType" name="endpoint3" process-name="travelGood" service-name="ns1:NiceViewPartnerLink"/>
+        <endpoint endpoint-name="niceViewPortTypeBindingPort" interface-name="ns4:niceViewPortType" name="endpoint4" service-name="ns4:niceViewService"/>
+        <endpoint endpoint-name="lameDuckPort" interface-name="ns3:lameDuckPortType" name="endpoint5" service-name="ns3:lameDuckService"/>
+        <endpoint endpoint-name="travelGoodPortTypeBindingPort" interface-name="ns2:travelGoodPortType" name="endpoint6" service-name="ns2:travelGoodService"/>
     </endpoints>
     <service-units>
-        <service-engine-service-unit artifacts-zip="TravelGoodBpel.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="TraveGoodApp-TravelGoodBpel" unit-name="TravelGoodBpel" unknown="false" x="147" y="99">
-            <provides endpoint="endpoint4"/>
-            <consumes endpoint="endpoint5"/>
-            <consumes endpoint="endpoint6"/>
+        <service-engine-service-unit artifacts-zip="TravelGoodBpel.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="TravelGoodApp-TravelGoodBpel" unit-name="TravelGoodBpel" unknown="false" x="-1" y="-1">
+            <provides endpoint="endpoint1"/>
+            <consumes endpoint="endpoint2"/>
+            <consumes endpoint="endpoint3"/>
         </service-engine-service-unit>
-        <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="TraveGoodApp-sun-http-binding" unit-name="sun-http-binding">
+        <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="TravelGoodApp-sun-http-binding" unit-name="sun-http-binding">
             <ports>
-                <port x="67" y="279">
+                <port x="0" y="-1">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/service[@name='lameDuckService']/port[@name='lameDuckPort'])" xlink:type="simple"/>
-                    <consumes endpoint="endpoint2"/>
-                    <provides endpoint="endpoint2"/>
+                    <consumes endpoint="endpoint5"/>
+                    <provides endpoint="endpoint5"/>
                 </port>
-                <port x="67" y="358">
+                <port x="0" y="-1">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/service[@name='niceViewService']/port[@name='niceViewPortTypeBindingPort'])" xlink:type="simple"/>
-                    <consumes endpoint="endpoint1"/>
-                    <provides endpoint="endpoint1"/>
+                    <consumes endpoint="endpoint4"/>
+                    <provides endpoint="endpoint4"/>
                 </port>
-                <port x="67" y="39">
+                <port x="0" y="-1">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/travelGood.wsdl#xpointer(/definitions/service[@name='travelGoodService']/port[@name='travelGoodPortTypeBindingPort'])" xlink:type="simple"/>
-                    <consumes endpoint="endpoint3"/>
-                    <provides endpoint="endpoint3"/>
+                    <consumes endpoint="endpoint6"/>
+                    <provides endpoint="endpoint6"/>
                 </port>
             </ports>
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint6" provider="endpoint1" state="unchanged"/>
-        <connection consumer="endpoint5" provider="endpoint2" state="unchanged"/>
         <connection consumer="endpoint3" provider="endpoint4" state="unchanged"/>
+        <connection consumer="endpoint2" provider="endpoint5" state="unchanged"/>
+        <connection consumer="endpoint6" provider="endpoint1" state="unchanged"/>
     </connections>
     <porttypes>
         <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/portType[@name='lameDuckPortType'])" xlink:type="simple"/>
