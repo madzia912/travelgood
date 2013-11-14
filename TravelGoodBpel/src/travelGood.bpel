@@ -393,7 +393,7 @@
                                                         <variable name="RollbackHotelIn_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelRequest"/>
                                                     </variables>
                                                     <if name="IfHotelBooked">
-                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel/ns1:bookingState</condition>
+                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel[$RollbackHotelsForEachCounter]/ns1:bookingState</condition>
                                                         <sequence name="IfHotelBooked_true">
                                                             <assign name="HotelBookingNumberAssign">
                                                                 <copy>
@@ -647,16 +647,13 @@
                                             <forEach name="CancelingHotelsForEach" parallel="no" counterName="CancelingHotelsForEachCounter">
                                                 <startCounterValue>1</startCounterValue>
                                                 <finalCounterValue>count($itinerary/ns1:hotels/ns1:hotel)</finalCounterValue>
-                                                <completionCondition>
-                                                    <branches/>
-                                                </completionCondition>
                                                 <scope name="CancelSingleHotelsSequence">
                                                     <variables>
                                                         <variable name="CancelHotelOut_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelResponse"/>
                                                         <variable name="CancelHotelIn_NiceView" xmlns:tns="urn:niceview.dtu.dk" messageType="tns:cancelHotelRequest"/>
                                                     </variables>
                                                     <if name="IfHotelBooked">
-                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel/ns1:bookingState</condition>
+                                                        <condition>'BOOKED' = $itinerary/ns1:hotels/ns1:hotel[$CancelingHotelsForEachCounter]/ns1:bookingState</condition>
                                                         <sequence name="IfHotelBooked_true">
                                                             <assign name="HotelBookingNumberAssign">
                                                                 <copy>
