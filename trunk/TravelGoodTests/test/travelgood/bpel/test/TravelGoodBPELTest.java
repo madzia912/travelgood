@@ -20,8 +20,6 @@ import dk.dtu.travelgood.commons.FlightType;
 import dk.dtu.travelgood.commons.HotelType;
 import dk.dtu.travelgood.commons.ItineraryType;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
@@ -33,17 +31,17 @@ import travelgood.utils.model.BookingState;
  * @author Stanislav Skuratovich
  */
 public class TravelGoodBPELTest {
-
+    
     @Test
     public void B() throws ParseException {
         // create itinerary
         CreateItineraryResponse cir = createItinerary("use1");
         Assert.assertTrue(cir != null);
         String bookingNumber = cir.getBookingNumber();
-
+        
         // first flight
         GetFlightsResponse getFlightsResponse = getFlights(bookingNumber, "ABC", "CBA", "2014-10-10");
-
+        
         Assert.assertTrue(getFlightsResponse != null && getFlightsResponse.getFlights() != null
                 && getFlightsResponse.getFlights().getFlight() != null && getFlightsResponse.getFlights().getFlight().size() == 1);
         Assert.assertEquals("bookingNr1", getFlightsResponse.getFlights().getFlight().get(0).getBookingNumber());
@@ -93,21 +91,15 @@ public class TravelGoodBPELTest {
         creditCard.setExpMonth(7);
         creditCard.setExpYear(9);
         creditCard.setNumber("50408822");
-
-        // *******************
-        // here is an mistake booking is complete, but shoule be cancelled
-        // *******************
-        /*
+        
          try {
          BookItineraryResponse bookItinerary = bookItinerary(creditCard, bookingNumber);
-         if (bookItinerary.isBooked())
-         Assert.fail();
+         Assert.assertTrue(bookItinerary.isBooked());
          } 
          catch (BookItineraryFault_Exception ex) {
-         Assert.assertEquals("NOT_ACCEPTABLE", ex.getFaultInfo().getReason());
+         Assert.assertEquals("Book itinerary failed!", ex.getFaultInfo().getReason());
          }
-         */
-
+        
         // checking after
         getItineraryResponse = getItinerary(bookingNumber);
         Assert.assertTrue(getItineraryResponse != null && getItineraryResponse.getItinerary() != null);
@@ -116,16 +108,14 @@ public class TravelGoodBPELTest {
 
         Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getFlights().getFlight()));
         Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getHotels().getHotel()));
-
+        
         Assert.assertEquals("bookingNr1", itinerary.getFlights().getFlight().get(0).getBookingNumber());
-        // ***********
-        // after changing previous mistake BookingState should be changed to BookingState.CANCELLED.toString() in the first assertEquals
-        // ***********
-        Assert.assertEquals(BookingState.IN_PROGRESS.toString(), itinerary.getFlights().getFlight().get(0).getBookingState());
+        Assert.assertEquals(BookingState.CANCELLED.toString(), itinerary.getFlights().getFlight().get(0).getBookingState());
         Assert.assertEquals("bookingNr2", itinerary.getHotels().getHotel().get(0).getBookingNumber());
         Assert.assertEquals(BookingState.IN_PROGRESS.toString(), itinerary.getHotels().getHotel().get(0).getBookingState());
         Assert.assertEquals("bookingNr1", itinerary.getHotels().getHotel().get(1).getBookingNumber());
         Assert.assertEquals(BookingState.IN_PROGRESS.toString(), itinerary.getHotels().getHotel().get(1).getBookingState());
+        
     }
 
     @Test
@@ -293,11 +283,7 @@ public class TravelGoodBPELTest {
         creditCard.setExpMonth(5);
         creditCard.setExpYear(9);
         creditCard.setNumber("50408816");
-
-        // ***********
-        // this part is not working properly, state of itinerary doesn't change at all
-        // ***********
-        /*
+        
          try {
          BookItineraryResponse bookItinerary = bookItinerary(creditCard, bookingNumber);
          Assert.assertTrue(bookItinerary.isBooked());
@@ -315,13 +301,12 @@ public class TravelGoodBPELTest {
          Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getHotels().getHotel()));
 
          Assert.assertEquals("bookingNr1", itinerary.getFlights().getFlight().get(0).getBookingNumber());
-         Assert.assertEquals(BookingState.BOOKED, itinerary.getFlights().getFlight().get(0).getBookingState());
+         Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getFlights().getFlight().get(0).getBookingState());
          Assert.assertEquals("bookingNr1", itinerary.getHotels().getHotel().get(0).getBookingNumber());
-         Assert.assertEquals(BookingState.BOOKED, itinerary.getHotels().getHotel().get(0).getBookingState());
+         Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(0).getBookingState());
          Assert.assertEquals("bookingNr3", itinerary.getHotels().getHotel().get(1).getBookingNumber());
-         Assert.assertEquals(BookingState.BOOKED, itinerary.getHotels().getHotel().get(1).getBookingState());
-        
-        
+         Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(1).getBookingState());
+
          // Cancel
          try {
          CancelItineraryResponse cancelItinerary = cancelItinerary(creditCard, bookingNumber);
@@ -340,12 +325,12 @@ public class TravelGoodBPELTest {
          Assert.assertTrue(CollectionUtils.isNotEmpty(itinerary.getHotels().getHotel()));
 
          Assert.assertEquals("bookingNr1", itinerary.getFlights().getFlight().get(0).getBookingNumber());
-         Assert.assertEquals(BookingState.CANCELLED, itinerary.getFlights().getFlight().get(0).getBookingState());
+         Assert.assertEquals(BookingState.CANCELLED.toString(), itinerary.getFlights().getFlight().get(0).getBookingState());
          Assert.assertEquals("bookingNr1", itinerary.getHotels().getHotel().get(0).getBookingNumber());
-         Assert.assertEquals(BookingState.CANCELLED, itinerary.getHotels().getHotel().get(0).getBookingState());
+         Assert.assertEquals(BookingState.CANCELLED.toString(), itinerary.getHotels().getHotel().get(0).getBookingState());
          Assert.assertEquals("bookingNr3", itinerary.getHotels().getHotel().get(1).getBookingNumber());
-         Assert.assertEquals(BookingState.CANCELLED, itinerary.getHotels().getHotel().get(1).getBookingState());
-         */
+         // **** here test fails ****//
+         Assert.assertEquals(BookingState.CANCELLED.toString(), itinerary.getHotels().getHotel().get(1).getBookingState());
     }
 
     @Test
@@ -406,11 +391,7 @@ public class TravelGoodBPELTest {
         creditCard.setExpMonth(5);
         creditCard.setExpYear(9);
         creditCard.setNumber("50408816");
-
-        // ***********
-        // this part is not working properly, state of itinerary doesn't change at all
-        // ***********
-        /*
+        
          try {
          BookItineraryResponse bookItinerary = bookItinerary(creditCard, bookingNumber);
          Assert.assertTrue(bookItinerary.isBooked());
@@ -433,16 +414,15 @@ public class TravelGoodBPELTest {
          Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(0).getBookingState());
          Assert.assertEquals("bookingNr1", itinerary.getHotels().getHotel().get(1).getBookingNumber());
          Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(1).getBookingState());
-
+         
          // Cancel
          try {
          CancelItineraryResponse cancelItinerary = cancelItinerary(creditCard, bookingNumber);
-         if (cancelItinerary.isCanceled())
-         Assert.fail();
+         Assert.assertTrue(cancelItinerary.isCanceled());
          } catch (CancelItineraryFault_Exception ex) {
-         Assert.assertEquals("NOT_ACCEPTABLE", ex.getFaultInfo().getReason());
+         Assert.assertEquals("Failed to cancel the trip!", ex.getFaultInfo().getReason());
          }
-
+         
          //Check itinerary again
          itineraryResponse = getItinerary(bookingNumber);
          Assert.assertTrue(itineraryResponse != null && itineraryResponse.getItinerary() != null);
@@ -458,7 +438,7 @@ public class TravelGoodBPELTest {
          Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(0).getBookingState());
          Assert.assertEquals("bookingNr1", itinerary.getHotels().getHotel().get(1).getBookingNumber());
          Assert.assertEquals(BookingState.BOOKED.toString(), itinerary.getHotels().getHotel().get(1).getBookingState());
-         */
+         
     }
 
     private static AddFlightResponse addFlight(String bookingNumber, FlightType flight) {
