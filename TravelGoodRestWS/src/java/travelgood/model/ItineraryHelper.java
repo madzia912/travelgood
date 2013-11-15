@@ -105,8 +105,11 @@ public class ItineraryHelper {
             ItineraryHolder.getInstance().getTemporaryItineraries().remove(bookingNumber);
             ItineraryHolder.getInstance().getBookedItineraries().put(itinerary.getBookingNumber(), itinerary);
 
+            if(!isMoreThanOneDayLeft(itinerary)){
+                throw new ItineraryException("Less than one day left!");
+            }
             return itinerary;
-
+            
         } catch (Exception ex) { //Rollback all the booked items
             for (Object obj : bookedFlightsAndHotels) {
                 if (obj instanceof Flight) {
@@ -182,7 +185,11 @@ public class ItineraryHelper {
 
     public boolean addFlight(String bookingNumber, String flightBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
-
+        
+        if(!isMoreThanOneDayLeft(itinerary)){
+                throw new ItineraryException("Less than one day left!");
+        }
+        
         if (!itinerary.getBookingState().equals(BookingState.IN_PROGRESS)) {
             throw new ItineraryException("Itinerary not in progress!");
         }
@@ -205,6 +212,10 @@ public class ItineraryHelper {
     public boolean addHotel(String bookingNumber, String hotelBookingNumber) throws ItineraryException {
         Itinerary itinerary = getItinerary(bookingNumber);
 
+        if(!isMoreThanOneDayLeft(itinerary)){
+            throw new ItineraryException("Less than one day left!");
+        }
+                    
         if (!itinerary.getBookingState().equals(BookingState.IN_PROGRESS)) {
             throw new ItineraryException("Itinerary not in progress!");
         }
