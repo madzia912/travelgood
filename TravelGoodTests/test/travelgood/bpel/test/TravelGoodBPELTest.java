@@ -469,10 +469,10 @@ public class TravelGoodBPELTest {
         return port.bookItinerary(bookItineraryRequestPart);
     }
 
-    private static CancelItineraryResponse cancelItinerary(CreditCardType creaditCard, String bookingNumber) throws CancelItineraryFault_Exception {
+    private static CancelItineraryResponse cancelItinerary(CreditCardType creditCard, String bookingNumber) throws CancelItineraryFault_Exception {
         dk.dtu.travelgood.CancelItineraryRequest cancelItineraryRequestPart = new dk.dtu.travelgood.CancelItineraryRequest();
         cancelItineraryRequestPart.setBookingNumber(bookingNumber);
-        cancelItineraryRequestPart.setCreditCard(creaditCard);
+        cancelItineraryRequestPart.setCreditCard(creditCard);
 
         dk.dtu.travelgood.TravelGoodService service = new dk.dtu.travelgood.TravelGoodService();
         dk.dtu.travelgood.TravelGoodPortType port = service.getTravelGoodPortTypeBindingPort();
