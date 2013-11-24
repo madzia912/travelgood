@@ -11,7 +11,7 @@
         <endpoint display-name="TravelGoodBpelUtilsPartnerLink" endpoint-name="travelGoodBpelUtilsPortTypeRole_partnerRole" file-path="travelGood.bpel" interface-name="ns4:travelGoodBpelUtilsPortType" name="endpoint8" process-name="travelGood" service-name="ns5:TravelGoodBpelUtilsPartnerLink"/>
     </endpoints>
     <service-units>
-        <service-engine-service-unit artifacts-zip="TravelGoodBpel.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="TravelGoodApp-TravelGoodBpel" unit-name="TravelGoodBpel" unknown="false" x="-1" y="-1">
+        <service-engine-service-unit artifacts-zip="TravelGoodBpel.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="TravelGoodApp-TravelGoodBpel" unit-name="TravelGoodBpel" unknown="false" x="132" y="99">
             <provides endpoint="endpoint5"/>
             <consumes endpoint="endpoint6"/>
             <consumes endpoint="endpoint7"/>
@@ -19,22 +19,22 @@
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="TravelGoodApp-sun-http-binding" unit-name="sun-http-binding">
             <ports>
-                <port x="0" y="-1">
+                <port x="67" y="276">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/lameduck/lameDuckService.wsdl#xpointer(/definitions/service[@name='lameDuckService']/port[@name='lameDuckPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint2"/>
                     <provides endpoint="endpoint2"/>
                 </port>
-                <port x="0" y="-1">
+                <port x="67" y="197">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/niceview/niceViewService.wsdl#xpointer(/definitions/service[@name='niceViewService']/port[@name='niceViewPortTypeBindingPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint1"/>
                     <provides endpoint="endpoint1"/>
                 </port>
-                <port x="0" y="-1">
+                <port x="67" y="118">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/localhost_8080/TravelGoodBpelUtilsWS/travelGoodBpelUtilsService.wsdl#xpointer(/definitions/service[@name='travelGoodBpelUtilsService']/port[@name='travelGoodBpelUtilsPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint4"/>
                     <provides endpoint="endpoint4"/>
                 </port>
-                <port x="0" y="-1">
+                <port x="67" y="39">
                     <link xlink:href="../jbiServiceUnits/TravelGoodBpel/travelGood.wsdl#xpointer(/definitions/service[@name='travelGoodService']/port[@name='travelGoodPortTypeBindingPort'])" xlink:type="simple"/>
                     <consumes endpoint="endpoint3"/>
                     <provides endpoint="endpoint3"/>
