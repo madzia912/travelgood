@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <style type="text/css"/>
+        <style type="text/css"/>
     </head>
     <body>
         <inspection xmlns="http://schemas.xmlsoap.org/ws/2001/10/inspection/">
@@ -16,7 +16,7 @@
                 <description referencednamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8085/travelGoodBpelService?wsdl"/>
             </service>
             <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/lameduck/inspection.wsil"/>
-			<link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/niceview/inspection.wsil"/>
+            <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/niceview/inspection.wsil"/>
         </inspection>
     </body>
 </html>
