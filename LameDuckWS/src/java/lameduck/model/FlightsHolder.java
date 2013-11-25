@@ -11,7 +11,7 @@ import travelgood.utils.DateUtils;
 /**
  * Holds all available flights and reservations.
  *
- * @author Bartosz Grzegorz Cichecki
+ * @author Stanislav Skuratovich
  */
 public class FlightsHolder {
 

@@ -28,7 +28,7 @@ import travelgood.utils.model.BookingState;
 
 /**
  *
- * @author Stanislav Skuratovich
+ * @author Jacob Kjaer
  */
 public class TravelGoodBPELTest {
 

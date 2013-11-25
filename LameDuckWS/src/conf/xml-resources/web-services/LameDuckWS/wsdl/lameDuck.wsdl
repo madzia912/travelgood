@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    author: Bartosz Grzegorz Cichecki
+    author: Stanislav Skuratovich
 -->
 <definitions name="lameDuckWSDL" targetNamespace="urn:lameduck.dtu.dk"
              xmlns="http://schemas.xmlsoap.org/wsdl/"

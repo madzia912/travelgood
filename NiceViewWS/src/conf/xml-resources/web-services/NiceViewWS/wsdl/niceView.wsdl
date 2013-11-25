@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    author: Magdalena Furman
+    author: Jacob Kjaer
 -->
 <definitions name="niceViewWSDL" targetNamespace="urn:niceview.dtu.dk"
              xmlns="http://schemas.xmlsoap.org/wsdl/"

@@ -19,7 +19,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * @author Bartosz Grzegorz Cichecki
+ * @author Stanislav Skuratovich
  */
 public class FlightsHelper {
 

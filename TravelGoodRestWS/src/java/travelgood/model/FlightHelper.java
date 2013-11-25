@@ -8,7 +8,7 @@ import travelgood.utils.model.Flights;
 
 /**
  *
- * @author Bartosz Grzegorz Cichecki
+ * @author Magdalena Furman
  */
 public class FlightHelper {
 

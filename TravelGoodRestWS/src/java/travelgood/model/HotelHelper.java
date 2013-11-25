@@ -9,7 +9,7 @@ import travelgood.utils.model.Hotels;
 
 /**
  *
- * @author Bartosz Grzegorz Cichecki
+ * @author Magdalena Furman
  */
 public class HotelHelper {
 

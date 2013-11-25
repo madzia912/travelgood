@@ -19,7 +19,7 @@ import travelgood.utils.model.rest.GetHotelsResponse;
 import travelgood.utils.model.rest.GetItineraryResponse;
 
 /**
- * @author Bartosz Grzegorz Cichecki
+ * @author Stanislav Skuratovich
  */
 public class TravelGoodRestfulTest {
 

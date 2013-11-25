@@ -38,7 +38,7 @@ import travelgood.utils.model.rest.GetItineraryResponse;
 
 /**
  *
- * @author Bartosz Grzegorz Cichecki
+ * @author Jacob Kjaer
  */
 @Path("/itinerary")
 public class ItineraryResource {

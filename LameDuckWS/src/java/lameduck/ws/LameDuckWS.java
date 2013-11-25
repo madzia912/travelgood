@@ -13,7 +13,7 @@ import javax.jws.WebService;
 import lameduck.model.FlightsHelper;
 
 /**
- * @author Bartosz Grzegorz Cichecki
+ * @author Stanislav Skuratovich
  */
 @WebService(serviceName = "lameDuckService", portName = "lameDuckPort", endpointInterface = "dk.dtu.lameduck.LameDuckPortType", targetNamespace = "urn:lameduck.dtu.dk", wsdlLocation = "WEB-INF/wsdl/LameDuckWS/lameDuck.wsdl")
 public class LameDuckWS {
