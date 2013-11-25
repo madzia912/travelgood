@@ -16,6 +16,7 @@
                 <description referencednamespace="http://schemas.xmlsoap.org/wsdl/" location="http://localhost:8080/lameduck/lameDuckService?wsdl"/>
             </service>
             <link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/niceview/inspection.wsil"/>
+			<link referencedNamespace="http://schemas.xmlsoap.org/ws/2001/10/inspection/" location="http://localhost:8080/travelgood/bpel/inspection.wsil"/>
         </inspection>
     </body>
 </html>
