@@ -2,7 +2,7 @@ package travelgood.model;
 
 /**
  *
- * @author Bartosz Grzegorz Cichecki
+ * @author Magdalena Furman
  */
 public class ItineraryException extends Exception {
 
